@@ -1,0 +1,10 @@
+framework module GreatStuff {
+  umbrella header "GreatStuff.h"
+
+  export *
+  module * { export * }
+}
+
+module GreatStuff.Swift {
+    header "GreatStuff-Swift.h"
+}
