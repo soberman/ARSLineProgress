@@ -160,7 +160,7 @@ private extension ViewController2 {
         let outerAnimation = CABasicAnimation(keyPath: "transform.rotation")
         outerAnimation.fromValue = 0.0
         outerAnimation.toValue = 2 * CGFloat(M_PI)
-        outerAnimation.duration = 4.0
+        outerAnimation.duration = 3.0
         outerAnimation.repeatCount = 100
         outerAnimation.additive = true
         outerCircle.addAnimation(outerAnimation, forKey: "outerCircleRotation")
@@ -168,7 +168,7 @@ private extension ViewController2 {
         let middleAnimation = CABasicAnimation(keyPath: "transform.rotation")
         middleAnimation.fromValue = 0.0
         middleAnimation.toValue = 2 * CGFloat(M_PI)
-        middleAnimation.duration = 2.0
+        middleAnimation.duration = 1.5
         middleAnimation.repeatCount = 100
         middleAnimation.additive = true
         middleCircle.addAnimation(middleAnimation, forKey: "middleCircleRotation")
@@ -176,7 +176,7 @@ private extension ViewController2 {
         let innerAnimation = CABasicAnimation(keyPath: "transform.rotation")
         innerAnimation.fromValue = 0.0
         innerAnimation.toValue = 2 * CGFloat(M_PI)
-        innerAnimation.duration = 1.0
+        innerAnimation.duration = 0.75
         innerAnimation.repeatCount = 100
         innerAnimation.additive = true
         innerCircle.addAnimation(innerAnimation, forKey: "middleCircleRotation")
