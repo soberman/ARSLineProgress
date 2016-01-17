@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		27454BD31C4C18E300DBB38C /* GreatStuff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27454BD21C4C18E300DBB38C /* GreatStuff.framework */; };
 		27454BD41C4C18E300DBB38C /* GreatStuff.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 27454BD21C4C18E300DBB38C /* GreatStuff.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		27454BD61C4C239900DBB38C /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27454BD51C4C239900DBB38C /* ViewController2.swift */; };
 		276406BB1C3832B600BCE105 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276406BA1C3832B600BCE105 /* AppDelegate.swift */; };
 		276406BD1C3832B600BCE105 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276406BC1C3832B600BCE105 /* ViewController.swift */; };
 		276406C01C3832B700BCE105 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 276406BE1C3832B700BCE105 /* Main.storyboard */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		27454BD21C4C18E300DBB38C /* GreatStuff.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GreatStuff.framework; sourceTree = "<group>"; };
+		27454BD51C4C239900DBB38C /* ViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
 		276406B71C3832B600BCE105 /* ARSLineProgress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARSLineProgress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		276406BA1C3832B600BCE105 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		276406BC1C3832B600BCE105 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			children = (
 				276406BA1C3832B600BCE105 /* AppDelegate.swift */,
 				276406BC1C3832B600BCE105 /* ViewController.swift */,
+				27454BD51C4C239900DBB38C /* ViewController2.swift */,
 				276406BE1C3832B700BCE105 /* Main.storyboard */,
 				276406C11C3832B700BCE105 /* Assets.xcassets */,
 				276406C31C3832B700BCE105 /* LaunchScreen.storyboard */,
@@ -157,6 +160,7 @@
 			files = (
 				276406BD1C3832B600BCE105 /* ViewController.swift in Sources */,
 				276406BB1C3832B600BCE105 /* AppDelegate.swift in Sources */,
+				27454BD61C4C239900DBB38C /* ViewController2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
