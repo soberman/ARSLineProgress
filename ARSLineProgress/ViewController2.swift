@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import GreatStuff
 
 class ViewController2: UIViewController {
     
@@ -125,7 +124,7 @@ private extension ViewController2 {
         outerCircle.path = path.CGPath
         outerCircle.frame = backgroundRect.bounds
         outerCircle.lineWidth = 2.0
-        outerCircle.strokeColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+//        outerCircle.strokeColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
         outerCircle.fillColor = UIColor.clearColor().CGColor
         backgroundRect.layer.addSublayer(outerCircle)
     }
@@ -135,7 +134,7 @@ private extension ViewController2 {
         middleCircle.path = path.CGPath
         middleCircle.frame = backgroundRect.bounds
         middleCircle.lineWidth = 2.0
-        middleCircle.strokeColor = UIColor.gs_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
+//        middleCircle.strokeColor = UIColor.gs_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
         middleCircle.fillColor = UIColor.clearColor().CGColor
         backgroundRect.layer.addSublayer(middleCircle)
     }
@@ -145,7 +144,7 @@ private extension ViewController2 {
         innerCircle.path = path.CGPath
         innerCircle.frame = backgroundRect.bounds
         innerCircle.lineWidth = 2.0
-        innerCircle.strokeColor = UIColor.gs_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).CGColor
+//        innerCircle.strokeColor = UIColor.gs_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).CGColor
         innerCircle.fillColor = UIColor.clearColor().CGColor
         backgroundRect.layer.addSublayer(innerCircle)
     }

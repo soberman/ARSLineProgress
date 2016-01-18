@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		27454BD31C4C18E300DBB38C /* GreatStuff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27454BD21C4C18E300DBB38C /* GreatStuff.framework */; };
-		27454BD41C4C18E300DBB38C /* GreatStuff.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 27454BD21C4C18E300DBB38C /* GreatStuff.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		273F58431C4C9DC900D84513 /* ARSLineProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273F58421C4C9DC900D84513 /* ARSLineProgress.swift */; };
 		27454BD61C4C239900DBB38C /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27454BD51C4C239900DBB38C /* ViewController2.swift */; };
 		276406BB1C3832B600BCE105 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276406BA1C3832B600BCE105 /* AppDelegate.swift */; };
 		276406BD1C3832B600BCE105 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276406BC1C3832B600BCE105 /* ViewController.swift */; };
@@ -24,7 +23,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				27454BD41C4C18E300DBB38C /* GreatStuff.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -32,7 +30,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		27454BD21C4C18E300DBB38C /* GreatStuff.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GreatStuff.framework; sourceTree = "<group>"; };
+		273F58421C4C9DC900D84513 /* ARSLineProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSLineProgress.swift; path = ARSLineProgress/ARSLineProgress.swift; sourceTree = "<group>"; };
 		27454BD51C4C239900DBB38C /* ViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
 		276406B71C3832B600BCE105 /* ARSLineProgress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARSLineProgress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		276406BA1C3832B600BCE105 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -48,17 +46,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27454BD31C4C18E300DBB38C /* GreatStuff.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		273F58411C4C9D9B00D84513 /* ARSLineProgress */ = {
+			isa = PBXGroup;
+			children = (
+				273F58421C4C9DC900D84513 /* ARSLineProgress.swift */,
+			);
+			name = ARSLineProgress;
+			sourceTree = "<group>";
+		};
 		276406AE1C3832B600BCE105 = {
 			isa = PBXGroup;
 			children = (
-				27454BD21C4C18E300DBB38C /* GreatStuff.framework */,
 				276406B91C3832B600BCE105 /* ARSLineProgress */,
 				276406B81C3832B600BCE105 /* Products */,
 			);
@@ -75,9 +79,10 @@
 		276406B91C3832B600BCE105 /* ARSLineProgress */ = {
 			isa = PBXGroup;
 			children = (
-				276406BA1C3832B600BCE105 /* AppDelegate.swift */,
+				273F58411C4C9D9B00D84513 /* ARSLineProgress */,
 				276406BC1C3832B600BCE105 /* ViewController.swift */,
 				27454BD51C4C239900DBB38C /* ViewController2.swift */,
+				276406BA1C3832B600BCE105 /* AppDelegate.swift */,
 				276406BE1C3832B700BCE105 /* Main.storyboard */,
 				276406C11C3832B700BCE105 /* Assets.xcassets */,
 				276406C31C3832B700BCE105 /* LaunchScreen.storyboard */,
@@ -161,6 +166,7 @@
 				276406BD1C3832B600BCE105 /* ViewController.swift in Sources */,
 				276406BB1C3832B600BCE105 /* AppDelegate.swift in Sources */,
 				27454BD61C4C239900DBB38C /* ViewController2.swift in Sources */,
+				273F58431C4C9DC900D84513 /* ARSLineProgress.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
