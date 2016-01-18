@@ -15,7 +15,11 @@ class ViewController2: UIViewController {
     private var middleCircle = CAShapeLayer()
     private var innerCircle = CAShapeLayer()
     private var multiplier: CGFloat = 1.0
-    private var progress: CGFloat = 0.0
+    private var progress: CGFloat = 0.0 {
+        didSet {
+//            if oldValue <= 100 { incrementMultiplier() }
+        }
+    }
     private var timer = NSTimer()
     
     override func viewDidLoad() {
@@ -97,14 +101,23 @@ class ViewController2: UIViewController {
             }
         }
         
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(0.1)
         let oPath = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundRect.bounds), CGRectGetMidY(backgroundRect.bounds)), radius: 40.0, startAngle: 0, endAngle: CGFloat(M_PI) / 180 * 3.6 * multiplier, clockwise: true)
         outerCircle.path = oPath.CGPath
+        CATransaction.commit()
         
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(0.1)
         let mPath = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundRect.bounds), CGRectGetMidY(backgroundRect.bounds)), radius: 30.0, startAngle: 0, endAngle: CGFloat(M_PI) / 180 * 3.6 * multiplier, clockwise: true)
         middleCircle.path = mPath.CGPath
-        
+        CATransaction.commit()
+
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(0.1)
         let iPath = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundRect.bounds), CGRectGetMidY(backgroundRect.bounds)), radius: 20.0, startAngle: 0, endAngle: CGFloat(M_PI) / 180 * 3.6 * multiplier, clockwise: true)
         innerCircle.path = iPath.CGPath
+        CATransaction.commit()
     }
     
 }
@@ -122,9 +135,32 @@ private extension ViewController2 {
     }
     
     func createCircles() {
-        createOuterCircle()
-        createMiddleCircle()
-        createInnerCircle()
+        let checkmarkCircle = CAShapeLayer()
+        let path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundRect.bounds), CGRectGetMidY(backgroundRect.bounds)), radius: 30.0, startAngle: 0, endAngle: 2 * CGFloat(M_PI), clockwise: true)
+        checkmarkCircle.path = path.CGPath
+        checkmarkCircle.frame = backgroundRect.bounds
+        checkmarkCircle.lineWidth = 2.0
+        checkmarkCircle.strokeColor = UIColor.gs_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
+        checkmarkCircle.fillColor = checkmarkCircle.strokeColor
+        backgroundRect.layer.addSublayer(checkmarkCircle)
+        
+        let group = CGRectMake(CGRectGetMinX(checkmarkCircle.bounds) + 3, CGRectGetMinY(checkmarkCircle.bounds) + 3, CGRectGetWidth(checkmarkCircle.bounds) - 6, CGRectGetHeight(checkmarkCircle.bounds) - 6);
+        let checkmark = UIBezierPath()
+        checkmark.moveToPoint(CGPointMake(CGRectGetMinX(group) + 0.40983 * CGRectGetWidth(group), CGRectGetMinY(group) + 0.48167 * CGRectGetHeight(group)))
+        checkmark.addLineToPoint(CGPointMake(CGRectGetMinX(group) + 0.47667 * CGRectGetWidth(group), CGRectGetMinY(group) + 0.65750 * CGRectGetHeight(group)))
+        checkmark.addLineToPoint(CGPointMake(CGRectGetMinX(group) + 0.59500 * CGRectGetWidth(group), CGRectGetMinY(group) + 0.38417 * CGRectGetHeight(group)))
+        checkmark.lineCapStyle = .Square
+        
+        let checkmarkShape = CAShapeLayer()
+        checkmarkShape.path = checkmark.CGPath
+        checkmarkShape.strokeColor = UIColor.whiteColor().CGColor
+        checkmarkShape.fillColor = UIColor.clearColor().CGColor
+        checkmarkShape.lineWidth = 2.0
+        checkmarkCircle.addSublayer(checkmarkShape)
+        
+//        createOuterCircle()
+//        createMiddleCircle()
+//        createInnerCircle()
     }
     
     func createOuterCircle() {
