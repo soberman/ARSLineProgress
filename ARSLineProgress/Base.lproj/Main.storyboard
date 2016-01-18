@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0br-UD-qQc">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -26,16 +26,45 @@
                                     <action selector="showInfiniteLoader:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MwA-Bq-FW6"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09r-nG-K4g">
+                                <rect key="frame" x="223" y="210" width="154" height="30"/>
+                                <state key="normal" title="Show Progress Loader">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showProgressLoader:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1s9-an-tRs"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.96078431369999995" green="0.35686274509999999" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="09r-nG-K4g" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="PY9-Ie-QOs"/>
                             <constraint firstItem="C6W-fh-tOi" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="XLH-VV-Bf4"/>
+                            <constraint firstItem="09r-nG-K4g" firstAttribute="top" secondItem="C6W-fh-tOi" secondAttribute="bottom" constant="80" id="ami-Dz-Sp4"/>
                             <constraint firstItem="C6W-fh-tOi" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="80" id="vti-2m-MhT"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+        </scene>
+        <!--View Controller2-->
+        <scene sceneID="4ep-97-RYM">
+            <objects>
+                <viewController id="0br-UD-qQc" customClass="ViewController2" customModule="ARSLineProgress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HcV-o6-Hyb"/>
+                        <viewControllerLayoutGuide type="bottom" id="ItI-zj-9Dp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="o6p-MH-bsq">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.96078431369999995" green="0.35686274509999999" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WT7-ro-GWh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="410" y="976"/>
         </scene>
     </scenes>
 </document>

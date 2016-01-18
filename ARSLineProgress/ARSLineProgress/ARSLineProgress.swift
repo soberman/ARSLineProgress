@@ -17,8 +17,11 @@ public extension ARSLineProgress {
     static func show() {
         InfiniteLoader().show()
     }
-    
     static func showOnView(view: UIView) {
+        
+    }
+    
+    static func showWithProgress() {
         
     }
     
@@ -155,34 +158,25 @@ private extension InfiniteLoader {
     
 }
 
-// MARK: Helpers
 
-private extension InfiniteLoader {
+
+
+// =====================================================================================================================
+// MARK: - Extensions & Helpers
+// =====================================================================================================================
+
+private func createBluringViewWithStyle(style: UIBlurEffectStyle) -> UIVisualEffectView {
+    let blur = UIBlurEffect(style: style)
+    let viewWithBlurredBackground = UIVisualEffectView(effect: blur)
+    let viewInducingVibrancy = UIVisualEffectView(effect: blur)
+    viewInducingVibrancy.layer.cornerRadius = 20
+    viewInducingVibrancy.clipsToBounds = true
+    viewWithBlurredBackground.contentView.addSubview(viewInducingVibrancy)
     
-    func createBluringViewWithStyle(style: UIBlurEffectStyle) -> UIVisualEffectView {
-        let blur = UIBlurEffect(style: style)
-        let viewWithBlurredBackground = UIVisualEffectView(effect: blur)
-        let viewInducingVibrancy = UIVisualEffectView(effect: blur)
-        viewInducingVibrancy.layer.cornerRadius = 20
-        viewInducingVibrancy.clipsToBounds = true
-        viewWithBlurredBackground.contentView.addSubview(viewInducingVibrancy)
-        
-        return viewInducingVibrancy
-    }
-    
+    return viewInducingVibrancy
 }
 
-
-
-
-// =====================================================================================================================
-// MARK: - Extensions
-// =====================================================================================================================
-
-
-
-
-private extension UIColor {
+extension UIColor {
     
     static func gs_colorWithRGB(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> UIColor {
         return UIColor(red: red/255.0, green: green/255.0, blue: blue/255.0, alpha: alpha)

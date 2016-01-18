@@ -13,4 +13,8 @@ class ViewController: UIViewController {
     @IBAction func showInfiniteLoader(sender: AnyObject) {
         ARSLineProgress.show()
     }
+    
+    @IBAction func showProgressLoader(sender: AnyObject) {
+        ARSLineProgress.showWithProgress()
+    }
 }
