@@ -15,11 +15,7 @@ final class ViewController2: UIViewController {
     private var middleCircle = CAShapeLayer()
     private var innerCircle = CAShapeLayer()
     private var multiplier: CGFloat = 1.0
-    private var progress: CGFloat = 0.0 {
-        didSet {
-//            if oldValue <= 100 { self.incrementMultiplier() }
-        }
-    }
+    private var progress: CGFloat = 0.0
     private var timer = NSTimer()
     
     override func viewDidAppear(animated: Bool) {
@@ -208,60 +204,15 @@ private extension ViewController2 {
         CATransaction.commit()
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.8 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
-            self.showFailmark()
+            self.dismiss()
         })
     }
     
-    func showCheckmark() {
-        let group = CGRectMake(CGRectGetMinX(backgroundRect.bounds), CGRectGetMinY(backgroundRect.bounds), CGRectGetWidth(backgroundRect.bounds), CGRectGetHeight(backgroundRect.bounds));
-        let checkmark = UIBezierPath()
-        checkmark.moveToPoint(CGPointMake(CGRectGetMidX(group) - 27, CGRectGetMidY(group)))
-        checkmark.addLineToPoint(CGPointMake(CGRectGetMidX(group) - 2, CGRectGetMidY(group) + 25))
-        checkmark.addLineToPoint(CGPointMake(CGRectGetMidX(group) + 33, CGRectGetMidY(group) - 30))
-        checkmark.lineCapStyle = .Round
-        
-        let checkmarkShape = CAShapeLayer()
-        checkmarkShape.path = checkmark.CGPath
-        checkmarkShape.strokeColor = UIColor.gs_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
-        checkmarkShape.fillColor = UIColor.clearColor().CGColor
-        checkmarkShape.lineWidth = 2.0
-        checkmarkShape.lineCap = kCALineCapRound
-        checkmarkShape.rasterizationScale = UIScreen.mainScreen().scale
-        backgroundRect.layer.addSublayer(checkmarkShape)
-        
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.fromValue = 0.0
-        animation.toValue = 1.0
-        animation.duration = 0.6
-        animation.fillMode = kCAFillModeForwards
-        checkmarkShape.addAnimation(animation, forKey: "")
-    }
-    
-    func showFailmark() {
-        let group = CGRectMake(CGRectGetMinX(backgroundRect.bounds), CGRectGetMinY(backgroundRect.bounds), CGRectGetWidth(backgroundRect.bounds), CGRectGetHeight(backgroundRect.bounds));
-        let failmark = UIBezierPath()
-        failmark.moveToPoint(CGPointMake(CGRectGetMinX(group) + 30, CGRectGetMinY(group) + 30))
-        failmark.addLineToPoint(CGPointMake(CGRectGetMaxX(group) - 30, CGRectGetMaxY(group) - 30))
-        failmark.closePath()
-        failmark.moveToPoint(CGPointMake(CGRectGetMaxX(group) - 30, CGRectGetMinY(group) + 30))
-        failmark.addLineToPoint(CGPointMake(CGRectGetMinX(group) + 30, CGRectGetMaxY(group) - 30))
-        failmark.lineCapStyle = .Round
-        
-        let failmarkShape = CAShapeLayer()
-        failmarkShape.path = failmark.CGPath
-        failmarkShape.strokeColor = UIColor.gs_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
-        failmarkShape.fillColor = UIColor.clearColor().CGColor
-        failmarkShape.lineWidth = 2.0
-        failmarkShape.lineCap = kCALineCapRound
-        failmarkShape.rasterizationScale = UIScreen.mainScreen().scale
-        backgroundRect.layer.addSublayer(failmarkShape)
-        
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.fromValue = 0.0
-        animation.toValue = 1.0
-        animation.duration = 0.6
-        animation.fillMode = kCAFillModeForwards
-        failmarkShape.addAnimation(animation, forKey: "")
+    func dismiss() {
+        UIView.animateWithDuration(0.3) { () -> Void in
+            self.backgroundRect.transform = CGAffineTransformMakeScale(0.9, 0.9)
+            self.backgroundRect.alpha = 0.0
+        }
     }
     
 }
