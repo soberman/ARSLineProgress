@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController2: UIViewController {
+final class ViewController2: UIViewController {
     
     private var backgroundRect = UIView()
     private var outerCircle = CAShapeLayer()
@@ -105,15 +105,9 @@ class ViewController2: UIViewController {
         let mPath = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundRect.bounds), CGRectGetMidY(backgroundRect.bounds)), radius: 30.0, startAngle: 0, endAngle: CGFloat(M_PI) / 180 * 3.6 * multiplier, clockwise: true)
         let iPath = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundRect.bounds), CGRectGetMidY(backgroundRect.bounds)), radius: 20.0, startAngle: 0, endAngle: CGFloat(M_PI) / 180 * 3.6 * multiplier, clockwise: true)
         
-//        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//            CATransaction.begin()
-//            CATransaction.setAnimationDuration(0.5)
-        
-            self.outerCircle.path = oPath.CGPath
-            self.middleCircle.path = mPath.CGPath
-            self.innerCircle.path = iPath.CGPath
-//            CATransaction.commit()
-//        })
+        self.outerCircle.path = oPath.CGPath
+        self.middleCircle.path = mPath.CGPath
+        self.innerCircle.path = iPath.CGPath
     }
     
 }
@@ -124,7 +118,7 @@ private extension ViewController2 {
     
     func createBackgroundRect() {
         let screenCenter = CGPointMake(CGRectGetMidX(view.bounds), CGRectGetMidY(view.bounds))
-        backgroundRect.frame = CGRectMake(screenCenter.x - 100, screenCenter.y - 50, 200, 100)
+        backgroundRect.frame = CGRectMake(screenCenter.x - 62.5, screenCenter.y - 62.5, 125, 125)
         backgroundRect.backgroundColor = UIColor.whiteColor()
         backgroundRect.layer.cornerRadius = 20
         view.addSubview(backgroundRect)
@@ -214,23 +208,24 @@ private extension ViewController2 {
         CATransaction.commit()
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.8 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
-            self.showCheckmark()
+            self.showFailmark()
         })
     }
     
     func showCheckmark() {
-        let group = CGRectMake(CGRectGetMinX(backgroundRect.bounds) + 3, CGRectGetMinY(backgroundRect.bounds) + 3, CGRectGetWidth(backgroundRect.bounds) - 6, CGRectGetHeight(backgroundRect.bounds) - 6);
+        let group = CGRectMake(CGRectGetMinX(backgroundRect.bounds), CGRectGetMinY(backgroundRect.bounds), CGRectGetWidth(backgroundRect.bounds), CGRectGetHeight(backgroundRect.bounds));
         let checkmark = UIBezierPath()
-        checkmark.moveToPoint(CGPointMake(CGRectGetMinX(group) + 0.40983 * CGRectGetWidth(group), CGRectGetMinY(group) + 0.49167 * CGRectGetHeight(group)))
-        checkmark.addLineToPoint(CGPointMake(CGRectGetMinX(group) + 0.46667 * CGRectGetWidth(group), CGRectGetMinY(group) + 0.65750 * CGRectGetHeight(group)))
-        checkmark.addLineToPoint(CGPointMake(CGRectGetMinX(group) + 0.58500 * CGRectGetWidth(group), CGRectGetMinY(group) + 0.38417 * CGRectGetHeight(group)))
-        checkmark.lineCapStyle = .Square
+        checkmark.moveToPoint(CGPointMake(CGRectGetMidX(group) - 27, CGRectGetMidY(group)))
+        checkmark.addLineToPoint(CGPointMake(CGRectGetMidX(group) - 2, CGRectGetMidY(group) + 25))
+        checkmark.addLineToPoint(CGPointMake(CGRectGetMidX(group) + 33, CGRectGetMidY(group) - 30))
+        checkmark.lineCapStyle = .Round
         
         let checkmarkShape = CAShapeLayer()
         checkmarkShape.path = checkmark.CGPath
         checkmarkShape.strokeColor = UIColor.gs_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
         checkmarkShape.fillColor = UIColor.clearColor().CGColor
         checkmarkShape.lineWidth = 2.0
+        checkmarkShape.lineCap = kCALineCapRound
         checkmarkShape.rasterizationScale = UIScreen.mainScreen().scale
         backgroundRect.layer.addSublayer(checkmarkShape)
         
@@ -240,6 +235,33 @@ private extension ViewController2 {
         animation.duration = 0.6
         animation.fillMode = kCAFillModeForwards
         checkmarkShape.addAnimation(animation, forKey: "")
+    }
+    
+    func showFailmark() {
+        let group = CGRectMake(CGRectGetMinX(backgroundRect.bounds), CGRectGetMinY(backgroundRect.bounds), CGRectGetWidth(backgroundRect.bounds), CGRectGetHeight(backgroundRect.bounds));
+        let failmark = UIBezierPath()
+        failmark.moveToPoint(CGPointMake(CGRectGetMinX(group) + 30, CGRectGetMinY(group) + 30))
+        failmark.addLineToPoint(CGPointMake(CGRectGetMaxX(group) - 30, CGRectGetMaxY(group) - 30))
+        failmark.closePath()
+        failmark.moveToPoint(CGPointMake(CGRectGetMaxX(group) - 30, CGRectGetMinY(group) + 30))
+        failmark.addLineToPoint(CGPointMake(CGRectGetMinX(group) + 30, CGRectGetMaxY(group) - 30))
+        failmark.lineCapStyle = .Round
+        
+        let failmarkShape = CAShapeLayer()
+        failmarkShape.path = failmark.CGPath
+        failmarkShape.strokeColor = UIColor.gs_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
+        failmarkShape.fillColor = UIColor.clearColor().CGColor
+        failmarkShape.lineWidth = 2.0
+        failmarkShape.lineCap = kCALineCapRound
+        failmarkShape.rasterizationScale = UIScreen.mainScreen().scale
+        backgroundRect.layer.addSublayer(failmarkShape)
+        
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = 0.0
+        animation.toValue = 1.0
+        animation.duration = 0.6
+        animation.fillMode = kCAFillModeForwards
+        failmarkShape.addAnimation(animation, forKey: "")
     }
     
 }
