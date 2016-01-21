@@ -15,6 +15,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func showProgressLoader(sender: AnyObject) {
-        ARSLineProgress.showWithProgress()
+        ARSLineProgress.showWithProgress(0.0)
     }
 }
