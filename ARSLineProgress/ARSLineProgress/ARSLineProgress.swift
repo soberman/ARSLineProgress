@@ -12,6 +12,8 @@ import UIKit
 
 public struct ARSLineProgress {
 
+    // MARK: Show Infinite Loader
+    
     static func show() {
         InfiniteLoader().showWithCompletionBlock(nil)
     }
@@ -24,13 +26,33 @@ public struct ARSLineProgress {
         
     }
     
-    static func showWithProgress(progress: CGFloat) {
+    static func showOnView(view: UIView, completionBlock: () -> Void) {
+        InfiniteLoader().showWithCompletionBlock(completionBlock)
+    }
+    
+    // MARK: Show & Update Progress Loader
+    
+    static func showWithProgress(value: CGFloat) {
         ProgressLoader().show()
     }
     
-    static func showWithProgress(progress: CGFloat, onView: UIView) {
+    static func showWithProgress(value: CGFloat, onView: UIView) {
         
     }
+    
+    static func updateWithProgress(value: CGFloat) {
+        
+    }
+    
+    static func showWithProgressObject(progress: NSProgress) {
+        
+    }
+    
+    static func showWithProgressObject(progress: NSProgress, onView: UIView) {
+        
+    }
+    
+    // MARK: Hiding
     
     static func hide() {
         
@@ -47,11 +69,12 @@ public struct ARSLineProgress {
 
 
 // =====================================================================================================================
-// MARK: - Private Shared Constants
+// MARK: - Shared Constants
 // =====================================================================================================================
 
 private let BACKGROUND_VIEW_SIDE_LENGTH: CGFloat = 125.0
 private let BACKGROUND_VIEW_BORDER_RADIUS:CGFloat = 20.0
+private let BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION = 0.3
 
 
 
@@ -161,7 +184,7 @@ private extension InfiniteLoader {
     func presentWithCompletionBlock(block: (() -> Void)?) {
         window()!.addSubview(backgroundRect)
         backgroundRect.alpha = 0.1
-        UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION, delay: 0.0, options: .CurveEaseOut, animations: {
             self.backgroundRect.alpha = 1.0
         }, completion: { _ in block })
     }
@@ -201,11 +224,11 @@ private extension ProgressLoader {
     }
     
     func createBackgroundRect() {
-        let screenCenter = CGPointMake(CGRectGetMidX(view.bounds), CGRectGetMidY(view.bounds))
-        backgroundRect.frame = CGRectMake(screenCenter.x - 62.5, screenCenter.y - 62.5, 125, 125)
-        backgroundRect.backgroundColor = UIColor.whiteColor()
-        backgroundRect.layer.cornerRadius = 20
-        view.addSubview(backgroundRect)
+//        let screenCenter = CGPointMake(CGRectGetMidX(view.bounds), CGRectGetMidY(view.bounds))
+//        backgroundRect.frame = CGRectMake(screenCenter.x - 62.5, screenCenter.y - 62.5, 125, 125)
+//        backgroundRect.backgroundColor = UIColor.whiteColor()
+//        backgroundRect.layer.cornerRadius = 20
+//        view.addSubview(backgroundRect)
     }
     
     func createCircles() {
@@ -422,14 +445,17 @@ private struct BlurredBackgroundRect {
     var view: UIView
     
     init(style: UIBlurEffectStyle) {
+        view = UIView()
         updateView(style, vibrancy: true)
     }
     
     init(vibrancy: Bool) {
+        view = UIView()
         updateView(.ExtraLight, vibrancy: vibrancy)
     }
     
     init(style: UIBlurEffectStyle = .ExtraLight, vibrancy: Bool = true) {
+        view = UIView()
         updateView(style, vibrancy: vibrancy)
     }
     
@@ -460,17 +486,6 @@ private extension BlurredBackgroundRect {
 // =====================================================================================================================
 // MARK: - Extensions & Helpers & Class Constants & Shared Methods
 // =====================================================================================================================
-
-private func createBluringViewWithStyle(style: UIBlurEffectStyle) -> UIVisualEffectView {
-    let blur = UIBlurEffect(style: style)
-    let viewWithBlurredBackground = UIVisualEffectView(effect: blur)
-    let viewInducingVibrancy = UIVisualEffectView(effect: blur)
-    viewInducingVibrancy.layer.cornerRadius = 20
-    viewInducingVibrancy.clipsToBounds = true
-    viewWithBlurredBackground.contentView.addSubview(viewInducingVibrancy)
-    
-    return viewInducingVibrancy
-}
 
 private func window() -> UIWindow? {
     var targetWindow: UIWindow?
