@@ -15,19 +15,19 @@ public struct ARSLineProgress {
     // MARK: Show Infinite Loader
     
     static func show() {
-        InfiniteLoader().showWithCompletionBlock(nil)
+        InfiniteLoader().showOnView(nil, completionBlock: nil)
     }
     
     static func showWithCompetionBlock(block: () -> Void) {
-        InfiniteLoader().showWithCompletionBlock(block)
+        InfiniteLoader().showOnView(nil, completionBlock: block)
     }
     
     static func showOnView(view: UIView) {
-        
+        InfiniteLoader().showOnView(view, completionBlock: nil)
     }
     
     static func showOnView(view: UIView, completionBlock: () -> Void) {
-        InfiniteLoader().showWithCompletionBlock(completionBlock)
+        InfiniteLoader().showOnView(view, completionBlock: completionBlock)
     }
     
     // MARK: Show & Update Progress Loader
@@ -73,8 +73,14 @@ public struct ARSLineProgress {
 // =====================================================================================================================
 
 private let BACKGROUND_VIEW_SIDE_LENGTH: CGFloat = 125.0
-private let BACKGROUND_VIEW_BORDER_RADIUS:CGFloat = 20.0
+private let BACKGROUND_VIEW_CORNER_RADIUS:CGFloat = 20.0
 private let BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION = 0.3
+
+private let CIRCLE_ROTATION_DURATION_OUTER: CFTimeInterval = 3.0
+private let CIRCLE_ROTATION_DURATION_MIDDLE: CFTimeInterval = 1.5
+private let CIRCLE_ROTATION_DURATION_INNER: CFTimeInterval = 0.75
+private let CIRCLE_ROTATION_TO_VALUE = 2 * CGFloat(M_PI)
+private let CIRCLE_ROTATION_REPEAT_COUNT = Float(UINT64_MAX)
 
 
 
@@ -90,12 +96,7 @@ private struct InfiniteLoader {
     let CIRCLE_RADIUS_OUTER: CGFloat = 40.0
     let CIRCLE_RADIUS_MIDDLE: CGFloat = 30.0
     let CIRCLE_RADIUS_INNER: CGFloat = 20.0
-    let CIRCLE_ROTATION_DURATION_OUTER: CFTimeInterval = 3.0
-    let CIRCLE_ROTATION_DURATION_MIDDLE: CFTimeInterval = 1.5
-    let CIRCLE_ROTATION_DURATION_INNER: CFTimeInterval = 0.75
     let CIRCLE_START_ANGLE: CGFloat = -CGFloat(M_PI_2)
-    let CIRCLE_ROTATION_TO_VALUE = 2 * CGFloat(M_PI)
-    let CIRCLE_ROTATION_REPEAT_COUNT = Float(UINT64_MAX)
     let CIRCLE_END_ANGLE: CGFloat = 0.0
     var CIRCLE_COLOR_OUTER: CGColor {
         return UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
@@ -106,86 +107,58 @@ private struct InfiniteLoader {
     var CIRCLE_COLOR_INNER: CGColor {
         return UIColor.gs_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).CGColor
     }
-    var backgroundRect: UIView
+    var backgroundView: UIVisualEffectView
     var invisibleRect = UIView()
     var outerCircle = CAShapeLayer()
     var middleCircle = CAShapeLayer()
     var innerCircle = CAShapeLayer()
     
     init() {
-        backgroundRect = BlurredBackgroundRect().view
+        backgroundView = BlurredBackgroundRect().view
     }
     
 }
 
 private extension InfiniteLoader {
     
-    func showWithCompletionBlock(block: (() -> Void)?) {
-        if prepareObjects() == false { return }
+    func showOnView(view: UIView?, completionBlock: (() -> Void)?) {
+        if createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
         createCircles()
-        animateCircles()
-        presentWithCompletionBlock(block)
-    }
-    
-    func prepareObjects() -> Bool {
-        guard let window = window() else { return false }
-        let screenCenter = CGPointMake(CGRectGetMidX(window.screen.bounds), CGRectGetMidY(window.screen.bounds))
-        backgroundRect.frame = CGRectMake(screenCenter.x - BACKGROUND_VIEW_SIDE_LENGTH / 2, screenCenter.y - BACKGROUND_VIEW_SIDE_LENGTH / 2, BACKGROUND_VIEW_SIDE_LENGTH, BACKGROUND_VIEW_SIDE_LENGTH)
-        
-        return true
+        animateCircles(outerCircle: outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
+        presentWithCompletionBlock(completionBlock)
     }
     
     func createCircles() {
-        var path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundRect.bounds), CGRectGetMidY(backgroundRect.bounds)), radius: CIRCLE_RADIUS_OUTER, startAngle: CIRCLE_START_ANGLE, endAngle: CIRCLE_END_ANGLE, clockwise: true)
+        var path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundView.bounds), CGRectGetMidY(backgroundView.bounds)), radius: CIRCLE_RADIUS_OUTER, startAngle: CIRCLE_START_ANGLE, endAngle: CIRCLE_END_ANGLE, clockwise: true)
         outerCircle.path = path.CGPath
-        outerCircle.frame = backgroundRect.bounds
+        outerCircle.frame = backgroundView.bounds
         outerCircle.lineWidth = CIRCLE_LINE_WIDTH
         outerCircle.strokeColor = CIRCLE_COLOR_OUTER
         outerCircle.fillColor = UIColor.clearColor().CGColor
-        backgroundRect.layer.addSublayer(outerCircle)
+        backgroundView.contentView.layer.addSublayer(outerCircle)
         
-        path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundRect.bounds), CGRectGetMidY(backgroundRect.bounds)), radius: CIRCLE_RADIUS_MIDDLE, startAngle: CIRCLE_START_ANGLE, endAngle: CIRCLE_END_ANGLE, clockwise: true)
+        path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundView.bounds), CGRectGetMidY(backgroundView.bounds)), radius: CIRCLE_RADIUS_MIDDLE, startAngle: CIRCLE_START_ANGLE, endAngle: CIRCLE_END_ANGLE, clockwise: true)
         middleCircle.path = path.CGPath
-        middleCircle.frame = backgroundRect.bounds
+        middleCircle.frame = backgroundView.bounds
         middleCircle.lineWidth = CIRCLE_LINE_WIDTH
         middleCircle.strokeColor = CIRCLE_COLOR_MIDDLE
         middleCircle.fillColor = UIColor.clearColor().CGColor
-        backgroundRect.layer.addSublayer(middleCircle)
+        backgroundView.contentView.layer.addSublayer(middleCircle)
         
-        path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundRect.bounds), CGRectGetMidY(backgroundRect.bounds)), radius: CIRCLE_RADIUS_INNER, startAngle: CIRCLE_START_ANGLE, endAngle: CIRCLE_END_ANGLE, clockwise: true)
+        path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundView.bounds), CGRectGetMidY(backgroundView.bounds)), radius: CIRCLE_RADIUS_INNER, startAngle: CIRCLE_START_ANGLE, endAngle: CIRCLE_END_ANGLE, clockwise: true)
         innerCircle.path = path.CGPath
-        innerCircle.frame = backgroundRect.bounds
+        innerCircle.frame = backgroundView.bounds
         innerCircle.lineWidth = CIRCLE_LINE_WIDTH
         innerCircle.strokeColor = CIRCLE_COLOR_INNER
         innerCircle.fillColor = UIColor.clearColor().CGColor
-        backgroundRect.layer.addSublayer(innerCircle)
-    }
-    
-    func animateCircles() {
-        let outerAnimation = CABasicAnimation(keyPath: "transform.rotation")
-        outerAnimation.toValue = CIRCLE_ROTATION_TO_VALUE
-        outerAnimation.duration = CIRCLE_ROTATION_DURATION_OUTER
-        outerAnimation.repeatCount = CIRCLE_ROTATION_REPEAT_COUNT
-        outerCircle.addAnimation(outerAnimation, forKey: "outerCircleRotation")
-        
-        let middleAnimation = CABasicAnimation(keyPath: "transform.rotation")
-        middleAnimation.toValue = CIRCLE_ROTATION_TO_VALUE
-        middleAnimation.duration = CIRCLE_ROTATION_DURATION_MIDDLE
-        middleAnimation.repeatCount = CIRCLE_ROTATION_REPEAT_COUNT
-        middleCircle.addAnimation(middleAnimation, forKey: "middleCircleRotation")
-        
-        let innerAnimation = CABasicAnimation(keyPath: "transform.rotation")
-        innerAnimation.toValue = CIRCLE_ROTATION_TO_VALUE
-        innerAnimation.duration = CIRCLE_ROTATION_DURATION_INNER
-        innerAnimation.repeatCount = CIRCLE_ROTATION_REPEAT_COUNT
-        innerCircle.addAnimation(innerAnimation, forKey: "middleCircleRotation")
+        backgroundView.contentView.layer.addSublayer(innerCircle)
     }
     
     func presentWithCompletionBlock(block: (() -> Void)?) {
-        window()!.addSubview(backgroundRect)
-        backgroundRect.alpha = 0.1
+        window()!.addSubview(backgroundView)
+        backgroundView.alpha = 0.1
         UIView.animateWithDuration(BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION, delay: 0.0, options: .CurveEaseOut, animations: {
-            self.backgroundRect.alpha = 1.0
+            self.backgroundView.alpha = 1.0
         }, completion: { _ in block })
     }
     
@@ -442,39 +415,14 @@ private extension ProgressLoader {
 
 private struct BlurredBackgroundRect {
     
-    var view: UIView
+    var view: UIVisualEffectView
     
-    init(style: UIBlurEffectStyle) {
-        view = UIView()
-        updateView(style, vibrancy: true)
-    }
-    
-    init(vibrancy: Bool) {
-        view = UIView()
-        updateView(.ExtraLight, vibrancy: vibrancy)
-    }
-    
-    init(style: UIBlurEffectStyle = .ExtraLight, vibrancy: Bool = true) {
-        view = UIView()
-        updateView(style, vibrancy: vibrancy)
-    }
-    
-}
-
-private extension BlurredBackgroundRect {
-    
-    mutating func updateView(style: UIBlurEffectStyle, vibrancy: Bool) {
-        let blur = UIBlurEffect(style: style)
+    init(style: UIBlurEffectStyle = .ExtraLight) {
+        let blur = UIBlurEffect(style: .Light)
         let effectView = UIVisualEffectView(effect: blur)
+        effectView.clipsToBounds = true
         
-        if vibrancy {
-            let viewInducingVibrancy = UIVisualEffectView(effect: blur)
-            viewInducingVibrancy.layer.cornerRadius = BACKGROUND_VIEW_BORDER_RADIUS
-            viewInducingVibrancy.clipsToBounds = true
-            effectView.contentView.addSubview(viewInducingVibrancy)
-        }
-        
-        view = effectView.contentView
+        view = effectView
     }
     
 }
@@ -500,6 +448,43 @@ private func window() -> UIWindow? {
     }
     
     return targetWindow
+}
+
+private func createdFrameForBackgroundView(backgroundView: UIView, onView view: UIView?) -> Bool {
+    let center: CGPoint
+    
+    if view == nil {
+        guard let window = window() else { return false }
+        center = CGPointMake(CGRectGetMidX(window.screen.bounds), CGRectGetMidY(window.screen.bounds))
+    } else {
+        let screenBounds = UIScreen.mainScreen().bounds
+        center = CGPointMake(CGRectGetMidX(screenBounds), CGRectGetMidY(screenBounds))
+    }
+    
+    backgroundView.frame = CGRectMake(center.x - BACKGROUND_VIEW_SIDE_LENGTH / 2, center.y - BACKGROUND_VIEW_SIDE_LENGTH / 2, BACKGROUND_VIEW_SIDE_LENGTH, BACKGROUND_VIEW_SIDE_LENGTH)
+    backgroundView.layer.cornerRadius = BACKGROUND_VIEW_CORNER_RADIUS
+    
+    return true
+}
+
+private func animateCircles(outerCircle outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer) {
+    let outerAnimation = CABasicAnimation(keyPath: "transform.rotation")
+    outerAnimation.toValue = CIRCLE_ROTATION_TO_VALUE
+    outerAnimation.duration = CIRCLE_ROTATION_DURATION_OUTER
+    outerAnimation.repeatCount = CIRCLE_ROTATION_REPEAT_COUNT
+    outerCircle.addAnimation(outerAnimation, forKey: "outerCircleRotation")
+    
+    let middleAnimation = CABasicAnimation(keyPath: "transform.rotation")
+    middleAnimation.toValue = CIRCLE_ROTATION_TO_VALUE
+    middleAnimation.duration = CIRCLE_ROTATION_DURATION_MIDDLE
+    middleAnimation.repeatCount = CIRCLE_ROTATION_REPEAT_COUNT
+    middleCircle.addAnimation(middleAnimation, forKey: "middleCircleRotation")
+    
+    let innerAnimation = CABasicAnimation(keyPath: "transform.rotation")
+    innerAnimation.toValue = CIRCLE_ROTATION_TO_VALUE
+    innerAnimation.duration = CIRCLE_ROTATION_DURATION_INNER
+    innerAnimation.repeatCount = CIRCLE_ROTATION_REPEAT_COUNT
+    innerCircle.addAnimation(innerAnimation, forKey: "middleCircleRotation")
 }
 
 private extension UIColor {
