@@ -10,8 +10,8 @@
 
 import UIKit
 
-struct ARSLineProgress {
-
+final class ARSLineProgress {
+    
     // MARK: Show Infinite Loader
     
     static func show() {
@@ -51,7 +51,7 @@ struct ARSLineProgress {
     // MARK: Update Progress Loader
     
     static func updateWithProgress(value: CGFloat) {
-        
+        ProgressLoader.weakSelf?.progress = value
     }
     
     static func showWithProgressObject(progress: NSProgress) {
@@ -71,9 +71,8 @@ struct ARSLineProgress {
     static func hideWithCompletionBlock(block: () -> Void) {
         currentLoader?.hideWithCompletionBlock(block)
     }
-
+    
 }
-
 
 
 
@@ -83,7 +82,7 @@ struct ARSLineProgress {
 // =====================================================================================================================
 
 private protocol Appearable {
-    func presentWithCompletionBlock(block: (() -> Void)?)
+    func presentOnView(view: UIView?, completionBlock: (() -> Void)?)
     func hideWithCompletionBlock(block: (() -> Void)?)
 }
 
@@ -134,7 +133,7 @@ private var currentLoader: Appearable?
 // MARK: - Infinite Loader
 // =====================================================================================================================
 
-private struct InfiniteLoader: Appearable {
+private final class InfiniteLoader: Appearable {
     
     var backgroundView: UIVisualEffectView
     var invisibleRect = UIView()
@@ -146,13 +145,13 @@ private struct InfiniteLoader: Appearable {
         backgroundView = BlurredBackgroundRect().view
     }
     
-    func presentWithCompletionBlock(block: (() -> Void)?) {
+    func presentOnView(view: UIView?, completionBlock: (() -> Void)?) {
         currentLoader = self
         window()!.addSubview(backgroundView)
         backgroundView.alpha = 0.1
         UIView.animateWithDuration(BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION, delay: 0.0, options: .CurveEaseOut, animations: {
             self.backgroundView.alpha = 1.0
-            }, completion: { _ in block })
+            }, completion: { _ in completionBlock })
     }
     
     func hideWithCompletionBlock(block: (() -> Void)?) {
@@ -169,13 +168,14 @@ private extension InfiniteLoader {
     
     func showOnView(view: UIView?, completionBlock: (() -> Void)?) {
         if createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
+        
         createCircles(outerCircle: outerCircle,
             middleCircle: middleCircle,
             innerCircle: innerCircle,
             onView: backgroundView.contentView,
             loaderType: .Infinite)
         animateCircles(outerCircle: outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
-        presentWithCompletionBlock(completionBlock)
+        presentOnView(view, completionBlock: completionBlock)
     }
     
 }
@@ -187,7 +187,9 @@ private extension InfiniteLoader {
 // MARK: - Progress Loader
 // =====================================================================================================================
 
-private struct ProgressLoader: Appearable {
+private final class ProgressLoader: Appearable {
+    
+    static weak var weakSelf: ProgressLoader?
     
     var backgroundView: UIVisualEffectView
     var outerCircle = CAShapeLayer()
@@ -195,19 +197,19 @@ private struct ProgressLoader: Appearable {
     var innerCircle = CAShapeLayer()
     var multiplier: CGFloat = 1.0
     var progress: CGFloat = 0.0
-    var timer = NSTimer()
     
     init() {
         backgroundView = BlurredBackgroundRect().view
+        ProgressLoader.weakSelf = self
     }
     
-    func presentWithCompletionBlock(block: (() -> Void)?) {
+    func presentOnView(view: UIView?, completionBlock: (() -> Void)?) {
         currentLoader = self
         window()!.addSubview(backgroundView)
         backgroundView.alpha = 0.1
         UIView.animateWithDuration(BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION, delay: 0.0, options: .CurveEaseOut, animations: {
             self.backgroundView.alpha = 1.0
-            }, completion: { _ in block })
+            }, completion: { _ in completionBlock })
     }
     
     func hideWithCompletionBlock(block: (() -> Void)?) {
@@ -222,23 +224,70 @@ private struct ProgressLoader: Appearable {
 
 private extension ProgressLoader {
     
-    func showWithValue(value: CGFloat, onView: UIView?, completionBlock: (() -> Void)?) {
+    func showWithValue(value: CGFloat, onView view: UIView?, completionBlock: (() -> Void)?) {
+        if createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
+        
         createCircles(outerCircle: outerCircle, middleCircle: middleCircle, innerCircle: innerCircle, onView: backgroundView.contentView, loaderType: .Progress)
         animateCircles(outerCircle: outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
-        presentWithCompletionBlock(completionBlock)
+        presentOnView(view, completionBlock: completionBlock)
+        launchTimer()
+    }
+    
+    func launchTimer() {
+        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.01 * Double(NSEC_PER_SEC)));
+        dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+            guard let strongSelf = ProgressLoader.weakSelf else { return }
+            
+            strongSelf.incrementCircleRadius()
+            strongSelf.launchTimer()
+        })
+    }
+    
+    func incrementCircleRadius() {
+        if self.progress >= 100 {
+            ProgressLoader.weakSelf = nil
+            completed()
+            return
+        }
+        incrementMultiplier()
+        
+        let viewBounds = backgroundView.bounds
+        let center = CGPointMake(CGRectGetMidX(viewBounds), CGRectGetMidY(viewBounds))
+        let endAngle = CGFloat(M_PI) / 180 * 3.6 * multiplier
+        let outerPath = UIBezierPath(arcCenter: center, radius: CIRCLE_RADIUS_OUTER, startAngle: 0, endAngle: endAngle, clockwise: true)
+        let middlePath = UIBezierPath(arcCenter: center, radius: CIRCLE_RADIUS_MIDDLE, startAngle: 0, endAngle: endAngle, clockwise: true)
+        let innerPath = UIBezierPath(arcCenter: center, radius: CIRCLE_RADIUS_INNER, startAngle: 0, endAngle: endAngle, clockwise: true)
+        
+        self.outerCircle.path = outerPath.CGPath
+        self.middleCircle.path = middlePath.CGPath
+        self.innerCircle.path = innerPath.CGPath
+    }
+    
+    func incrementMultiplier() {
+        if progress / multiplier > 2 {
+            if multiplier < progress {
+                multiplier += 0.75
+            }
+        } else {
+            if multiplier < progress {
+                multiplier += 0.25
+            }
+        }
     }
     
     func completed() {
+        let transform = CATransform3DMakeScale(0.01, 0.01, 1)
+        
         CATransaction.begin()
         CATransaction.setAnimationDuration(0.5)
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(controlPoints: 0.70, -0.80, 0.68, 0.95))
-        self.innerCircle.transform = CATransform3DMakeScale(0.01, 0.01, 1)
+        self.innerCircle.transform = transform
             CATransaction.begin()
             CATransaction.setAnimationDuration(0.7)
-            self.middleCircle.transform = CATransform3DMakeScale(0.01, 0.01, 1)
+            self.middleCircle.transform = transform
                 CATransaction.begin()
                 CATransaction.setAnimationDuration(0.9)
-                self.outerCircle.transform = CATransform3DMakeScale(0.01, 0.01, 1)
+                self.outerCircle.transform = transform
                 CATransaction.commit()
             CATransaction.commit()
         CATransaction.commit()
@@ -331,31 +380,6 @@ private extension ProgressLoader {
         animationCircle.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         failCircle.addAnimation(animationCircle, forKey: nil)
         
-    }
-    
-    mutating func incrementMultiplier() {
-        if multiplier >= 100 {
-            timer.invalidate()
-            completed()
-            return
-        }
-        if progress / multiplier > 2 {
-            if multiplier < progress {
-                multiplier += 0.75
-            }
-        } else {
-            if multiplier < progress {
-                multiplier += 0.25
-            }
-        }
-        
-        let oPath = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundView.bounds), CGRectGetMidY(backgroundView.bounds)), radius: 40.0, startAngle: 0, endAngle: CGFloat(M_PI) / 180 * 3.6 * multiplier, clockwise: true)
-        let mPath = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundView.bounds), CGRectGetMidY(backgroundView.bounds)), radius: 30.0, startAngle: 0, endAngle: CGFloat(M_PI) / 180 * 3.6 * multiplier, clockwise: true)
-        let iPath = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundView.bounds), CGRectGetMidY(backgroundView.bounds)), radius: 20.0, startAngle: 0, endAngle: CGFloat(M_PI) / 180 * 3.6 * multiplier, clockwise: true)
-        
-        self.outerCircle.path = oPath.CGPath
-        self.middleCircle.path = mPath.CGPath
-        self.innerCircle.path = iPath.CGPath
     }
     
 }
