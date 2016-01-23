@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
 
     @IBAction func showInfiniteLoader(sender: AnyObject) {
         ARSLineProgress.show()
@@ -17,4 +17,5 @@ class ViewController: UIViewController {
     @IBAction func showProgressLoader(sender: AnyObject) {
         ARSLineProgress.showWithProgress(0.0)
     }
+    
 }
