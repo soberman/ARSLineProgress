@@ -124,6 +124,30 @@ private var CIRCLE_COLOR_INNER: CGColor {
     return UIColor.gs_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).CGColor
 }
 
+private let CHECKMARK_ANIMATION_FILL_DURATION = 0.4
+private let CHECKMARK_LINE_WIDTH: CGFloat = 2.0
+private var CHECKMARK_COLOR: CGColor {
+    return UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+}
+
+private let SUCCESS_CIRCLE_ANIMATION_FILL_DURATION = 0.7
+private let SUCCESS_CIRCLE_LINE_WIDTH: CGFloat = 2.0
+private var SUCCESS_CIRCLE_COLOR: CGColor {
+    return UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+}
+
+private let FAIL_CROSS_ANIMATION_FILL_DURATION = 0.4
+private let FAIL_CROSS_LINE_WIDTH: CGFloat = 2.0
+private var FAIL_CROSS_COLOR: CGColor {
+    return UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+}
+
+private let FAIL_CIRCLE_ANIMATION_FILL_DURATION = 0.7
+private let FAIL_CIRCLE_LINE_WIDTH: CGFloat = 2.0
+private var FAIL_CIRCLE_COLOR: CGColor {
+    return UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+}
+
 private var currentLoader: Appearable?
 
 
@@ -298,84 +322,94 @@ private extension ProgressLoader {
     }
     
     func showSuccess() {
+        let backgroundViewBounds = backgroundView.bounds
+        let backgroundLayer = backgroundView.layer
+        let outerCircleBounds = self.outerCircle.bounds
+        let outerCircleHeight = CGRectGetHeight(outerCircleBounds)
+        let outerCircleWidth = CGRectGetWidth(outerCircleBounds)
+        
         let checkmarkPath = UIBezierPath()
-        checkmarkPath.moveToPoint(CGPointMake(CGRectGetWidth(self.outerCircle.bounds) * 0.28, CGRectGetHeight(self.outerCircle.bounds) * 0.53))
-        checkmarkPath.addLineToPoint(CGPointMake(CGRectGetWidth(self.outerCircle.bounds) * 0.42, CGRectGetHeight(self.outerCircle.bounds) * 0.66))
-        checkmarkPath.addLineToPoint(CGPointMake(CGRectGetWidth(self.outerCircle.bounds) * 0.72, CGRectGetHeight(self.outerCircle.bounds) * 0.36))
+        checkmarkPath.moveToPoint(CGPointMake(outerCircleWidth * 0.28, outerCircleHeight * 0.53))
+        checkmarkPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.42, outerCircleHeight * 0.66))
+        checkmarkPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.72, outerCircleHeight * 0.36))
         checkmarkPath.lineCapStyle = .Square
         
         let checkmark = CAShapeLayer()
         checkmark.path = checkmarkPath.CGPath
         checkmark.fillColor = nil
-        checkmark.strokeColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
-        checkmark.lineWidth = 2.0
-        self.backgroundView.layer.addSublayer(checkmark)
-        
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.removedOnCompletion = true
-        animation.fromValue = 0
-        animation.toValue = 1
-        animation.fillMode = kCAFillModeBoth
-        animation.duration = 0.4
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        checkmark.addAnimation(animation, forKey: nil)
+        checkmark.strokeColor = CHECKMARK_COLOR
+        checkmark.lineWidth = CHECKMARK_LINE_WIDTH
+        backgroundLayer.addSublayer(checkmark)
         
         let successCircle = CAShapeLayer(layer: outerCircle)
-        successCircle.path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundView.bounds), CGRectGetMidY(backgroundView.bounds)), radius: 40.0, startAngle: -CGFloat(M_PI_2), endAngle: CGFloat(M_PI) / 180 * 270, clockwise: true).CGPath
+        successCircle.path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundViewBounds), CGRectGetMidY(backgroundViewBounds)), radius: CIRCLE_RADIUS_OUTER, startAngle: -CGFloat(M_PI_2), endAngle: CGFloat(M_PI) / 180 * 270, clockwise: true).CGPath
         successCircle.fillColor = nil
-        successCircle.strokeColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
-        successCircle.lineWidth = 2.0
-        backgroundView.layer.addSublayer(successCircle)
+        successCircle.strokeColor = SUCCESS_CIRCLE_COLOR
+        successCircle.lineWidth = SUCCESS_CIRCLE_LINE_WIDTH
+        backgroundLayer.addSublayer(successCircle)
+        
+        let animationCheckmark = CABasicAnimation(keyPath: "strokeEnd")
+        animationCheckmark.removedOnCompletion = true
+        animationCheckmark.fromValue = 0
+        animationCheckmark.toValue = 1
+        animationCheckmark.fillMode = kCAFillModeBoth
+        animationCheckmark.duration = CHECKMARK_ANIMATION_FILL_DURATION
+        animationCheckmark.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        checkmark.addAnimation(animationCheckmark, forKey: nil)
         
         let animationCircle = CABasicAnimation(keyPath: "strokeEnd")
         animationCircle.removedOnCompletion = true
         animationCircle.fromValue = 0
         animationCircle.toValue = 1
         animationCircle.fillMode = kCAFillModeBoth
-        animationCircle.duration = 0.7
+        animationCircle.duration = SUCCESS_CIRCLE_ANIMATION_FILL_DURATION
         animationCircle.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         successCircle.addAnimation(animationCircle, forKey: nil)
     }
     
     func showFail() {
+        let backgroundViewLayer = backgroundView.layer
+        let outerCircleBounds = outerCircle.bounds
+        let outerCircleWidth = CGRectGetWidth(outerCircleBounds)
+        let outerCircleHeight = CGRectGetHeight(outerCircleBounds)
+        
         let crossPath = UIBezierPath()
-        crossPath.moveToPoint(CGPointMake(CGRectGetWidth(outerCircle.bounds) * 0.67, CGRectGetHeight(outerCircle.bounds) * 0.32))
-        crossPath.addLineToPoint(CGPointMake(CGRectGetWidth(outerCircle.bounds) * 0.32, CGRectGetHeight(outerCircle.bounds) * 0.67))
-        crossPath.moveToPoint(CGPointMake(CGRectGetWidth(outerCircle.bounds) * 0.32, CGRectGetHeight(outerCircle.bounds) * 0.32))
-        crossPath.addLineToPoint(CGPointMake(CGRectGetWidth(outerCircle.bounds) * 0.67, CGRectGetHeight(outerCircle.bounds) * 0.67))
+        crossPath.moveToPoint(CGPointMake(outerCircleWidth * 0.67, outerCircleHeight * 0.32))
+        crossPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.32, outerCircleHeight * 0.67))
+        crossPath.moveToPoint(CGPointMake(outerCircleWidth * 0.32, outerCircleHeight * 0.32))
+        crossPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.67, outerCircleHeight * 0.67))
         crossPath.lineCapStyle = .Square
         
         let cross = CAShapeLayer()
         cross.path = crossPath.CGPath
         cross.fillColor = nil
-        cross.strokeColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
-        cross.lineWidth = 2.0
+        cross.strokeColor = FAIL_CROSS_COLOR
+        cross.lineWidth = FAIL_CROSS_LINE_WIDTH
         cross.frame = backgroundView.bounds
-        backgroundView.layer.addSublayer(cross)
-        
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.removedOnCompletion = false
-        animation.fromValue = 0
-        animation.toValue = 1
-        animation.duration = 0.4
-        animation.fillMode = kCAFillModeBoth
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
-        cross.addAnimation(animation, forKey: nil)
-        
+        backgroundViewLayer.addSublayer(cross)
         
         let failCircle = CAShapeLayer(layer: outerCircle)
-        failCircle.path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundView.bounds), CGRectGetMidY(backgroundView.bounds)), radius: 40.0, startAngle: -CGFloat(M_PI_2), endAngle: CGFloat(M_PI) / 180 * 270, clockwise: true).CGPath
+        failCircle.path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundView.bounds), CGRectGetMidY(backgroundView.bounds)), radius: CIRCLE_RADIUS_OUTER, startAngle: -CGFloat(M_PI_2), endAngle: CGFloat(M_PI) / 180 * 270, clockwise: true).CGPath
         failCircle.fillColor = nil
-        failCircle.strokeColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
-        failCircle.lineWidth = 2.0
-        backgroundView.layer.addSublayer(failCircle)
+        failCircle.strokeColor = FAIL_CIRCLE_COLOR
+        failCircle.lineWidth = FAIL_CIRCLE_LINE_WIDTH
+        backgroundViewLayer.addSublayer(failCircle)
+        
+        let animationCross = CABasicAnimation(keyPath: "strokeEnd")
+        animationCross.removedOnCompletion = false
+        animationCross.fromValue = 0
+        animationCross.toValue = 1
+        animationCross.duration = FAIL_CROSS_ANIMATION_FILL_DURATION
+        animationCross.fillMode = kCAFillModeBoth
+        animationCross.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        cross.addAnimation(animationCross, forKey: nil)
         
         let animationCircle = CABasicAnimation(keyPath: "opacity")
         animationCircle.removedOnCompletion = true
         animationCircle.fromValue = 0
         animationCircle.toValue = 1
         animationCircle.fillMode = kCAFillModeBoth
-        animationCircle.duration = 0.7
+        animationCircle.duration = FAIL_CIRCLE_ANIMATION_FILL_DURATION
         animationCircle.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         failCircle.addAnimation(animationCircle, forKey: nil)
         
