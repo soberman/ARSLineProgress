@@ -9,8 +9,6 @@
 import UIKit
 
 final class ViewController: UIViewController {
-    
-    var progress:CGFloat = 0.0
 
     @IBAction func showInfiniteLoader(sender: AnyObject) {
         ARSLineProgress.show()
@@ -21,14 +19,24 @@ final class ViewController: UIViewController {
         launchTimer()
     }
     
+}
+
+
+// MARK: Helper Demo Methods
+
+private var progress:CGFloat = 0.0
+
+extension ViewController {
+    
     private func launchTimer() {
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.7 * Double(NSEC_PER_SEC)));
         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
-            self.progress += CGFloat(arc4random_uniform(10))
-            ARSLineProgress.updateWithProgress(self.progress)
+            progress += CGFloat(arc4random_uniform(10))
+            ARSLineProgress.updateWithProgress(progress)
             self.launchTimer()
             
-            if self.progress >= 100 {
+            if progress >= 100 {
+                progress = 0
                 self.hideLoader()
                 return
             }

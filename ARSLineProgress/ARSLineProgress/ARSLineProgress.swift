@@ -189,14 +189,13 @@ private extension InfiniteLoader {
 
 private final class ProgressLoader: Appearable {
     
-    static weak var weakSelf: ProgressLoader?
-    
     var backgroundView: UIVisualEffectView
     var outerCircle = CAShapeLayer()
     var middleCircle = CAShapeLayer()
     var innerCircle = CAShapeLayer()
     var multiplier: CGFloat = 1.0
     var progress: CGFloat = 0.0
+    static weak var weakSelf: ProgressLoader?
     
     init() {
         backgroundView = BlurredBackgroundRect().view
@@ -244,11 +243,6 @@ private extension ProgressLoader {
     }
     
     func incrementCircleRadius() {
-        if self.progress >= 100 {
-            ProgressLoader.weakSelf = nil
-            completed()
-            return
-        }
         incrementMultiplier()
         
         let viewBounds = backgroundView.bounds
@@ -261,6 +255,11 @@ private extension ProgressLoader {
         self.outerCircle.path = outerPath.CGPath
         self.middleCircle.path = middlePath.CGPath
         self.innerCircle.path = innerPath.CGPath
+        
+        if multiplier >= 100 {
+            ProgressLoader.weakSelf = nil
+            completed()
+        }
     }
     
     func incrementMultiplier() {
