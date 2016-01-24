@@ -10,7 +10,7 @@
 
 import UIKit
 
-final class ARSLineProgress {
+public final class ARSLineProgress {
     
     // MARK: Show Infinite Loader
     
@@ -32,20 +32,36 @@ final class ARSLineProgress {
     
     // MARK: Show Progress Loader
     
-    static func showWithProgress(value: CGFloat) {
-        ProgressLoader().showWithValue(value, onView: nil, completionBlock: nil)
+    static func showWithProgress(initialValue value: CGFloat) {
+        ProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: nil)
     }
     
-    static func showWithProgress(value: CGFloat, onView: UIView) {
-        ProgressLoader().showWithValue(value, onView: onView, completionBlock: nil)
+    static func showWithProgress(initialValue value: CGFloat, onView: UIView) {
+        ProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: nil)
     }
     
-    static func showWithProgress(value: CGFloat, completionBlock: (() -> Void)?) {
-        ProgressLoader().showWithValue(value, onView: nil, completionBlock: completionBlock)
+    static func showWithProgress(initialValue value: CGFloat, completionBlock: (() -> Void)?) {
+        ProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: completionBlock)
     }
     
-    static func showWithProgress(value: CGFloat, onView: UIView, completionBlock: (() -> Void)?) {
-        ProgressLoader().showWithValue(value, onView: onView, completionBlock: completionBlock)
+    static func showWithProgress(initialValue value: CGFloat, onView: UIView, completionBlock: (() -> Void)?) {
+        ProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: completionBlock)
+    }
+    
+    static func showWithProgressObject(progress: NSProgress) {
+        ProgressLoader().showWithValue(0.0, onView: nil, progress: progress, completionBlock: nil)
+    }
+    
+    static func showWithProgressObject(progress: NSProgress, completionBlock: (() -> Void)?) {
+        ProgressLoader().showWithValue(0.0, onView: nil, progress: progress, completionBlock: completionBlock)
+    }
+    
+    static func showWithProgressObject(progress: NSProgress, onView: UIView) {
+        ProgressLoader().showWithValue(0.0, onView: onView, progress: progress, completionBlock: nil)
+    }
+    
+    static func showWithProgressObject(progress: NSProgress, onView: UIView, completionBlock: (() -> Void)?) {
+        ProgressLoader().showWithValue(0.0, onView: onView, progress: progress, completionBlock: completionBlock)
     }
     
     // MARK: Update Progress Loader
@@ -54,22 +70,23 @@ final class ARSLineProgress {
         ProgressLoader.weakSelf?.progress = value
     }
     
-    static func showWithProgressObject(progress: NSProgress) {
-        
-    }
-    
-    static func showWithProgressObject(progress: NSProgress, onView: UIView) {
-        
-    }
-    
     // MARK: Hide Loader
     
     static func hide() {
-        currentLoader?.hideWithCompletionBlock(nil)
+        hideLoader(currentLoader, withCompletionBlock: nil)
     }
     
     static func hideWithCompletionBlock(block: () -> Void) {
-        currentLoader?.hideWithCompletionBlock(block)
+        hideLoader(currentLoader, withCompletionBlock: block)
+    }
+    
+}
+
+
+public struct ARSLineProgressConfiguration {
+    
+    init() {
+        
     }
     
 }
@@ -81,9 +98,9 @@ final class ARSLineProgress {
 // MARK: - Protocols & Enums
 // =====================================================================================================================
 
-private protocol Appearable {
-    func presentOnView(view: UIView?, completionBlock: (() -> Void)?)
-    func hideWithCompletionBlock(block: (() -> Void)?)
+@objc private protocol Loader {
+    var backgroundView: UIVisualEffectView { get set }
+    optional func hideWithCompletionBlock(block: (() -> Void)?)
 }
 
 private enum LoaderType {
@@ -148,7 +165,7 @@ private var FAIL_CIRCLE_COLOR: CGColor {
     return UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
 }
 
-private var currentLoader: Appearable?
+private var currentLoader: Loader?
 
 
 
@@ -157,9 +174,9 @@ private var currentLoader: Appearable?
 // MARK: - Infinite Loader
 // =====================================================================================================================
 
-private final class InfiniteLoader: Appearable {
+private final class InfiniteLoader: Loader {
     
-    var backgroundView: UIVisualEffectView
+    @objc var backgroundView: UIVisualEffectView
     var invisibleRect = UIView()
     var outerCircle = CAShapeLayer()
     var middleCircle = CAShapeLayer()
@@ -167,23 +184,6 @@ private final class InfiniteLoader: Appearable {
     
     init() {
         backgroundView = BlurredBackgroundRect().view
-    }
-    
-    func presentOnView(view: UIView?, completionBlock: (() -> Void)?) {
-        currentLoader = self
-        window()!.addSubview(backgroundView)
-        backgroundView.alpha = 0.1
-        UIView.animateWithDuration(BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION, delay: 0.0, options: .CurveEaseOut, animations: {
-            self.backgroundView.alpha = 1.0
-            }, completion: { _ in completionBlock })
-    }
-    
-    func hideWithCompletionBlock(block: (() -> Void)?) {
-        currentLoader = nil
-        UIView.animateWithDuration(BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION, delay: 0.0, options: .CurveEaseOut, animations: {
-            self.backgroundView.alpha = 0.0
-            self.backgroundView.transform = CGAffineTransformMakeScale(0.9, 0.9)
-            }, completion: { _ in block })
     }
     
 }
@@ -199,7 +199,7 @@ private extension InfiniteLoader {
             onView: backgroundView.contentView,
             loaderType: .Infinite)
         animateCircles(outerCircle: outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
-        presentOnView(view, completionBlock: completionBlock)
+        presentLoader(self, onView: view, completionBlock: completionBlock)
     }
     
 }
@@ -211,9 +211,9 @@ private extension InfiniteLoader {
 // MARK: - Progress Loader
 // =====================================================================================================================
 
-private final class ProgressLoader: Appearable {
+private final class ProgressLoader: Loader {
     
-    var backgroundView: UIVisualEffectView
+    @objc var backgroundView: UIVisualEffectView
     var outerCircle = CAShapeLayer()
     var middleCircle = CAShapeLayer()
     var innerCircle = CAShapeLayer()
@@ -226,33 +226,16 @@ private final class ProgressLoader: Appearable {
         ProgressLoader.weakSelf = self
     }
     
-    func presentOnView(view: UIView?, completionBlock: (() -> Void)?) {
-        currentLoader = self
-        window()!.addSubview(backgroundView)
-        backgroundView.alpha = 0.1
-        UIView.animateWithDuration(BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION, delay: 0.0, options: .CurveEaseOut, animations: {
-            self.backgroundView.alpha = 1.0
-            }, completion: { _ in completionBlock })
-    }
-    
-    func hideWithCompletionBlock(block: (() -> Void)?) {
-        currentLoader = nil
-        UIView.animateWithDuration(BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION, delay: 0.0, options: .CurveEaseOut, animations: {
-            self.backgroundView.alpha = 0.0
-            self.backgroundView.transform = CGAffineTransformMakeScale(0.9, 0.9)
-            }, completion: { _ in block })
-    }
-    
 }
 
 private extension ProgressLoader {
     
-    func showWithValue(value: CGFloat, onView view: UIView?, completionBlock: (() -> Void)?) {
+    func showWithValue(value: CGFloat, onView view: UIView?, progress: NSProgress?, completionBlock: (() -> Void)?) {
         if createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
         
         createCircles(outerCircle: outerCircle, middleCircle: middleCircle, innerCircle: innerCircle, onView: backgroundView.contentView, loaderType: .Progress)
         animateCircles(outerCircle: outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
-        presentOnView(view, completionBlock: completionBlock)
+        presentLoader(self, onView: view, completionBlock: completionBlock)
         launchTimer()
     }
     
@@ -317,7 +300,6 @@ private extension ProgressLoader {
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.9 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
             self.showSuccess()
-            //            self.showFail()
         })
     }
     
@@ -415,6 +397,10 @@ private extension ProgressLoader {
         
     }
     
+    func cleanup() {
+        backgroundView.removeFromSuperview()
+    }
+    
 }
 
 
@@ -444,6 +430,37 @@ private struct BlurredBackgroundRect {
 // =====================================================================================================================
 // MARK: - Extensions & Helpers & Shared Methods
 // =====================================================================================================================
+
+private func presentLoader(loader: Loader, onView view: UIView?, completionBlock: (() -> Void)?) {
+    currentLoader = loader
+    let backgroundView = loader.backgroundView
+    
+    if let targetView = view {
+        targetView.addSubview(backgroundView)
+    } else {
+        window()!.addSubview(backgroundView)
+    }
+    backgroundView.alpha = 0.1
+    UIView.animateWithDuration(BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION, delay: 0.0, options: .CurveEaseOut, animations: {
+        backgroundView.alpha = 1.0
+    }, completion: { _ in completionBlock })
+}
+
+private func hideLoader(loader: Loader?, withCompletionBlock block: (() -> Void)?) {
+    guard let loader = loader else { return }
+    
+    currentLoader = nil
+    let backgroundView = loader.backgroundView
+    
+    UIView.animateWithDuration(BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION, delay: 0.0, options: .CurveEaseOut, animations: {
+        backgroundView.alpha = 0.0
+        backgroundView.transform = CGAffineTransformMakeScale(0.9, 0.9)
+    }, completion: { _ in block })
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
+        cleanupLoader(loader)
+    })
+}
 
 private func window() -> UIWindow? {
     var targetWindow: UIWindow?
@@ -530,6 +547,10 @@ private func animateCircles(outerCircle outerCircle: CAShapeLayer, middleCircle:
     let innerAnimation = middleAnimation.copy() as! CABasicAnimation
     innerAnimation.duration = CIRCLE_ROTATION_DURATION_INNER
     innerCircle.addAnimation(innerAnimation, forKey: "middleCircleRotation")
+}
+
+private func cleanupLoader(loader: Loader) {
+    loader.backgroundView.removeFromSuperview()
 }
 
 private extension UIColor {

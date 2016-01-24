@@ -15,7 +15,8 @@ final class ViewController: UIViewController {
     }
     
     @IBAction func showProgressLoader(sender: AnyObject) {
-        ARSLineProgress.showWithProgress(progress)
+        print(self.view.subviews.count)
+        ARSLineProgress.showWithProgress(initialValue: progress, onView: view)
         launchTimer()
     }
     
@@ -33,20 +34,27 @@ extension ViewController {
         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
             progress += CGFloat(arc4random_uniform(10))
             ARSLineProgress.updateWithProgress(progress)
-            self.launchTimer()
             
             if progress >= 100 {
                 progress = 0
                 self.hideLoader()
                 return
             }
+            
+            self.launchTimer()
         })
     }
     
     private func hideLoader() {
-        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(UInt64(3) * NSEC_PER_SEC));
+        print(self.view.subviews.count)
+        var dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(UInt64(3) * NSEC_PER_SEC));
         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
             ARSLineProgress.hide()
+        })
+        
+        dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(UInt64(6) * NSEC_PER_SEC));
+        dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+            print(self.view.subviews.count)
         })
     }
     
