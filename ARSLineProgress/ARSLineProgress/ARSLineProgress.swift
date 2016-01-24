@@ -218,6 +218,7 @@ private final class ProgressLoader: Loader {
     var middleCircle = CAShapeLayer()
     var innerCircle = CAShapeLayer()
     var multiplier: CGFloat = 1.0
+    var lastMultiplierValue: CGFloat = 0.0
     var progressValue: CGFloat = 0.0
     var progress: NSProgress?
     static weak var weakSelf: ProgressLoader?
@@ -252,7 +253,7 @@ private extension ProgressLoader {
     }
     
     func incrementCircleRadius() {
-        incrementMultiplier()
+        if didIncrementMultiplier() == false { return }
         
         let viewBounds = backgroundView.bounds
         let center = CGPointMake(CGRectGetMidX(viewBounds), CGRectGetMidY(viewBounds))
@@ -271,8 +272,9 @@ private extension ProgressLoader {
         }
     }
     
-    func incrementMultiplier() {
+    func didIncrementMultiplier() -> Bool {
         let progress: CGFloat = progressSource()
+        if lastMultiplierValue == progress { return false }
         
         if progress / multiplier > 2 {
             if multiplier < progress {
@@ -283,6 +285,9 @@ private extension ProgressLoader {
                 multiplier += 0.25
             }
         }
+        lastMultiplierValue = multiplier
+        
+        return true
     }
     
     func progressSource() -> CGFloat {
