@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		273F58431C4C9DC900D84513 /* ARSLineProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273F58421C4C9DC900D84513 /* ARSLineProgress.swift */; };
 		276406BB1C3832B600BCE105 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276406BA1C3832B600BCE105 /* AppDelegate.swift */; };
 		276406BD1C3832B600BCE105 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276406BC1C3832B600BCE105 /* ViewController.swift */; };
 		276406C01C3832B700BCE105 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 276406BE1C3832B700BCE105 /* Main.storyboard */; };
 		276406C21C3832B700BCE105 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 276406C11C3832B700BCE105 /* Assets.xcassets */; };
 		276406C51C3832B700BCE105 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 276406C31C3832B700BCE105 /* LaunchScreen.storyboard */; };
+		27E116281C55844300661F75 /* ARSLineProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E116271C55844300661F75 /* ARSLineProgress.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,7 +29,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		273F58421C4C9DC900D84513 /* ARSLineProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSLineProgress.swift; path = ARSLineProgress/ARSLineProgress.swift; sourceTree = "<group>"; };
 		276406B71C3832B600BCE105 /* ARSLineProgress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARSLineProgress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		276406BA1C3832B600BCE105 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		276406BC1C3832B600BCE105 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -37,6 +36,7 @@
 		276406C11C3832B700BCE105 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		276406C41C3832B700BCE105 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		276406C61C3832B700BCE105 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		27E116271C55844300661F75 /* ARSLineProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSLineProgress.swift; path = ../../Source/ARSLineProgress.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,14 +50,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		273F58411C4C9D9B00D84513 /* ARSLineProgress */ = {
-			isa = PBXGroup;
-			children = (
-				273F58421C4C9DC900D84513 /* ARSLineProgress.swift */,
-			);
-			name = ARSLineProgress;
-			sourceTree = "<group>";
-		};
 		276406AE1C3832B600BCE105 = {
 			isa = PBXGroup;
 			children = (
@@ -77,7 +69,7 @@
 		276406B91C3832B600BCE105 /* ARSLineProgress */ = {
 			isa = PBXGroup;
 			children = (
-				273F58411C4C9D9B00D84513 /* ARSLineProgress */,
+				27E116271C55844300661F75 /* ARSLineProgress.swift */,
 				276406BC1C3832B600BCE105 /* ViewController.swift */,
 				276406BA1C3832B600BCE105 /* AppDelegate.swift */,
 				276406BE1C3832B700BCE105 /* Main.storyboard */,
@@ -161,8 +153,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				276406BD1C3832B600BCE105 /* ViewController.swift in Sources */,
+				27E116281C55844300661F75 /* ARSLineProgress.swift in Sources */,
 				276406BB1C3832B600BCE105 /* AppDelegate.swift in Sources */,
-				273F58431C4C9DC900D84513 /* ARSLineProgress.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
