@@ -173,6 +173,7 @@ private typealias config = ARSLineProgressConfiguration
 @objc private protocol Loader {
     var backgroundView: UIVisualEffectView { get set }
     optional func hideWithCompletionBlock(block: (() -> Void)?)
+    optional weak var targetView: UIView? { get set }
 }
 
 private enum LoaderType {
@@ -215,9 +216,30 @@ private final class InfiniteLoader: Loader {
     var outerCircle = CAShapeLayer()
     var middleCircle = CAShapeLayer()
     var innerCircle = CAShapeLayer()
+    @objc weak var targetView: UIView?
     
     init() {
         backgroundView = BlurredBackgroundRect().view
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "orientationChanged:",
+            name: UIDeviceOrientationDidChangeNotification,
+            object: nil)
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: UIDeviceOrientationDidChangeNotification,
+            object: nil)
+    }
+    
+    @objc func orientationChanged(notification: NSNotification) {
+        if let loader = currentLoader {
+            if let targetView = loader.targetView {
+                createdFrameForBackgroundView(loader.backgroundView, onView: targetView)
+            } else {
+                createdFrameForBackgroundView(loader.backgroundView, onView: nil)
+            }
+        }
     }
     
 }
@@ -226,6 +248,8 @@ private extension InfiniteLoader {
     
     func showOnView(view: UIView?, completionBlock: (() -> Void)?) {
         if createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
+        
+        targetView = view
         
         createCircles(outerCircle: outerCircle,
             middleCircle: middleCircle,
@@ -257,10 +281,31 @@ private final class ProgressLoader: Loader {
     var progress: NSProgress?
     var failed = false
     static weak var weakSelf: ProgressLoader?
+    @objc weak var targetView: UIView?
     
     init() {
         backgroundView = BlurredBackgroundRect().view
         ProgressLoader.weakSelf = self
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "orientationChanged:",
+            name: UIDeviceOrientationDidChangeNotification,
+            object: nil)
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: UIDeviceOrientationDidChangeNotification,
+            object: nil)
+    }
+    
+    @objc func orientationChanged(notification: NSNotification) {
+        if let loader = currentLoader {
+            if let targetView = loader.targetView {
+                createdFrameForBackgroundView(loader.backgroundView, onView: targetView)
+            } else {
+                createdFrameForBackgroundView(loader.backgroundView, onView: nil)
+            }
+        }
     }
     
 }
@@ -274,6 +319,7 @@ private extension ProgressLoader {
         if let progress = progress { self.progress = progress }
         
         currentCompletionBlock = completionBlock
+        targetView = view
         
         createCircles(outerCircle: outerCircle,
             middleCircle: middleCircle,
