@@ -82,11 +82,75 @@ public final class ARSLineProgress {
     
 }
 
-
 public struct ARSLineProgressConfiguration {
+    static var backgroundViewSidesLengths: CGFloat = 125.0
+    static var backgroundViewCornerRadius: CGFloat = 20.0
+    static var backgroundViewPresentAnimationDuration: CFTimeInterval = 0.3
+    static var backgroundViewDismissAnimationDuration: CFTimeInterval = 0.3
     
-    init() {
+    static var blurStyle: UIBlurEffectStyle = .Light
+    static var circleColorOuter: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+    static var circleColorMiddle: CGColor = UIColor.gs_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
+    static var circleColorInner: CGColor = UIColor.gs_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).CGColor
+    
+    static var circleRadiusOuter: CGFloat = 40.0
+    static var circleRadiusMiddle: CGFloat = 30.0
+    static var circleRadiusInner: CGFloat = 20.0
+    
+    static var circleRotationDurationOuter: CFTimeInterval = 3.0
+    static var circleRotationDurationMiddle: CFTimeInterval = 1.5
+    static var circleRotationDurationInner: CFTimeInterval = 0.75
+    
+    static var checkmarkAnimationDrawDuration: CFTimeInterval = 0.4
+    static var checkmarkLineWidth: CGFloat = 2.0
+    static var checkmarkColor: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+    
+    static var successCircleAnimationDrawDuration: CFTimeInterval = 0.7
+    static var successCircleLineWidth: CGFloat = 2.0
+    static var successCircleColor: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+    
+    static var failCrossAnimationDrawDuration: CFTimeInterval = 0.4
+    static var failCrossLineWidth: CGFloat = 2.0
+    static var failCrossColor: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+    
+    static var failCircleAnimationDrawDuration: CFTimeInterval = 0.7
+    static var failCircleLineWidth: CGFloat = 2.0
+    static var failCircleColor: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+    
+    static func restoreDefaults() {
+        config.backgroundViewSidesLengths = 125
+        config.backgroundViewCornerRadius = 20.0
+        config.backgroundViewPresentAnimationDuration = 0.3
+        config.backgroundViewDismissAnimationDuration = 0.3
         
+        config.blurStyle = .Light
+        config.circleColorOuter = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+        config.circleColorMiddle = UIColor.gs_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
+        config.circleColorInner = UIColor.gs_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).CGColor
+        
+        config.circleRadiusOuter = 40.0
+        config.circleRadiusMiddle = 30.0
+        config.circleRadiusInner = 20.0
+        
+        config.circleRotationDurationOuter = 3.0
+        config.circleRotationDurationMiddle = 1.5
+        config.circleRotationDurationInner = 0.75
+        
+        config.checkmarkAnimationDrawDuration = 0.4
+        config.checkmarkLineWidth = 2.0
+        config.checkmarkColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+        
+        config.successCircleAnimationDrawDuration = 0.7
+        config.successCircleLineWidth = 2.0
+        config.successCircleColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+        
+        config.failCrossAnimationDrawDuration = 0.4
+        config.failCrossLineWidth = 2.0
+        config.failCrossColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+        
+        config.failCircleAnimationDrawDuration = 0.7
+        config.failCircleLineWidth = 2.0
+        config.failCircleColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
     }
     
 }
@@ -95,8 +159,10 @@ public struct ARSLineProgressConfiguration {
 
 
 // =====================================================================================================================
-// MARK: - Protocols & Enums
+// MARK: - Protocols, Typealiases & Enums
 // =====================================================================================================================
+
+private typealias config = ARSLineProgressConfiguration
 
 @objc private protocol Loader {
     var backgroundView: UIVisualEffectView { get set }
@@ -115,55 +181,11 @@ private enum LoaderType {
 // MARK: - Shared Constants
 // =====================================================================================================================
 
-private let BACKGROUND_VIEW_SIDE_LENGTH: CGFloat = 125.0
-private let BACKGROUND_VIEW_CORNER_RADIUS:CGFloat = 20.0
-private let BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION = 0.3
-
-private let CIRCLE_ROTATION_DURATION_OUTER: CFTimeInterval = 3.0
-private let CIRCLE_ROTATION_DURATION_MIDDLE: CFTimeInterval = 1.5
-private let CIRCLE_ROTATION_DURATION_INNER: CFTimeInterval = 0.75
 private let CIRCLE_ROTATION_TO_VALUE = 2 * CGFloat(M_PI)
 private let CIRCLE_ROTATION_REPEAT_COUNT = Float(UINT64_MAX)
-
 private let CIRCLE_LINE_WIDTH: CGFloat = 2.0
-private let CIRCLE_RADIUS_OUTER: CGFloat = 40.0
-private let CIRCLE_RADIUS_MIDDLE: CGFloat = 30.0
-private let CIRCLE_RADIUS_INNER: CGFloat = 20.0
 private let CIRCLE_START_ANGLE: CGFloat = -CGFloat(M_PI_2)
 private let CIRCLE_END_ANGLE: CGFloat = 0.0
-private var CIRCLE_COLOR_OUTER: CGColor {
-    return UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
-}
-private var CIRCLE_COLOR_MIDDLE: CGColor {
-    return UIColor.gs_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
-}
-private var CIRCLE_COLOR_INNER: CGColor {
-    return UIColor.gs_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).CGColor
-}
-
-private let CHECKMARK_ANIMATION_FILL_DURATION = 0.4
-private let CHECKMARK_LINE_WIDTH: CGFloat = 2.0
-private var CHECKMARK_COLOR: CGColor {
-    return UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
-}
-
-private let SUCCESS_CIRCLE_ANIMATION_FILL_DURATION = 0.7
-private let SUCCESS_CIRCLE_LINE_WIDTH: CGFloat = 2.0
-private var SUCCESS_CIRCLE_COLOR: CGColor {
-    return UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
-}
-
-private let FAIL_CROSS_ANIMATION_FILL_DURATION = 0.4
-private let FAIL_CROSS_LINE_WIDTH: CGFloat = 2.0
-private var FAIL_CROSS_COLOR: CGColor {
-    return UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
-}
-
-private let FAIL_CIRCLE_ANIMATION_FILL_DURATION = 0.7
-private let FAIL_CIRCLE_LINE_WIDTH: CGFloat = 2.0
-private var FAIL_CIRCLE_COLOR: CGColor {
-    return UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
-}
 
 private var currentLoader: Loader?
 
@@ -258,9 +280,9 @@ private extension ProgressLoader {
         let viewBounds = backgroundView.bounds
         let center = CGPointMake(CGRectGetMidX(viewBounds), CGRectGetMidY(viewBounds))
         let endAngle = CGFloat(M_PI) / 180 * 3.6 * multiplier
-        let outerPath = UIBezierPath(arcCenter: center, radius: CIRCLE_RADIUS_OUTER, startAngle: 0, endAngle: endAngle, clockwise: true)
-        let middlePath = UIBezierPath(arcCenter: center, radius: CIRCLE_RADIUS_MIDDLE, startAngle: 0, endAngle: endAngle, clockwise: true)
-        let innerPath = UIBezierPath(arcCenter: center, radius: CIRCLE_RADIUS_INNER, startAngle: 0, endAngle: endAngle, clockwise: true)
+        let outerPath = UIBezierPath(arcCenter: center, radius: config.circleRadiusOuter, startAngle: 0, endAngle: endAngle, clockwise: true)
+        let middlePath = UIBezierPath(arcCenter: center, radius: config.circleRadiusMiddle, startAngle: 0, endAngle: endAngle, clockwise: true)
+        let innerPath = UIBezierPath(arcCenter: center, radius: config.circleRadiusInner, startAngle: 0, endAngle: endAngle, clockwise: true)
         
         self.outerCircle.path = outerPath.CGPath
         self.middleCircle.path = middlePath.CGPath
@@ -336,15 +358,15 @@ private extension ProgressLoader {
         let checkmark = CAShapeLayer()
         checkmark.path = checkmarkPath.CGPath
         checkmark.fillColor = nil
-        checkmark.strokeColor = CHECKMARK_COLOR
-        checkmark.lineWidth = CHECKMARK_LINE_WIDTH
+        checkmark.strokeColor = config.checkmarkColor
+        checkmark.lineWidth = config.checkmarkLineWidth
         backgroundLayer.addSublayer(checkmark)
         
         let successCircle = CAShapeLayer(layer: outerCircle)
-        successCircle.path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundViewBounds), CGRectGetMidY(backgroundViewBounds)), radius: CIRCLE_RADIUS_OUTER, startAngle: -CGFloat(M_PI_2), endAngle: CGFloat(M_PI) / 180 * 270, clockwise: true).CGPath
+        successCircle.path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundViewBounds), CGRectGetMidY(backgroundViewBounds)), radius: config.circleRadiusOuter, startAngle: -CGFloat(M_PI_2), endAngle: CGFloat(M_PI) / 180 * 270, clockwise: true).CGPath
         successCircle.fillColor = nil
-        successCircle.strokeColor = SUCCESS_CIRCLE_COLOR
-        successCircle.lineWidth = SUCCESS_CIRCLE_LINE_WIDTH
+        successCircle.strokeColor = config.successCircleColor
+        successCircle.lineWidth = config.successCircleLineWidth
         backgroundLayer.addSublayer(successCircle)
         
         let animationCheckmark = CABasicAnimation(keyPath: "strokeEnd")
@@ -352,7 +374,7 @@ private extension ProgressLoader {
         animationCheckmark.fromValue = 0
         animationCheckmark.toValue = 1
         animationCheckmark.fillMode = kCAFillModeBoth
-        animationCheckmark.duration = CHECKMARK_ANIMATION_FILL_DURATION
+        animationCheckmark.duration = config.checkmarkAnimationDrawDuration
         animationCheckmark.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         checkmark.addAnimation(animationCheckmark, forKey: nil)
         
@@ -361,7 +383,7 @@ private extension ProgressLoader {
         animationCircle.fromValue = 0
         animationCircle.toValue = 1
         animationCircle.fillMode = kCAFillModeBoth
-        animationCircle.duration = SUCCESS_CIRCLE_ANIMATION_FILL_DURATION
+        animationCircle.duration = config.successCircleAnimationDrawDuration
         animationCircle.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         successCircle.addAnimation(animationCircle, forKey: nil)
     }
@@ -382,23 +404,23 @@ private extension ProgressLoader {
         let cross = CAShapeLayer()
         cross.path = crossPath.CGPath
         cross.fillColor = nil
-        cross.strokeColor = FAIL_CROSS_COLOR
-        cross.lineWidth = FAIL_CROSS_LINE_WIDTH
+        cross.strokeColor = config.failCrossColor
+        cross.lineWidth = config.failCrossLineWidth
         cross.frame = backgroundView.bounds
         backgroundViewLayer.addSublayer(cross)
         
         let failCircle = CAShapeLayer(layer: outerCircle)
-        failCircle.path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundView.bounds), CGRectGetMidY(backgroundView.bounds)), radius: CIRCLE_RADIUS_OUTER, startAngle: -CGFloat(M_PI_2), endAngle: CGFloat(M_PI) / 180 * 270, clockwise: true).CGPath
+        failCircle.path = UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(backgroundView.bounds), CGRectGetMidY(backgroundView.bounds)), radius: config.circleRadiusOuter, startAngle: -CGFloat(M_PI_2), endAngle: CGFloat(M_PI) / 180 * 270, clockwise: true).CGPath
         failCircle.fillColor = nil
-        failCircle.strokeColor = FAIL_CIRCLE_COLOR
-        failCircle.lineWidth = FAIL_CIRCLE_LINE_WIDTH
+        failCircle.strokeColor = config.failCircleColor
+        failCircle.lineWidth = config.failCircleLineWidth
         backgroundViewLayer.addSublayer(failCircle)
         
         let animationCross = CABasicAnimation(keyPath: "strokeEnd")
         animationCross.removedOnCompletion = false
         animationCross.fromValue = 0
         animationCross.toValue = 1
-        animationCross.duration = FAIL_CROSS_ANIMATION_FILL_DURATION
+        animationCross.duration = config.failCrossAnimationDrawDuration
         animationCross.fillMode = kCAFillModeBoth
         animationCross.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
         cross.addAnimation(animationCross, forKey: nil)
@@ -408,7 +430,7 @@ private extension ProgressLoader {
         animationCircle.fromValue = 0
         animationCircle.toValue = 1
         animationCircle.fillMode = kCAFillModeBoth
-        animationCircle.duration = FAIL_CIRCLE_ANIMATION_FILL_DURATION
+        animationCircle.duration = config.failCircleAnimationDrawDuration
         animationCircle.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         failCircle.addAnimation(animationCircle, forKey: nil)
         
@@ -458,7 +480,7 @@ private func presentLoader(loader: Loader, onView view: UIView?, completionBlock
         window()!.addSubview(backgroundView)
     }
     backgroundView.alpha = 0.1
-    UIView.animateWithDuration(BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION, delay: 0.0, options: .CurveEaseOut, animations: {
+    UIView.animateWithDuration(config.backgroundViewPresentAnimationDuration, delay: 0.0, options: .CurveEaseOut, animations: {
         backgroundView.alpha = 1.0
     }, completion: { _ in completionBlock })
 }
@@ -469,12 +491,12 @@ private func hideLoader(loader: Loader?, withCompletionBlock block: (() -> Void)
     currentLoader = nil
     let backgroundView = loader.backgroundView
     
-    UIView.animateWithDuration(BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION, delay: 0.0, options: .CurveEaseOut, animations: {
+    UIView.animateWithDuration(config.backgroundViewDismissAnimationDuration, delay: 0.0, options: .CurveEaseOut, animations: {
         backgroundView.alpha = 0.0
         backgroundView.transform = CGAffineTransformMakeScale(0.9, 0.9)
     }, completion: { _ in block })
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(BACKGROUND_VIEW_PRESENT_ANIMATION_DURATION * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(config.backgroundViewDismissAnimationDuration * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
         cleanupLoader(loader)
     })
 }
@@ -505,40 +527,44 @@ private func createdFrameForBackgroundView(backgroundView: UIView, onView view: 
         center = CGPointMake(CGRectGetMidX(viewBounds), CGRectGetMidY(viewBounds))
     }
     
-    backgroundView.frame = CGRectMake(center.x - BACKGROUND_VIEW_SIDE_LENGTH / 2, center.y - BACKGROUND_VIEW_SIDE_LENGTH / 2, BACKGROUND_VIEW_SIDE_LENGTH, BACKGROUND_VIEW_SIDE_LENGTH)
-    backgroundView.layer.cornerRadius = BACKGROUND_VIEW_CORNER_RADIUS
+    let sideLengths = config.backgroundViewSidesLengths
+    backgroundView.frame = CGRectMake(center.x - sideLengths / 2, center.y - sideLengths / 2, sideLengths, sideLengths)
+    backgroundView.layer.cornerRadius = config.backgroundViewCornerRadius
     
     return true
 }
 
 private func createCircles(outerCircle outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer, onView view: UIView, loaderType: LoaderType) {
+    let circleRadiusOuter = config.circleRadiusOuter
+    let circleRadiusMiddle = config.circleRadiusMiddle
+    let circleRadiusInner = config.circleRadiusInner
     let viewBounds = view.bounds
     let arcCenter = CGPointMake(CGRectGetMidX(viewBounds), CGRectGetMidY(viewBounds))
     var path: UIBezierPath
     
     switch loaderType {
     case .Infinite:
-        path = UIBezierPath(arcCenter: arcCenter, radius: CIRCLE_RADIUS_OUTER, startAngle: CIRCLE_START_ANGLE, endAngle: CIRCLE_END_ANGLE, clockwise: true)
+        path = UIBezierPath(arcCenter: arcCenter, radius: circleRadiusOuter, startAngle: CIRCLE_START_ANGLE, endAngle: CIRCLE_END_ANGLE, clockwise: true)
     case .Progress:
-        path = UIBezierPath(arcCenter: arcCenter, radius: CIRCLE_RADIUS_OUTER, startAngle: 0, endAngle: CGFloat(M_PI) / 180 * 3.6 * 1, clockwise: true)
+        path = UIBezierPath(arcCenter: arcCenter, radius: circleRadiusOuter, startAngle: 0, endAngle: CGFloat(M_PI) / 180 * 3.6 * 1, clockwise: true)
     }
-    configureLayer(outerCircle, forView: view, withPath: path.CGPath, withBounds: viewBounds, withColor: CIRCLE_COLOR_OUTER)
+    configureLayer(outerCircle, forView: view, withPath: path.CGPath, withBounds: viewBounds, withColor: config.circleColorOuter)
     
     switch loaderType {
     case .Infinite:
-        path = UIBezierPath(arcCenter: arcCenter, radius: CIRCLE_RADIUS_MIDDLE, startAngle: CIRCLE_START_ANGLE, endAngle: CIRCLE_END_ANGLE, clockwise: true)
+        path = UIBezierPath(arcCenter: arcCenter, radius: circleRadiusMiddle, startAngle: CIRCLE_START_ANGLE, endAngle: CIRCLE_END_ANGLE, clockwise: true)
     case .Progress:
-        path = UIBezierPath(arcCenter: arcCenter, radius: CIRCLE_RADIUS_MIDDLE, startAngle: 0, endAngle: CGFloat(M_PI) / 180 * 3.6 * 1, clockwise: true)
+        path = UIBezierPath(arcCenter: arcCenter, radius: circleRadiusMiddle, startAngle: 0, endAngle: CGFloat(M_PI) / 180 * 3.6 * 1, clockwise: true)
     }
-    configureLayer(middleCircle, forView: view, withPath: path.CGPath, withBounds: viewBounds, withColor: CIRCLE_COLOR_MIDDLE)
+    configureLayer(middleCircle, forView: view, withPath: path.CGPath, withBounds: viewBounds, withColor: config.circleColorMiddle)
     
     switch loaderType {
     case .Infinite:
-        path = UIBezierPath(arcCenter: arcCenter, radius: CIRCLE_RADIUS_INNER, startAngle: CIRCLE_START_ANGLE, endAngle: CIRCLE_END_ANGLE, clockwise: true)
+        path = UIBezierPath(arcCenter: arcCenter, radius: circleRadiusInner, startAngle: CIRCLE_START_ANGLE, endAngle: CIRCLE_END_ANGLE, clockwise: true)
     case .Progress:
-        path = UIBezierPath(arcCenter: arcCenter, radius: CIRCLE_RADIUS_INNER, startAngle: 0, endAngle: CGFloat(M_PI) / 180 * 3.6 * 1, clockwise: true)
+        path = UIBezierPath(arcCenter: arcCenter, radius: circleRadiusInner, startAngle: 0, endAngle: CGFloat(M_PI) / 180 * 3.6 * 1, clockwise: true)
     }
-    configureLayer(innerCircle, forView: view, withPath: path.CGPath, withBounds: viewBounds, withColor: CIRCLE_COLOR_INNER)
+    configureLayer(innerCircle, forView: view, withPath: path.CGPath, withBounds: viewBounds, withColor: config.circleColorInner)
 }
 
 private func configureLayer(layer: CAShapeLayer, forView view: UIView, withPath path: CGPath, withBounds bounds: CGRect, withColor color: CGColor) {
@@ -553,16 +579,16 @@ private func configureLayer(layer: CAShapeLayer, forView view: UIView, withPath 
 private func animateCircles(outerCircle outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer) {
     let outerAnimation = CABasicAnimation(keyPath: "transform.rotation")
     outerAnimation.toValue = CIRCLE_ROTATION_TO_VALUE
-    outerAnimation.duration = CIRCLE_ROTATION_DURATION_OUTER
+    outerAnimation.duration = config.circleRotationDurationOuter
     outerAnimation.repeatCount = CIRCLE_ROTATION_REPEAT_COUNT
     outerCircle.addAnimation(outerAnimation, forKey: "outerCircleRotation")
     
     let middleAnimation = outerAnimation.copy() as! CABasicAnimation
-    middleAnimation.duration = CIRCLE_ROTATION_DURATION_MIDDLE
+    middleAnimation.duration = config.circleRotationDurationMiddle
     middleCircle.addAnimation(middleAnimation, forKey: "middleCircleRotation")
     
     let innerAnimation = middleAnimation.copy() as! CABasicAnimation
-    innerAnimation.duration = CIRCLE_ROTATION_DURATION_INNER
+    innerAnimation.duration = config.circleRotationDurationInner
     innerCircle.addAnimation(innerAnimation, forKey: "middleCircleRotation")
 }
 
