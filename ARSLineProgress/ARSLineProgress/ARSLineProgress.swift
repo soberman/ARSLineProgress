@@ -67,7 +67,7 @@ public final class ARSLineProgress {
     // MARK: Update Progress Loader
     
     static func updateWithProgress(value: CGFloat) {
-        ProgressLoader.weakSelf?.progress = value
+        ProgressLoader.weakSelf?.progressValue = value
     }
     
     // MARK: Hide Loader
@@ -218,7 +218,8 @@ private final class ProgressLoader: Loader {
     var middleCircle = CAShapeLayer()
     var innerCircle = CAShapeLayer()
     var multiplier: CGFloat = 1.0
-    var progress: CGFloat = 0.0
+    var progressValue: CGFloat = 0.0
+    var progress: NSProgress?
     static weak var weakSelf: ProgressLoader?
     
     init() {
@@ -232,6 +233,7 @@ private extension ProgressLoader {
     
     func showWithValue(value: CGFloat, onView view: UIView?, progress: NSProgress?, completionBlock: (() -> Void)?) {
         if createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
+        if let progress = progress { self.progress = progress }
         
         createCircles(outerCircle: outerCircle, middleCircle: middleCircle, innerCircle: innerCircle, onView: backgroundView.contentView, loaderType: .Progress)
         animateCircles(outerCircle: outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
@@ -270,6 +272,8 @@ private extension ProgressLoader {
     }
     
     func incrementMultiplier() {
+        let progress: CGFloat = progressSource()
+        
         if progress / multiplier > 2 {
             if multiplier < progress {
                 multiplier += 0.75
@@ -278,6 +282,14 @@ private extension ProgressLoader {
             if multiplier < progress {
                 multiplier += 0.25
             }
+        }
+    }
+    
+    func progressSource() -> CGFloat {
+        if let progress = self.progress {
+            return CGFloat(progress.fractionCompleted * 100.0)
+        } else {
+            return progressValue
         }
     }
     

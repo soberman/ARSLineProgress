@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		273F58431C4C9DC900D84513 /* ARSLineProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273F58421C4C9DC900D84513 /* ARSLineProgress.swift */; };
-		27454BD61C4C239900DBB38C /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27454BD51C4C239900DBB38C /* ViewController2.swift */; };
 		276406BB1C3832B600BCE105 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276406BA1C3832B600BCE105 /* AppDelegate.swift */; };
 		276406BD1C3832B600BCE105 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276406BC1C3832B600BCE105 /* ViewController.swift */; };
 		276406C01C3832B700BCE105 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 276406BE1C3832B700BCE105 /* Main.storyboard */; };
@@ -31,7 +30,6 @@
 
 /* Begin PBXFileReference section */
 		273F58421C4C9DC900D84513 /* ARSLineProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSLineProgress.swift; path = ARSLineProgress/ARSLineProgress.swift; sourceTree = "<group>"; };
-		27454BD51C4C239900DBB38C /* ViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
 		276406B71C3832B600BCE105 /* ARSLineProgress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARSLineProgress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		276406BA1C3832B600BCE105 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		276406BC1C3832B600BCE105 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -81,7 +79,6 @@
 			children = (
 				273F58411C4C9D9B00D84513 /* ARSLineProgress */,
 				276406BC1C3832B600BCE105 /* ViewController.swift */,
-				27454BD51C4C239900DBB38C /* ViewController2.swift */,
 				276406BA1C3832B600BCE105 /* AppDelegate.swift */,
 				276406BE1C3832B700BCE105 /* Main.storyboard */,
 				276406C11C3832B700BCE105 /* Assets.xcassets */,
@@ -165,7 +162,6 @@
 			files = (
 				276406BD1C3832B600BCE105 /* ViewController.swift in Sources */,
 				276406BB1C3832B600BCE105 /* AppDelegate.swift in Sources */,
-				27454BD61C4C239900DBB38C /* ViewController2.swift in Sources */,
 				273F58431C4C9DC900D84513 /* ARSLineProgress.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

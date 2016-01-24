@@ -16,7 +16,8 @@ final class ViewController: UIViewController {
     
     @IBAction func showProgressLoader(sender: AnyObject) {
         print(self.view.subviews.count)
-        ARSLineProgress.showWithProgress(initialValue: progress, onView: view)
+        progressObject = NSProgress(totalUnitCount: 100)
+        ARSLineProgress.showWithProgressObject(progressObject!)
         launchTimer()
     }
     
@@ -25,18 +26,17 @@ final class ViewController: UIViewController {
 
 // MARK: Helper Demo Methods
 
-private var progress:CGFloat = 0.0
+private var progress: CGFloat = 0.0
+private var progressObject: NSProgress?
 
 extension ViewController {
     
     private func launchTimer() {
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.7 * Double(NSEC_PER_SEC)));
         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
-            progress += CGFloat(arc4random_uniform(10))
-            ARSLineProgress.updateWithProgress(progress)
+            progressObject!.completedUnitCount += Int64(arc4random_uniform(10))
             
-            if progress >= 100 {
-                progress = 0
+            if progressObject?.fractionCompleted == 1.0 {
                 self.hideLoader()
                 return
             }
