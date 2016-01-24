@@ -18,7 +18,7 @@ public final class ARSLineProgress {
         InfiniteLoader().showOnView(nil, completionBlock: nil)
     }
     
-    static func showWithCompetionBlock(block: () -> Void) {
+    static func showWithPresentCompetionBlock(block: () -> Void) {
         InfiniteLoader().showOnView(nil, completionBlock: block)
     }
     
@@ -271,13 +271,15 @@ private extension ProgressLoader {
         if createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
         if let progress = progress { self.progress = progress }
         
+        currentCompletionBlock = completionBlock
+        
         createCircles(outerCircle: outerCircle,
             middleCircle: middleCircle,
             innerCircle: innerCircle,
             onView: backgroundView.contentView,
             loaderType: .Progress)
         animateCircles(outerCircle: outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
-        presentLoader(self, onView: view, completionBlock: completionBlock)
+        presentLoader(self, onView: view, completionBlock: nil)
         launchTimer()
     }
     

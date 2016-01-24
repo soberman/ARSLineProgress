@@ -38,6 +38,15 @@
                                     <action selector="showProgressLoaderWithSuccess:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ADJ-c9-zTf"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W26-F9-oNZ">
+                                <rect key="frame" x="140" y="430" width="321" height="30"/>
+                                <state key="normal" title="Show Progress Loader Without Final Animation">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showProgressWithoutAnimation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xJ2-sq-d0F"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EWM-RC-RUO">
                                 <rect key="frame" x="192" y="320" width="217" height="30"/>
                                 <state key="normal" title="Show Progress Loader With Fail">
@@ -50,11 +59,13 @@
                         </subviews>
                         <color key="backgroundColor" red="0.96078431369999995" green="0.35686274509999999" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="W26-F9-oNZ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2Cj-jB-90b"/>
                             <constraint firstItem="EWM-RC-RUO" firstAttribute="top" secondItem="09r-nG-K4g" secondAttribute="bottom" constant="80" id="4VH-MA-Yb8"/>
                             <constraint firstItem="Yix-sF-EUZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="JOS-uC-f4S"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Yix-sF-EUZ" secondAttribute="bottom" id="Lpb-FX-fdt"/>
                             <constraint firstItem="09r-nG-K4g" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="PY9-Ie-QOs"/>
                             <constraint firstItem="EWM-RC-RUO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="TOP-Ko-aUm"/>
+                            <constraint firstItem="W26-F9-oNZ" firstAttribute="top" secondItem="EWM-RC-RUO" secondAttribute="bottom" constant="80" id="TQb-SB-1mo"/>
                             <constraint firstItem="C6W-fh-tOi" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="XLH-VV-Bf4"/>
                             <constraint firstAttribute="trailing" secondItem="Yix-sF-EUZ" secondAttribute="trailing" id="Ycu-UQ-mCR"/>
                             <constraint firstItem="09r-nG-K4g" firstAttribute="top" secondItem="C6W-fh-tOi" secondAttribute="bottom" constant="80" id="ami-Dz-Sp4"/>

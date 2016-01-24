@@ -9,13 +9,9 @@
 import UIKit
 
 final class ViewController: UIViewController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
 
     @IBAction func showInfiniteLoader(sender: AnyObject) {
-        ARSLineProgress.showWithCompetionBlock { () -> Void in
+        ARSLineProgress.showWithPresentCompetionBlock { () -> Void in
             print("Showed with completion block")
         }
         
@@ -26,10 +22,12 @@ final class ViewController: UIViewController {
         })
     }
     
+    // MARK: In case you want, you can use regular CGFloat value with showWithProgress(initialValue: 1.0) method.
+    
     @IBAction func showProgressLoaderWithSuccess(sender: AnyObject) {
         progressObject = NSProgress(totalUnitCount: 100)
         ARSLineProgress.showWithProgressObject(progressObject!, completionBlock: {
-            print("Showed with completion block")
+            print("Success completion block")
         })
         
         progressDemoHelper(success: true)
@@ -38,12 +36,23 @@ final class ViewController: UIViewController {
     @IBAction func showProgressLoaderWithFail(sender: AnyObject) {
         progressObject = NSProgress(totalUnitCount: 100)
         ARSLineProgress.showWithProgressObject(progressObject!, completionBlock: {
-            print("Showed with completion block")
+            print("This copmletion block is going to be overriden by cancel completion block in launchTimer() method.")
         })
         
         progressDemoHelper(success: false)
     }
     
+    
+    @IBAction func showProgressWithoutAnimation(sender: AnyObject) {
+        ARSLineProgressConfiguration.showSuccessCheckmark = false
+        
+        progressObject = NSProgress(totalUnitCount: 100)
+        ARSLineProgress.showWithProgressObject(progressObject!, completionBlock: {
+            print("Success completion block")
+        })
+        
+        progressDemoHelper(success: true)
+    }
     
 }
 
