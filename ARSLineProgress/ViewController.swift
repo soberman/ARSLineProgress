@@ -9,6 +9,11 @@
 import UIKit
 
 final class ViewController: UIViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        ARSLineProgressConfiguration.blurStyle = .Dark
+    }
 
     @IBAction func showInfiniteLoader(sender: AnyObject) {
         ARSLineProgress.show()
@@ -33,21 +38,11 @@ extension ViewController {
     private func launchTimer() {
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.7 * Double(NSEC_PER_SEC)));
         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
-            progressObject!.completedUnitCount += Int64(arc4random_uniform(10))
+            progressObject!.completedUnitCount += Int64(arc4random_uniform(30))
             
-            if progressObject?.fractionCompleted == 1.0 {
-                self.hideLoader()
-                return
-            }
+            if progressObject?.fractionCompleted >= 1.0 { return }
             
             self.launchTimer()
-        })
-    }
-    
-    private func hideLoader() {
-        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(UInt64(3) * NSEC_PER_SEC));
-        dispatch_after(dispatchTime, dispatch_get_main_queue(), {
-            ARSLineProgress.hide()
         })
     }
     
