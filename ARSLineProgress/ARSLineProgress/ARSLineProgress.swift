@@ -10,58 +10,60 @@
 
 import UIKit
 
-public final class ARSLineProgress {
+final class ARSLineProgress {
+    
+    static var shown: Bool { return currentLoader != nil ? true : false }
     
     // MARK: Show Infinite Loader
     
     static func show() {
-        InfiniteLoader().showOnView(nil, completionBlock: nil)
+        if !shown { InfiniteLoader().showOnView(nil, completionBlock: nil) }
     }
     
     static func showWithPresentCompetionBlock(block: () -> Void) {
-        InfiniteLoader().showOnView(nil, completionBlock: block)
+        if !shown { InfiniteLoader().showOnView(nil, completionBlock: block) }
     }
     
     static func showOnView(view: UIView) {
-        InfiniteLoader().showOnView(view, completionBlock: nil)
+        if !shown { InfiniteLoader().showOnView(view, completionBlock: nil) }
     }
     
     static func showOnView(view: UIView, completionBlock: () -> Void) {
-        InfiniteLoader().showOnView(view, completionBlock: completionBlock)
+        if !shown { InfiniteLoader().showOnView(view, completionBlock: completionBlock) }
     }
     
     // MARK: Show Progress Loader
     
     static func showWithProgress(initialValue value: CGFloat) {
-        ProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: nil)
+        if !shown { ProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: nil) }
     }
     
     static func showWithProgress(initialValue value: CGFloat, onView: UIView) {
-        ProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: nil)
+        if !shown { ProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: nil) }
     }
     
     static func showWithProgress(initialValue value: CGFloat, completionBlock: (() -> Void)?) {
-        ProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: completionBlock)
+        if !shown { ProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: completionBlock) }
     }
     
     static func showWithProgress(initialValue value: CGFloat, onView: UIView, completionBlock: (() -> Void)?) {
-        ProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: completionBlock)
+        if !shown { ProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: completionBlock) }
     }
     
     static func showWithProgressObject(progress: NSProgress) {
-        ProgressLoader().showWithValue(0.0, onView: nil, progress: progress, completionBlock: nil)
+        if !shown { ProgressLoader().showWithValue(0.0, onView: nil, progress: progress, completionBlock: nil) }
     }
     
     static func showWithProgressObject(progress: NSProgress, completionBlock: (() -> Void)?) {
-        ProgressLoader().showWithValue(0.0, onView: nil, progress: progress, completionBlock: completionBlock)
+        if !shown { ProgressLoader().showWithValue(0.0, onView: nil, progress: progress, completionBlock: completionBlock) }
     }
     
     static func showWithProgressObject(progress: NSProgress, onView: UIView) {
-        ProgressLoader().showWithValue(0.0, onView: onView, progress: progress, completionBlock: nil)
+        if !shown { ProgressLoader().showWithValue(0.0, onView: onView, progress: progress, completionBlock: nil) }
     }
     
     static func showWithProgressObject(progress: NSProgress, onView: UIView, completionBlock: (() -> Void)?) {
-        ProgressLoader().showWithValue(0.0, onView: onView, progress: progress, completionBlock: completionBlock)
+        if !shown { ProgressLoader().showWithValue(0.0, onView: onView, progress: progress, completionBlock: completionBlock) }
     }
     
     // MARK: Update Progress Loader
@@ -90,7 +92,7 @@ public final class ARSLineProgress {
     
 }
 
-public struct ARSLineProgressConfiguration {
+struct ARSLineProgressConfiguration {
     
     static var showSuccessCheckmark = true
     
