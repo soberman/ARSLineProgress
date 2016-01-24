@@ -70,6 +70,14 @@ public final class ARSLineProgress {
         ProgressLoader.weakSelf?.progressValue = value
     }
     
+    static func cancelPorgressWithFailAnimation(showFail: Bool) {
+        ProgressLoader.weakSelf?.cancelWithFailAnimation(showFail, completionBlock: nil)
+    }
+    
+    static func cancelPorgressWithFailAnimation(showFail: Bool, completionBlock: (() -> Void)?) {
+        ProgressLoader.weakSelf?.cancelWithFailAnimation(showFail, completionBlock: completionBlock)
+    }
+    
     // MARK: Hide Loader
     
     static func hide() {
@@ -90,7 +98,7 @@ public struct ARSLineProgressConfiguration {
     static var backgroundViewPresentAnimationDuration: CFTimeInterval = 0.3
     static var backgroundViewDismissAnimationDuration: CFTimeInterval = 0.3
     
-    static var blurStyle: UIBlurEffectStyle = .Light
+    static var blurStyle: UIBlurEffectStyle = .Dark
     static var circleColorOuter: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
     static var circleColorMiddle: CGColor = UIColor.gs_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
     static var circleColorInner: CGColor = UIColor.gs_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).CGColor
@@ -115,6 +123,7 @@ public struct ARSLineProgressConfiguration {
     static var failCircleLineWidth: CGFloat = 2.0
     static var failCircleColor: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
     
+    /// Use this function to restore all properties to their default values.
     static func restoreDefaults() {
         config.showSuccessCheckmark = true
         
@@ -122,7 +131,7 @@ public struct ARSLineProgressConfiguration {
         config.backgroundViewPresentAnimationDuration = 0.3
         config.backgroundViewDismissAnimationDuration = 0.3
         
-        config.blurStyle = .Light
+        config.blurStyle = .Dark
         config.circleColorOuter = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
         config.circleColorMiddle = UIColor.gs_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
         config.circleColorInner = UIColor.gs_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).CGColor
@@ -244,6 +253,7 @@ private final class ProgressLoader: Loader {
     var lastMultiplierValue: CGFloat = 0.0
     var progressValue: CGFloat = 0.0
     var progress: NSProgress?
+    var failed = false
     static weak var weakSelf: ProgressLoader?
     
     init() {
@@ -254,6 +264,8 @@ private final class ProgressLoader: Loader {
 }
 
 private extension ProgressLoader {
+    
+    // MARK: Show/Cancel
     
     func showWithValue(value: CGFloat, onView view: UIView?, progress: NSProgress?, completionBlock: (() -> Void)?) {
         if createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
@@ -269,6 +281,17 @@ private extension ProgressLoader {
         launchTimer()
     }
     
+    func cancelWithFailAnimation(failAnim: Bool, completionBlock: (() -> Void)?) {
+        if failAnim {
+            currentCompletionBlock = completionBlock
+            failed = true
+        } else {
+            hideLoader(currentLoader, withCompletionBlock: completionBlock)
+        }
+    }
+    
+    // MARK: Configs & Animations
+    
     func launchTimer() {
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.01 * Double(NSEC_PER_SEC)));
         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
@@ -282,6 +305,20 @@ private extension ProgressLoader {
     func incrementCircleRadius() {
         if didIncrementMultiplier() == false { return }
         
+        drawCirclePath()
+        
+        if failed && multiplier <= 0.0 {
+            ProgressLoader.weakSelf = nil
+            multiplier = 0.01
+            drawCirclePath()
+            failedLoading()
+        } else if multiplier >= 100 {
+            ProgressLoader.weakSelf = nil
+            completed()
+        }
+    }
+    
+    func drawCirclePath() {
         let viewBounds = backgroundView.bounds
         let center = CGPointMake(CGRectGetMidX(viewBounds), CGRectGetMidY(viewBounds))
         let endAngle = CGFloat(M_PI) / 180 * 3.6 * multiplier
@@ -292,14 +329,14 @@ private extension ProgressLoader {
         self.outerCircle.path = outerPath.CGPath
         self.middleCircle.path = middlePath.CGPath
         self.innerCircle.path = innerPath.CGPath
-        
-        if multiplier >= 100 {
-            ProgressLoader.weakSelf = nil
-            completed()
-        }
     }
     
     func didIncrementMultiplier() -> Bool {
+        if failed {
+            multiplier -= 1.5
+            return true
+        }
+        
         let progress: CGFloat = progressSource()
         if lastMultiplierValue == progress { return false }
         
@@ -346,13 +383,21 @@ private extension ProgressLoader {
             if config.showSuccessCheckmark {
                 self.showSuccess()
                 
-                let dismissDelay = 0.5 + 0.9 + max(config.successCircleAnimationDrawDuration, config.checkmarkAnimationDrawDuration)
+                let dismissDelay = 0.5 + max(config.successCircleAnimationDrawDuration, config.checkmarkAnimationDrawDuration)
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(dismissDelay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
                     hideLoader(currentLoader, withCompletionBlock: currentCompletionBlock)
                 })
             } else {
                 hideLoader(currentLoader, withCompletionBlock: currentCompletionBlock)
             }
+        })
+    }
+    
+    func failedLoading() {
+        showFail()
+        let dismissDelay = 0.5 + max(config.failCircleAnimationDrawDuration, config.failCrossAnimationDrawDuration)
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(dismissDelay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+            hideLoader(currentLoader, withCompletionBlock: currentCompletionBlock)
         })
     }
     
@@ -497,7 +542,6 @@ private struct BlurredBackgroundRect {
 
 private func presentLoader(loader: Loader, onView view: UIView?, completionBlock: (() -> Void)?) {
     currentLoader = loader
-    currentCompletionBlock = completionBlock
     let backgroundView = loader.backgroundView
     
     if let targetView = view {
@@ -508,19 +552,18 @@ private func presentLoader(loader: Loader, onView view: UIView?, completionBlock
     backgroundView.alpha = 0.1
     UIView.animateWithDuration(config.backgroundViewPresentAnimationDuration, delay: 0.0, options: .CurveEaseOut, animations: {
         backgroundView.alpha = 1.0
-    }, completion: { _ in completionBlock })
+    }, completion: { _ in completionBlock?() })
 }
 
 private func hideLoader(loader: Loader?, withCompletionBlock block: (() -> Void)?) {
     guard let loader = loader else { return }
     
-    currentLoader = nil
     let backgroundView = loader.backgroundView
     
     UIView.animateWithDuration(config.backgroundViewDismissAnimationDuration, delay: 0.0, options: .CurveEaseOut, animations: {
         backgroundView.alpha = 0.0
         backgroundView.transform = CGAffineTransformMakeScale(0.9, 0.9)
-    }, completion: { _ in block })
+    }, completion: { _ in block?() })
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(config.backgroundViewDismissAnimationDuration * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
         cleanupLoader(loader)
@@ -644,6 +687,8 @@ private func animateCircles(outerCircle outerCircle: CAShapeLayer, middleCircle:
 
 private func cleanupLoader(loader: Loader) {
     loader.backgroundView.removeFromSuperview()
+    currentLoader = nil
+    currentCompletionBlock = nil
 }
 
 private extension UIColor {
