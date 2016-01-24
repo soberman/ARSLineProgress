@@ -2,7 +2,7 @@
 //  ARSLineProgress.swift
 //  ARSLineProgress
 //
-//  Created by Yaroslav Arsenkin on 18.01.16.
+//  Created by Yaroslav Arsenkin on 24.01.16.
 //  Copyright © 2016 Iaroslav Arsenkin. All rights reserved.
 //
 //  Website: http://arsenkin.com
