@@ -12,7 +12,21 @@
 		276406C01C3832B700BCE105 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 276406BE1C3832B700BCE105 /* Main.storyboard */; };
 		276406C21C3832B700BCE105 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 276406C11C3832B700BCE105 /* Assets.xcassets */; };
 		276406C51C3832B700BCE105 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 276406C31C3832B700BCE105 /* LaunchScreen.storyboard */; };
+		27E116281C55844300661F75 /* ARSLineProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E116271C55844300661F75 /* ARSLineProgress.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		27454BCF1C4C17F700DBB38C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		276406B71C3832B600BCE105 /* ARSLineProgress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARSLineProgress.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -22,6 +36,7 @@
 		276406C11C3832B700BCE105 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		276406C41C3832B700BCE105 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		276406C61C3832B700BCE105 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		27E116271C55844300661F75 /* ARSLineProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSLineProgress.swift; path = ../../Source/ARSLineProgress.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,8 +69,9 @@
 		276406B91C3832B600BCE105 /* ARSLineProgress */ = {
 			isa = PBXGroup;
 			children = (
-				276406BA1C3832B600BCE105 /* AppDelegate.swift */,
+				27E116271C55844300661F75 /* ARSLineProgress.swift */,
 				276406BC1C3832B600BCE105 /* ViewController.swift */,
+				276406BA1C3832B600BCE105 /* AppDelegate.swift */,
 				276406BE1C3832B700BCE105 /* Main.storyboard */,
 				276406C11C3832B700BCE105 /* Assets.xcassets */,
 				276406C31C3832B700BCE105 /* LaunchScreen.storyboard */,
@@ -74,6 +90,7 @@
 				276406B31C3832B600BCE105 /* Sources */,
 				276406B41C3832B600BCE105 /* Frameworks */,
 				276406B51C3832B600BCE105 /* Resources */,
+				27454BCF1C4C17F700DBB38C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -136,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				276406BD1C3832B600BCE105 /* ViewController.swift in Sources */,
+				27E116281C55844300661F75 /* ARSLineProgress.swift in Sources */,
 				276406BB1C3832B600BCE105 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -249,7 +267,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = ARSLineProgress/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arsenkin.ARSLineProgress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -260,7 +283,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = ARSLineProgress/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arsenkin.ARSLineProgress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -286,6 +314,7 @@
 				276406CB1C3832B700BCE105 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

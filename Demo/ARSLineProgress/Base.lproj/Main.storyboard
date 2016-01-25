@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ARSLineProgress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ios-9-wallpapers-4" translatesAutoresizingMaskIntoConstraints="NO" id="Yix-sF-EUZ">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C6W-fh-tOi">
+                                <rect key="frame" x="230" y="100" width="140" height="30"/>
+                                <state key="normal" title="Show Infinite Loader">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showInfiniteLoader:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MwA-Bq-FW6"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09r-nG-K4g">
+                                <rect key="frame" x="174" y="210" width="252" height="30"/>
+                                <state key="normal" title="Show Progress Loader With Success">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showProgressLoaderWithSuccess:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ADJ-c9-zTf"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W26-F9-oNZ">
+                                <rect key="frame" x="140" y="430" width="321" height="30"/>
+                                <state key="normal" title="Show Progress Loader Without Final Animation">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showProgressWithoutAnimation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xJ2-sq-d0F"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EWM-RC-RUO">
+                                <rect key="frame" x="192" y="320" width="217" height="30"/>
+                                <state key="normal" title="Show Progress Loader With Fail">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showProgressLoaderWithFail:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0z3-gK-mDi"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96078431369999995" green="0.35686274509999999" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="W26-F9-oNZ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2Cj-jB-90b"/>
+                            <constraint firstItem="EWM-RC-RUO" firstAttribute="top" secondItem="09r-nG-K4g" secondAttribute="bottom" constant="80" id="4VH-MA-Yb8"/>
+                            <constraint firstItem="Yix-sF-EUZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="JOS-uC-f4S"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Yix-sF-EUZ" secondAttribute="bottom" id="Lpb-FX-fdt"/>
+                            <constraint firstItem="09r-nG-K4g" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="PY9-Ie-QOs"/>
+                            <constraint firstItem="EWM-RC-RUO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="TOP-Ko-aUm"/>
+                            <constraint firstItem="W26-F9-oNZ" firstAttribute="top" secondItem="EWM-RC-RUO" secondAttribute="bottom" constant="80" id="TQb-SB-1mo"/>
+                            <constraint firstItem="C6W-fh-tOi" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="XLH-VV-Bf4"/>
+                            <constraint firstAttribute="trailing" secondItem="Yix-sF-EUZ" secondAttribute="trailing" id="Ycu-UQ-mCR"/>
+                            <constraint firstItem="09r-nG-K4g" firstAttribute="top" secondItem="C6W-fh-tOi" secondAttribute="bottom" constant="80" id="ami-Dz-Sp4"/>
+                            <constraint firstItem="Yix-sF-EUZ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="eV3-1g-O57"/>
+                            <constraint firstItem="C6W-fh-tOi" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="80" id="vti-2m-MhT"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="402" y="293"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="ios-9-wallpapers-4" width="329" height="585"/>
+    </resources>
+</document>
