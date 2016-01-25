@@ -34,18 +34,22 @@ final class ARSLineProgress {
     
     // MARK: Show Progress Loader
     
+    /// initialValue should be from 0 to 100
     static func showWithProgress(initialValue value: CGFloat) {
         if !shown { ProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: nil) }
     }
     
+    /// initialValue should be from 0 to 100
     static func showWithProgress(initialValue value: CGFloat, onView: UIView) {
         if !shown { ProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: nil) }
     }
     
+    /// initialValue should be from 0 to 100
     static func showWithProgress(initialValue value: CGFloat, completionBlock: (() -> Void)?) {
         if !shown { ProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: completionBlock) }
     }
     
+    /// initialValue should be from 0 to 100
     static func showWithProgress(initialValue value: CGFloat, onView: UIView, completionBlock: (() -> Void)?) {
         if !shown { ProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: completionBlock) }
     }
