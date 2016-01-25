@@ -90,7 +90,7 @@ public final class ARSLineProgress {
         hideLoader(currentLoader, withCompletionBlock: nil)
     }
     
-    static func hideWithCompletionBlock(block: () -> Void) {
+    public static func hideWithCompletionBlock(block: () -> Void) {
         hideLoader(currentLoader, withCompletionBlock: block)
     }
     
@@ -98,39 +98,39 @@ public final class ARSLineProgress {
 
 public struct ARSLineProgressConfiguration {
     
-    static var showSuccessCheckmark = true
+    public static var showSuccessCheckmark = true
     
-    static var backgroundViewCornerRadius: CGFloat = 20.0
-    static var backgroundViewPresentAnimationDuration: CFTimeInterval = 0.3
-    static var backgroundViewDismissAnimationDuration: CFTimeInterval = 0.3
+    public static var backgroundViewCornerRadius: CGFloat = 20.0
+    public static var backgroundViewPresentAnimationDuration: CFTimeInterval = 0.3
+    public static var backgroundViewDismissAnimationDuration: CFTimeInterval = 0.3
     
-    static var blurStyle: UIBlurEffectStyle = .Dark
-    static var circleColorOuter: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
-    static var circleColorMiddle: CGColor = UIColor.gs_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
-    static var circleColorInner: CGColor = UIColor.gs_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).CGColor
+    public static var blurStyle: UIBlurEffectStyle = .Dark
+    public static var circleColorOuter: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+    public static var circleColorMiddle: CGColor = UIColor.gs_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
+    public static var circleColorInner: CGColor = UIColor.gs_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).CGColor
     
-    static var circleRotationDurationOuter: CFTimeInterval = 3.0
-    static var circleRotationDurationMiddle: CFTimeInterval = 1.5
-    static var circleRotationDurationInner: CFTimeInterval = 0.75
+    public static var circleRotationDurationOuter: CFTimeInterval = 3.0
+    public static var circleRotationDurationMiddle: CFTimeInterval = 1.5
+    public static var circleRotationDurationInner: CFTimeInterval = 0.75
     
-    static var checkmarkAnimationDrawDuration: CFTimeInterval = 0.4
-    static var checkmarkLineWidth: CGFloat = 2.0
-    static var checkmarkColor: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+    public static var checkmarkAnimationDrawDuration: CFTimeInterval = 0.4
+    public static var checkmarkLineWidth: CGFloat = 2.0
+    public static var checkmarkColor: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
     
-    static var successCircleAnimationDrawDuration: CFTimeInterval = 0.7
-    static var successCircleLineWidth: CGFloat = 2.0
-    static var successCircleColor: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+    public static var successCircleAnimationDrawDuration: CFTimeInterval = 0.7
+    public static var successCircleLineWidth: CGFloat = 2.0
+    public static var successCircleColor: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
     
-    static var failCrossAnimationDrawDuration: CFTimeInterval = 0.4
-    static var failCrossLineWidth: CGFloat = 2.0
-    static var failCrossColor: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+    public static var failCrossAnimationDrawDuration: CFTimeInterval = 0.4
+    public static var failCrossLineWidth: CGFloat = 2.0
+    public static var failCrossColor: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
     
-    static var failCircleAnimationDrawDuration: CFTimeInterval = 0.7
-    static var failCircleLineWidth: CGFloat = 2.0
-    static var failCircleColor: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+    public static var failCircleAnimationDrawDuration: CFTimeInterval = 0.7
+    public static var failCircleLineWidth: CGFloat = 2.0
+    public static var failCircleColor: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
     
     /// Use this function to restore all properties to their default values.
-    static func restoreDefaults() {
+    public static func restoreDefaults() {
         config.showSuccessCheckmark = true
         
         config.backgroundViewCornerRadius = 20.0
