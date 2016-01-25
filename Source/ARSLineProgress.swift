@@ -10,83 +10,83 @@
 
 import UIKit
 
-final class ARSLineProgress {
+public final class ARSLineProgress {
     
-    static var shown: Bool { return currentLoader != nil ? true : false }
+    public static var shown: Bool { return currentLoader != nil ? true : false }
     
     // MARK: Show Infinite Loader
     
-    static func show() {
+    public static func show() {
         if !shown { InfiniteLoader().showOnView(nil, completionBlock: nil) }
     }
     
-    static func showWithPresentCompetionBlock(block: () -> Void) {
+    public static func showWithPresentCompetionBlock(block: () -> Void) {
         if !shown { InfiniteLoader().showOnView(nil, completionBlock: block) }
     }
     
-    static func showOnView(view: UIView) {
+    public static func showOnView(view: UIView) {
         if !shown { InfiniteLoader().showOnView(view, completionBlock: nil) }
     }
     
-    static func showOnView(view: UIView, completionBlock: () -> Void) {
+    public static func showOnView(view: UIView, completionBlock: () -> Void) {
         if !shown { InfiniteLoader().showOnView(view, completionBlock: completionBlock) }
     }
     
     // MARK: Show Progress Loader
     
     /// initialValue should be from 0 to 100
-    static func showWithProgress(initialValue value: CGFloat) {
+    public static func showWithProgress(initialValue value: CGFloat) {
         if !shown { ProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: nil) }
     }
     
     /// initialValue should be from 0 to 100
-    static func showWithProgress(initialValue value: CGFloat, onView: UIView) {
+    public static func showWithProgress(initialValue value: CGFloat, onView: UIView) {
         if !shown { ProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: nil) }
     }
     
     /// initialValue should be from 0 to 100
-    static func showWithProgress(initialValue value: CGFloat, completionBlock: (() -> Void)?) {
+    public static func showWithProgress(initialValue value: CGFloat, completionBlock: (() -> Void)?) {
         if !shown { ProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: completionBlock) }
     }
     
     /// initialValue should be from 0 to 100
-    static func showWithProgress(initialValue value: CGFloat, onView: UIView, completionBlock: (() -> Void)?) {
+    public static func showWithProgress(initialValue value: CGFloat, onView: UIView, completionBlock: (() -> Void)?) {
         if !shown { ProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: completionBlock) }
     }
     
-    static func showWithProgressObject(progress: NSProgress) {
+    public static func showWithProgressObject(progress: NSProgress) {
         if !shown { ProgressLoader().showWithValue(0.0, onView: nil, progress: progress, completionBlock: nil) }
     }
     
-    static func showWithProgressObject(progress: NSProgress, completionBlock: (() -> Void)?) {
+    public static func showWithProgressObject(progress: NSProgress, completionBlock: (() -> Void)?) {
         if !shown { ProgressLoader().showWithValue(0.0, onView: nil, progress: progress, completionBlock: completionBlock) }
     }
     
-    static func showWithProgressObject(progress: NSProgress, onView: UIView) {
+    public static func showWithProgressObject(progress: NSProgress, onView: UIView) {
         if !shown { ProgressLoader().showWithValue(0.0, onView: onView, progress: progress, completionBlock: nil) }
     }
     
-    static func showWithProgressObject(progress: NSProgress, onView: UIView, completionBlock: (() -> Void)?) {
+    public static func showWithProgressObject(progress: NSProgress, onView: UIView, completionBlock: (() -> Void)?) {
         if !shown { ProgressLoader().showWithValue(0.0, onView: onView, progress: progress, completionBlock: completionBlock) }
     }
     
     // MARK: Update Progress Loader
     
-    static func updateWithProgress(value: CGFloat) {
+    public static func updateWithProgress(value: CGFloat) {
         ProgressLoader.weakSelf?.progressValue = value
     }
     
-    static func cancelPorgressWithFailAnimation(showFail: Bool) {
+    public static func cancelPorgressWithFailAnimation(showFail: Bool) {
         ProgressLoader.weakSelf?.cancelWithFailAnimation(showFail, completionBlock: nil)
     }
     
-    static func cancelPorgressWithFailAnimation(showFail: Bool, completionBlock: (() -> Void)?) {
+    public static func cancelPorgressWithFailAnimation(showFail: Bool, completionBlock: (() -> Void)?) {
         ProgressLoader.weakSelf?.cancelWithFailAnimation(showFail, completionBlock: completionBlock)
     }
     
     // MARK: Hide Loader
     
-    static func hide() {
+    public static func hide() {
         hideLoader(currentLoader, withCompletionBlock: nil)
     }
     
@@ -96,7 +96,7 @@ final class ARSLineProgress {
     
 }
 
-struct ARSLineProgressConfiguration {
+public struct ARSLineProgressConfiguration {
     
     static var showSuccessCheckmark = true
     
