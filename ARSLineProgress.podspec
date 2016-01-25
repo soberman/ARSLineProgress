@@ -1,113 +1,99 @@
 Pod::Spec.new do |s|
 
-  s.name         = "ARSPopover"
-  s.version      = "2.2.1"
-  s.summary      = "Universal popover for iPhone and iPad."
+  s.name         = "ARSLineProgress"
+  s.version      = "1.0.0"
+  s.summary      = "iOS progress bar, replacement for the default activity indicator."
 
   s.description  = <<-DESC
-  # ARSPopover
-  Universal popover for iPhone and iPad that you can use in your projects. No custom drawing, no custom elements - everything is purely native.
+  ![ARSLineProgress](http://git.arsenkin.com/ARSLineProgress/ARSLineProgress.png)
 
-  |           iPhone             |           iPad           |
-  | ---------------------------- | ------------------------ |
-  | ![ARSPopover-iPhone][iPhone] | ![ARSPopover-iPad][iPad] |
+# ARSLineProgress
+iOS progress bar as a replacement for iOS activity indicator. This progress HUD will add some nice style touch to your application. Moreover, you can customize this progress loader through customization structure.
 
-  [iPhone]: http://git.arsenkin.com/ARSPopover-iPhone.gif
-  [iPad]: http://git.arsenkin.com/ARSPopover-iPad.gif
+|                Infinite               |               Success               |              Fail             |          No State Animation      |
+| ------------------------------------- | ----------------------------------- | ----------------------------- | -------------------------------- |
+| ![ARSLineProgress Infinite][Infinite] | ![ARSLineProgress Success][Success] | ![ARSLineProgress Fail][Fail] | ![ARSLineProgress NoState][NoState] |
 
-  ## Installation
+[Infinite]: http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_infinite.gif
+[Success]: http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_progress_with_success.gif
+[Fail]: http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_progress_with_fail.gif
+[NoState]: http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_without_final_animation.gif
 
-  ### CocoaPods
-  To install with [CocoaPods](http://cocoapods.org/), copy and paste this in your *.pod* file:
+## Installation
 
-      platform :ios, '8.3'
-      pod 'ARSPopover', '~> 2.0'
+### CocoaPods
+To install with [CocoaPods](http://cocoapods.org/), copy and paste this in your *Podfile* file:
 
-  ### Non-CocoaPods way
-  You can always to do the old way - just drag the source files into your projects and you are good to go.
+    platform :ios, '8.0'
+    pod 'ARSLineProgress', '~> 1.0'
 
-      ## Usage
-      Sample usage of the ARSPopover might look like this:
+### Non-CocoaPods way
+You can always to do the old way - just drag the source file into your projects and you are good to go.
 
-      ``` objective-c
-      - (IBAction)showPopoverWithWebView:(id)sender {
-          ARSPopover *popoverController = [ARSPopover new];
-          popoverController.sourceView = self.buttonWithWebView;
-          popoverController.sourceRect = CGRectMake(CGRectGetMidX(self.buttonWithWebView.bounds), CGRectGetMaxY(self.buttonWithWebView.bounds), 0, 0);
-          popoverController.contentSize = CGSizeMake(400, 600);
-          popoverController.arrowDirection = UIPopoverArrowDirectionUp;
+## Usage
+ARSLineProgress makes it easy to use it - you have `ARSLineProgress` class, that offer you a wide range of class methods to show progress loader.
 
-          [self presentViewController:popoverController animated:YES completion:^{
-              [popoverController insertContentIntoPopover:^(ARSPopover *popover, CGSize popoverPresentedSize, CGFloat popoverArrowHeight) {
-                  CGFloat originX = 0;
-                  CGFloat originY = 0;
-                  CGFloat width = popoverPresentedSize.width;
-                  CGFloat height = popoverPresentedSize.height - popoverArrowHeight;
+###### Showing
+You can show progress indicator in two modes: infinite and progress.
+Infinite progress will be shown until you hide it.
+``` Swift
+class func show()
+class func showWithPresentCompetionBlock(block: () -> Void)
+class func showOnView(view: UIView)
+class func showOnView(view: UIView, completionBlock: () -> Void)
 
-                  CGRect frame = CGRectMake(originX, originY, width, height);
-                  UIWebView *webView = [[UIWebView alloc] initWithFrame:frame];
-                  webView.scalesPageToFit = YES;
-                  [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://google.com"]]];
-                  [popover.view addSubview:webView];
-              }];
-          }];
-      }
-      ```
-      ### Required properties' configurations
+class func hide()
+class func hideWithCompletionBlock(block: () -> Void)
+```
 
-      In order to get a working popover, you need to specify next properties:
+Progress indicator will be shown until the `NSProgress` object has the `fractionCompleted` value `1.0` or in case you have passed raw value - `100.0`.
 
-      * `popoverController.sourceView` - The view containing the anchor rectangle for the popover.
+``` Swift
+class func showWithProgressObject(progress: NSProgress)
+class func showWithProgressObject(progress: NSProgress, completionBlock: (() -> Void)?)
+class func showWithProgressObject(progress: NSProgress, onView: UIView)
+class func showWithProgressObject(progress: NSProgress, onView: UIView, completionBlock: (() -> Void)?)
 
-      ``` objective-c
-      popoverController.sourceView = self.buttonWithWebView;
-      ```
+// Updating progress in case you are using on of the methods above:
+class func updateWithProgress(value: CGFloat)
 
-      * `popoverController.sourceRect` - The rectangle in the specified view in which to anchor the popover.
+// initialValue should be from 0 to 100 in these methods
+class func showWithProgress(initialValue value: CGFloat)
+class func showWithProgress(initialValue value: CGFloat, completionBlock: (() -> Void)?)
+class func showWithProgress(initialValue value: CGFloat, onView: UIView)
+class func showWithProgress(initialValue value: CGFloat, onView: UIView, completionBlock: (() -> Void)?)
+```
 
-      ``` objective-c
-      popoverController.sourceRect = CGRectMake(CGRectGetMidX(self.buttonWithWebView.bounds), CGRectGetMaxY(self.buttonWithWebView.bounds), 0, 0);
-      ```
+###### Hiding
+Hiding progressHUD is can be similar to what you have done so far with the infinite loader, or you could use these dedicated methods:
 
-      * `popoverController.contentSize` - The preferred size for the popover’s view.
+``` Swift
+class func cancelPorgressWithFailAnimation(showFail: Bool)
+class func cancelPorgressWithFailAnimation(showFail: Bool, completionBlock: (() -> Void)?)
+```
 
-      ``` objective-c
-      popoverController.contentSize = CGSizeMake(400, 600);
-      ```
+## Customization
+You can customize progressHUD through the `ARSLineProgressConfiguration` structure, that offers you a wide range of customization. Any changes are going to be visible only if you have set them before showing preloader, otherwise they are going to be visible during your next show of preloader.
 
-      * And the last, most important thing - you have to call method `insertContentIntoPopover` and pass a block of code, which should add subviews to popover's view you wish to see.
+Once you changed your mind and you want to restore ARSLineProgressConfiguration to its default parameters - use `static func restoreDefaults()` method.
 
-      _Be sure to call this method only after you have presented popup. Otherwise you might get wrong size in popoverPresentedSize._
+## Other
+ARSLineProgress automatically responds to orientation changes, so it always going to be centered on the screen.
 
-      ``` objective-c
-      [popoverController insertContentIntoPopover:^(ARSPopover *popover, CGSize popoverPresentedSize, CGFloat popoverArrowHeight) {
-          CGFloat originX = 0;
-          CGFloat originY = 0;
-          CGFloat width = popoverPresentedSize.width;
-          CGFloat height = popoverPresentedSize.height - popoverArrowHeight;
-
-          CGRect frame = CGRectMake(originX, originY, width, height);
-          UIWebView *webView = [[UIWebView alloc] initWithFrame:frame];
-          webView.scalesPageToFit = YES;
-          [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://google.com"]]];
-          [popover.view addSubview:webView];
-      }];
-      ```
-
-  ## License
-  ARSPopover is released under the [MIT license](http://opensource.org/licenses/MIT). See LICENSE for details.
+## License
+ARSLineProgress is released under the [MIT license](http://opensource.org/licenses/MIT). See LICENSE for details.
 
                    DESC
 
-  s.homepage     = "https://github.com/soberman/ARSPopover"
+  s.homepage     = "https://github.com/soberman/ARSLineProgress"
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author             = { "Yarik Arsenkin" => "info@arsenkin.com" }
   s.social_media_url   = "http://twitter.com/Soberman777"
-  s.platform     = :ios, "8.3"
-  s.source       = { :git => "https://github.com/soberman/ARSPopover.git", :tag => "2.2.1" }
-  s.source_files  = "Source/ARSPopover.{h,m}"
+  s.platform     = :ios, "8.0"
+  s.source       = { :git => "https://github.com/soberman/ARSLineProgress.git", :tag => "1.0.0" }
+  s.source_files  = "Source/ARSLineProgress.swift"
   s.exclude_files = "Demo/*"
-  s.public_header_files = "Source/ARSPopover.h"
+  # s.public_header_files = "Source/ARSLineProgress.swift"
   s.requires_arc = true
 
 end
