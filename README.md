@@ -15,11 +15,11 @@ iOS progress bar as a replacement for iOS activity indicator. This progress HUD 
 ## Installation
 
 ### Carthage
-To install with [Carthage](https://github.com/Carthage/Carthage), simply specify this on your `Cartfile`:
+To install with [Carthage](https://github.com/Carthage/Carthage), simply specify this in your `Cartfile`:
 
     github "soberman/ARSLineProgress" >= 1.0
 
-In case you don't Carthage installed yet, you could do this with [Homebrew](http://brew.sh/):
+In case you don't have Carthage installed yet, you could do this with [Homebrew](http://brew.sh/):
 
 ``` Bash
 $ brew update
@@ -36,14 +36,14 @@ To install with [CocoaPods](http://cocoapods.org/), copy and paste this in your 
     pod 'ARSLineProgress', '~> 1.0'
 
 ### Rookie way
-You can always to do the old way - just drag the source file into your projects and you are good to go.
+You can always do it the old-fashioned way - just drag the source file into your projects and you are good to go.
 
 ## Usage
-ARSLineProgress makes it easy to use it - you have `ARSLineProgress` class, that offer you a wide range of class methods to show progress loader.
+ARSLineProgress makes it easy to use it - you have `ARSLineProgress` class, that offers you a wide range of class methods to show progress loader.
 
 ###### Showing
 You can show progress indicator in two modes: infinite and progress.
-Infinite progress will be shown until you hide it.
+Infinite one will be shown until you hide it.
 ``` Swift
 class func show()
 class func showWithPresentCompetionBlock(block: () -> Void)
@@ -73,7 +73,7 @@ class func showWithProgress(initialValue value: CGFloat, onView: UIView, complet
 ```
 
 ###### Hiding
-Hiding progressHUD is can be similar to what you have done so far with the infinite loader, or you could use these dedicated methods:
+Hiding progressHUD can be similar to what you have done so far with the infinite loader, or you could use these dedicated methods:
 
 ``` Swift
 class func cancelPorgressWithFailAnimation(showFail: Bool)
@@ -83,7 +83,7 @@ class func cancelPorgressWithFailAnimation(showFail: Bool, completionBlock: (() 
 ## Customization
 You can customize progressHUD through the `ARSLineProgressConfiguration` structure, that offers you a wide range of customization. Any changes are going to be visible only if you have set them before showing preloader, otherwise they are going to be visible during your next show of preloader.
 
-Once you changed your mind and you want to restore ARSLineProgressConfiguration to its default parameters - use `static func restoreDefaults()` method.
+Once you have changed your mind and you want to restore `ARSLineProgressConfiguration` to its default parameters - use `static func restoreDefaults()` method.
 
 ## Other
 ARSLineProgress automatically responds to orientation changes, so it always going to be centered on the screen.
