@@ -14,6 +14,20 @@ iOS progress bar as a replacement for iOS activity indicator. This progress HUD 
 
 ## Installation
 
+### Carthage
+To install with [Carthage](https://github.com/Carthage/Carthage), simply specify this on your `Cartfile`:
+
+    github "soberman/ARSLineProgress" >= 1.0
+
+In case you don't Carthage installed yet, you could do this with [Homebrew](http://brew.sh/):
+
+``` Bash
+$ brew update
+$ brew install carthage
+```
+
+I would also advise to refer to this section of the Carthage description, for when [you're building for iOS, tvOS or WatchOS](https://github.com/Carthage/Carthage#if-youre-building-for-ios-tvos-or-watchos)
+
 ### CocoaPods
 To install with [CocoaPods](http://cocoapods.org/), copy and paste this in your *Podfile* file:
 
@@ -21,7 +35,7 @@ To install with [CocoaPods](http://cocoapods.org/), copy and paste this in your 
     platform :ios, '8.0'
     pod 'ARSLineProgress', '~> 1.0'
 
-### Non-CocoaPods way
+### Rookie way
 You can always to do the old way - just drag the source file into your projects and you are good to go.
 
 ## Usage
