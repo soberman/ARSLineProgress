@@ -92,7 +92,7 @@ ARSLineProgress is released under the [MIT license](http://opensource.org/licens
   s.platform     = :ios, "8.0"
   s.source       = { :git => "https://github.com/soberman/ARSLineProgress.git", :tag => "1.0.0" }
   s.source_files  = "Source/ARSLineProgress.swift"
-  s.exclude_files = "Demo/*"
+  s.exclude_files = "Demo/*", "Carthage/*"
   # s.public_header_files = "Source/ARSLineProgress.swift"
   s.requires_arc = true
 
