@@ -17,6 +17,7 @@ iOS progress bar as a replacement for iOS activity indicator. This progress HUD 
 ### CocoaPods
 To install with [CocoaPods](http://cocoapods.org/), copy and paste this in your *Podfile* file:
 
+    use_frameworks!
     platform :ios, '8.0'
     pod 'ARSLineProgress', '~> 1.0'
 
