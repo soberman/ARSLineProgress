@@ -1,4 +1,4 @@
-![ARSLineProgress](http://git.arsenkin.com/ARSLineProgress/ARSLineProgress.png)
+![ARSLineProgress](http://git.arsenkin.com/ARSLineProgress/ARSLineProgress@2x.png)
 
 # ARSLineProgress
 iOS progress bar as a replacement for iOS activity indicator. This progress HUD will add some nice style touch to your application. Moreover, you can customize this progress loader through customization structure.
