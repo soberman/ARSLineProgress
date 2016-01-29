@@ -14,7 +14,27 @@ public final class ARSLineProgress {
     
     public static var shown: Bool { return currentLoader != nil ? true : false }
     
+    
+    // MARK: Show Statuses
+    
+    
+    /** 
+        Will hide the current loader progress and show success animation instead.
+    */
+    public static func showSuccess() {
+        
+    }
+    
+    /**
+        Will hide the current loader progress and show fail animation instead.
+    */
+    public static func showFail() {
+        
+    }
+    
+    
     // MARK: Show Infinite Loader
+    
     
     public static func show() {
         if !shown { InfiniteLoader().showOnView(nil, completionBlock: nil) }
@@ -32,24 +52,34 @@ public final class ARSLineProgress {
         if !shown { InfiniteLoader().showOnView(view, completionBlock: completionBlock) }
     }
     
+    
     // MARK: Show Progress Loader
     
-    /// initialValue should be from 0 to 100
+    
+    /**
+        - note: initialValue should be from 0 to 100
+    */
     public static func showWithProgress(initialValue value: CGFloat) {
         if !shown { ProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: nil) }
     }
     
-    /// initialValue should be from 0 to 100
+    /**
+        - note: initialValue should be from 0 to 100
+     */
     public static func showWithProgress(initialValue value: CGFloat, onView: UIView) {
         if !shown { ProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: nil) }
     }
     
-    /// initialValue should be from 0 to 100
+    /**
+        - note: initialValue should be from 0 to 100
+     */
     public static func showWithProgress(initialValue value: CGFloat, completionBlock: (() -> Void)?) {
         if !shown { ProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: completionBlock) }
     }
     
-    /// initialValue should be from 0 to 100
+    /**
+        - note: initialValue should be from 0 to 100
+     */
     public static func showWithProgress(initialValue value: CGFloat, onView: UIView, completionBlock: (() -> Void)?) {
         if !shown { ProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: completionBlock) }
     }
@@ -70,7 +100,9 @@ public final class ARSLineProgress {
         if !shown { ProgressLoader().showWithValue(0.0, onView: onView, progress: progress, completionBlock: completionBlock) }
     }
     
+    
     // MARK: Update Progress Loader
+    
     
     public static func updateWithProgress(value: CGFloat) {
         ProgressLoader.weakSelf?.progressValue = value
@@ -84,7 +116,9 @@ public final class ARSLineProgress {
         ProgressLoader.weakSelf?.cancelWithFailAnimation(showFail, completionBlock: completionBlock)
     }
     
+    
     // MARK: Hide Loader
+    
     
     public static func hide() {
         hideLoader(currentLoader, withCompletionBlock: nil)
@@ -129,7 +163,9 @@ public struct ARSLineProgressConfiguration {
     public static var failCircleLineWidth: CGFloat = 2.0
     public static var failCircleColor: CGColor = UIColor.gs_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
     
-    /// Use this function to restore all properties to their default values.
+    /**
+        Use this function to restore all properties to their default values.
+     */
     public static func restoreDefaults() {
         config.showSuccessCheckmark = true
         
@@ -176,8 +212,9 @@ private typealias config = ARSLineProgressConfiguration
 
 @objc private protocol Loader {
     var backgroundView: UIVisualEffectView { get set }
-    optional func hideWithCompletionBlock(block: (() -> Void)?)
+    
     optional weak var targetView: UIView? { get set }
+    optional func hideWithCompletionBlock(block: (() -> Void)?)
 }
 
 private enum LoaderType {
