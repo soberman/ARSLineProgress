@@ -22,7 +22,7 @@ public final class ARSLineProgress {
         Will hide the current loader progress and show success animation instead.
     */
     public static func showSuccess() {
-        
+        SuccessStatus.showSuccess()
     }
     
     /**
@@ -212,9 +212,10 @@ private typealias config = ARSLineProgressConfiguration
 
 @objc private protocol Loader {
     var backgroundView: UIVisualEffectView { get set }
-    
+    optional var outerCircle: CAShapeLayer { get set }
+    optional var middleCircle: CAShapeLayer { get set }
+    optional var innerCircle: CAShapeLayer { get set }
     optional weak var targetView: UIView? { get set }
-    optional func hideWithCompletionBlock(block: (() -> Void)?)
 }
 
 private enum LoaderType {
@@ -253,10 +254,9 @@ private var currentCompletionBlock: (() -> Void)?
 private final class InfiniteLoader: Loader {
     
     @objc var backgroundView: UIVisualEffectView
-    var invisibleRect = UIView()
-    var outerCircle = CAShapeLayer()
-    var middleCircle = CAShapeLayer()
-    var innerCircle = CAShapeLayer()
+    @objc var outerCircle = CAShapeLayer()
+    @objc var middleCircle = CAShapeLayer()
+    @objc var innerCircle = CAShapeLayer()
     @objc weak var targetView: UIView?
     
     init() {
@@ -313,9 +313,9 @@ private extension InfiniteLoader {
 private final class ProgressLoader: Loader {
     
     @objc var backgroundView: UIVisualEffectView
-    var outerCircle = CAShapeLayer()
-    var middleCircle = CAShapeLayer()
-    var innerCircle = CAShapeLayer()
+    @objc var outerCircle = CAShapeLayer()
+    @objc var middleCircle = CAShapeLayer()
+    @objc var innerCircle = CAShapeLayer()
     var multiplier: CGFloat = 1.0
     var lastMultiplierValue: CGFloat = 0.0
     var progressValue: CGFloat = 0.0
@@ -472,7 +472,7 @@ private extension ProgressLoader {
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.9 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
             if config.showSuccessCheckmark {
-                self.showSuccess()
+                SuccessStatus.showSuccess()
                 
                 let dismissDelay = 0.5 + max(config.successCircleAnimationDrawDuration, config.checkmarkAnimationDrawDuration)
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(dismissDelay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
@@ -490,57 +490,6 @@ private extension ProgressLoader {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(dismissDelay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
             hideLoader(currentLoader, withCompletionBlock: currentCompletionBlock)
         })
-    }
-    
-    func showSuccess() {
-        let backgroundViewBounds = backgroundView.bounds
-        let backgroundLayer = backgroundView.layer
-        let outerCircleBounds = self.outerCircle.bounds
-        let outerCircleHeight = CGRectGetHeight(outerCircleBounds)
-        let outerCircleWidth = CGRectGetWidth(outerCircleBounds)
-        
-        let checkmarkPath = UIBezierPath()
-        checkmarkPath.moveToPoint(CGPointMake(outerCircleWidth * 0.28, outerCircleHeight * 0.53))
-        checkmarkPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.42, outerCircleHeight * 0.66))
-        checkmarkPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.72, outerCircleHeight * 0.36))
-        checkmarkPath.lineCapStyle = .Square
-        
-        let checkmark = CAShapeLayer()
-        checkmark.path = checkmarkPath.CGPath
-        checkmark.fillColor = nil
-        checkmark.strokeColor = config.checkmarkColor
-        checkmark.lineWidth = config.checkmarkLineWidth
-        backgroundLayer.addSublayer(checkmark)
-        
-        let successCircleArcCenter = CGPointMake(CGRectGetMidX(backgroundViewBounds), CGRectGetMidY(backgroundViewBounds))
-        let successCircle = CAShapeLayer(layer: outerCircle)
-        successCircle.path = UIBezierPath(arcCenter: successCircleArcCenter,
-            radius: CIRCLE_RADIUS_OUTER,
-            startAngle: -CGFloat(M_PI_2),
-            endAngle: CGFloat(M_PI) / 180 * 270,
-            clockwise: true).CGPath
-        successCircle.fillColor = nil
-        successCircle.strokeColor = config.successCircleColor
-        successCircle.lineWidth = config.successCircleLineWidth
-        backgroundLayer.addSublayer(successCircle)
-        
-        let animationCheckmark = CABasicAnimation(keyPath: "strokeEnd")
-        animationCheckmark.removedOnCompletion = true
-        animationCheckmark.fromValue = 0
-        animationCheckmark.toValue = 1
-        animationCheckmark.fillMode = kCAFillModeBoth
-        animationCheckmark.duration = config.checkmarkAnimationDrawDuration
-        animationCheckmark.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        checkmark.addAnimation(animationCheckmark, forKey: nil)
-        
-        let animationCircle = CABasicAnimation(keyPath: "strokeEnd")
-        animationCircle.removedOnCompletion = true
-        animationCircle.fromValue = 0
-        animationCircle.toValue = 1
-        animationCircle.fillMode = kCAFillModeBoth
-        animationCircle.duration = config.successCircleAnimationDrawDuration
-        animationCircle.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        successCircle.addAnimation(animationCircle, forKey: nil)
     }
     
     func showFail() {
@@ -606,6 +555,87 @@ private extension ProgressLoader {
 
 
 
+private final class SuccessStatus: Loader {
+    
+    @objc var backgroundView: UIVisualEffectView
+    
+    init() {
+        backgroundView = BlurredBackgroundRect().view
+        createdFrameForBackgroundView(backgroundView, onView: nil)
+    }
+    
+    static func showSuccess() {
+        if let loader = currentLoader {
+            stopCircleAnimations(loader, completionBlock: {
+                SuccessStatus.drawSuccess(loader.backgroundView)
+            })
+        } else {
+            let loader = SuccessStatus()
+            presentLoader(loader, onView: nil, completionBlock: {
+                SuccessStatus.drawSuccess(loader.backgroundView)
+            })
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1.25 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
+                hideLoader(loader, withCompletionBlock: nil)
+            })
+        }
+    }
+
+    static func drawSuccess(backgroundView: UIVisualEffectView) {
+        let backgroundViewBounds = backgroundView.bounds
+        let backgroundLayer = backgroundView.layer
+        let outerCircleHeight = CGRectGetHeight(backgroundViewBounds)
+        let outerCircleWidth = CGRectGetWidth(backgroundViewBounds)
+        
+        let checkmarkPath = UIBezierPath()
+        checkmarkPath.moveToPoint(CGPointMake(outerCircleWidth * 0.28, outerCircleHeight * 0.53))
+        checkmarkPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.42, outerCircleHeight * 0.66))
+        checkmarkPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.72, outerCircleHeight * 0.36))
+        checkmarkPath.lineCapStyle = .Square
+        
+        let checkmark = CAShapeLayer()
+        checkmark.path = checkmarkPath.CGPath
+        checkmark.fillColor = nil
+        checkmark.strokeColor = config.checkmarkColor
+        checkmark.lineWidth = config.checkmarkLineWidth
+        backgroundLayer.addSublayer(checkmark)
+        
+        let successCircleArcCenter = CGPointMake(CGRectGetMidX(backgroundViewBounds), CGRectGetMidY(backgroundViewBounds))
+        let successCircle = CAShapeLayer()
+        successCircle.path = UIBezierPath(arcCenter: successCircleArcCenter,
+            radius: CIRCLE_RADIUS_OUTER,
+            startAngle: -CGFloat(M_PI_2),
+            endAngle: CGFloat(M_PI) / 180 * 270,
+            clockwise: true).CGPath
+        successCircle.fillColor = nil
+        successCircle.strokeColor = config.successCircleColor
+        successCircle.lineWidth = config.successCircleLineWidth
+        backgroundLayer.addSublayer(successCircle)
+        
+        let animationCheckmark = CABasicAnimation(keyPath: "strokeEnd")
+        animationCheckmark.removedOnCompletion = true
+        animationCheckmark.fromValue = 0
+        animationCheckmark.toValue = 1
+        animationCheckmark.fillMode = kCAFillModeBoth
+        animationCheckmark.duration = config.checkmarkAnimationDrawDuration
+        animationCheckmark.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        checkmark.addAnimation(animationCheckmark, forKey: nil)
+        
+        let animationCircle = CABasicAnimation(keyPath: "strokeEnd")
+        animationCircle.removedOnCompletion = true
+        animationCircle.fromValue = 0
+        animationCircle.toValue = 1
+        animationCircle.fillMode = kCAFillModeBoth
+        animationCircle.duration = config.successCircleAnimationDrawDuration
+        animationCircle.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        successCircle.addAnimation(animationCircle, forKey: nil)
+    }
+    
+}
+
+
+
+
 // =====================================================================================================================
 // MARK: - Background Rect
 // =====================================================================================================================
@@ -630,6 +660,17 @@ private struct BlurredBackgroundRect {
 // =====================================================================================================================
 // MARK: - Extensions & Helpers & Shared Methods
 // =====================================================================================================================
+
+private func stopCircleAnimations(loader: Loader, completionBlock: () -> Void) {
+    
+    CATransaction.begin()
+    CATransaction.setAnimationDuration(0.25)
+    CATransaction.setCompletionBlock(completionBlock)
+        loader.outerCircle?.opacity = 0.0
+        loader.middleCircle?.opacity = 0.0
+        loader.innerCircle?.opacity = 0.0
+    CATransaction.commit()
+}
 
 private func presentLoader(loader: Loader, onView view: UIView?, completionBlock: (() -> Void)?) {
     currentLoader = loader
