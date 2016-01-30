@@ -9,18 +9,16 @@
 import UIKit
 
 final class ViewController: UIViewController {
-    
-    var showingLoader = false
 
     @IBAction func showInfiniteLoader(sender: AnyObject) {
-        if showingLoader { return } else { showingLoader = true }
+        if ARSLineProgress.shown { return }
+
         ARSLineProgress.showWithPresentCompetionBlock { () -> Void in
             print("Showed with completion block")
         }
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(3 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
             ARSLineProgress.hideWithCompletionBlock({ () -> Void in
-                self.showingLoader = false
                 print("Hidden with completion block")
             })
         })
@@ -29,10 +27,10 @@ final class ViewController: UIViewController {
     // MARK: In case you want, you can use regular CGFloat value with showWithProgress(initialValue: 1.0) method.
     
     @IBAction func showProgressLoaderWithSuccess(sender: AnyObject) {
-        if showingLoader { return } else { showingLoader = true }
+        if ARSLineProgress.shown { return }
+        
         progressObject = NSProgress(totalUnitCount: 100)
         ARSLineProgress.showWithProgressObject(progressObject!, completionBlock: {
-            self.showingLoader = false
             print("Success completion block")
         })
         
@@ -40,7 +38,8 @@ final class ViewController: UIViewController {
     }
     
     @IBAction func showProgressLoaderWithFail(sender: AnyObject) {
-        if showingLoader { return } else { showingLoader = true }
+        if ARSLineProgress.shown { return }
+
         progressObject = NSProgress(totalUnitCount: 100)
         ARSLineProgress.showWithProgressObject(progressObject!, completionBlock: {
             print("This copmletion block is going to be overriden by cancel completion block in launchTimer() method.")
@@ -51,17 +50,25 @@ final class ViewController: UIViewController {
     
     
     @IBAction func showProgressWithoutAnimation(sender: AnyObject) {
-        if showingLoader { return } else { showingLoader = true }
+        if ARSLineProgress.shown { return }
+
         ARSLineProgressConfiguration.showSuccessCheckmark = false
         
         progressObject = NSProgress(totalUnitCount: 100)
         ARSLineProgress.showWithProgressObject(progressObject!, completionBlock: {
             print("Success completion block")
-            self.showingLoader = false
             ARSLineProgressConfiguration.restoreDefaults()
         })
         
         progressDemoHelper(success: true)
+    }
+    
+    @IBAction func didTapShowSuccessButton(sender: AnyObject) {
+        ARSLineProgress.showSuccess()
+    }
+    
+    @IBAction func didTapShowFailButton(sender: AnyObject) {
+        ARSLineProgress.showFail()
     }
     
 }
@@ -82,12 +89,12 @@ extension ViewController {
     
     private func launchTimer() {
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.7 * Double(NSEC_PER_SEC)));
+        
         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
             progressObject!.completedUnitCount += Int64(arc4random_uniform(30))
             
             if isSuccess == false && progressObject?.fractionCompleted >= 0.7 {
                 ARSLineProgress.cancelPorgressWithFailAnimation(true, completionBlock: {
-                    self.showingLoader = false
                     print("Hidden with completion block")
                 })
                 return
