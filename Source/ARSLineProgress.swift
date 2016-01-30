@@ -532,10 +532,6 @@ private final class Status: Loader {
             presentLoader(loader, onView: nil, completionBlock: {
                 drawStatus(type, loader: loader)
             })
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1.25 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
-                hideLoader(loader, withCompletionBlock: nil)
-            })
         }
     }
     
@@ -548,6 +544,10 @@ private final class Status: Loader {
         case .Fail:
             Status.drawFail(loader.backgroundView)
         }
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1.25 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
+            hideLoader(loader, withCompletionBlock: nil)
+        })
     }
     
 }
