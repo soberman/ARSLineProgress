@@ -13,23 +13,24 @@ import UIKit
 public final class ARSLineProgress {
     
     public static var shown: Bool { return currentLoader != nil ? true : false }
+    public static var statusShown: Bool { return currentStatus != nil ? true : false }
     
     
     // MARK: Show Statuses
     
     
     /** 
-        Will hide the current loader progress and show success animation instead.
+        Will interrupt the current .Infinite loader progress and show success animation instead.
     */
     public static func showSuccess() {
-        SuccessStatus.showSuccess()
+        if !statusShown { Status.show(.Success) }
     }
     
     /**
-        Will hide the current loader progress and show fail animation instead.
+        Will interrupt the current .Infinite loader progress and show fail animation instead.
     */
     public static func showFail() {
-        
+        if !statusShown { Status.show(.Fail) }
     }
     
     
@@ -241,6 +242,7 @@ private let CIRCLE_LINE_WIDTH: CGFloat = 2.0
 private let CIRCLE_START_ANGLE: CGFloat = -CGFloat(M_PI_2)
 private let CIRCLE_END_ANGLE: CGFloat = 0.0
 
+private weak var currentStatus: Loader?
 private var currentLoader: Loader?
 private var currentCompletionBlock: (() -> Void)?
 
@@ -472,7 +474,7 @@ private extension ProgressLoader {
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.9 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
             if config.showSuccessCheckmark {
-                SuccessStatus.showSuccess()
+                Status.show(.Success)
                 
                 let dismissDelay = 0.5 + max(config.successCircleAnimationDrawDuration, config.checkmarkAnimationDrawDuration)
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(dismissDelay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
@@ -485,65 +487,11 @@ private extension ProgressLoader {
     }
     
     func failedLoading() {
-        showFail()
+        Status.show(.Fail)
         let dismissDelay = 0.5 + max(config.failCircleAnimationDrawDuration, config.failCrossAnimationDrawDuration)
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(dismissDelay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
             hideLoader(currentLoader, withCompletionBlock: currentCompletionBlock)
         })
-    }
-    
-    func showFail() {
-        let backgroundViewBounds = backgroundView.bounds
-        let backgroundViewLayer = backgroundView.layer
-        let outerCircleBounds = outerCircle.bounds
-        let outerCircleWidth = CGRectGetWidth(outerCircleBounds)
-        let outerCircleHeight = CGRectGetHeight(outerCircleBounds)
-        
-        let crossPath = UIBezierPath()
-        crossPath.moveToPoint(CGPointMake(outerCircleWidth * 0.67, outerCircleHeight * 0.32))
-        crossPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.32, outerCircleHeight * 0.67))
-        crossPath.moveToPoint(CGPointMake(outerCircleWidth * 0.32, outerCircleHeight * 0.32))
-        crossPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.67, outerCircleHeight * 0.67))
-        crossPath.lineCapStyle = .Square
-        
-        let cross = CAShapeLayer()
-        cross.path = crossPath.CGPath
-        cross.fillColor = nil
-        cross.strokeColor = config.failCrossColor
-        cross.lineWidth = config.failCrossLineWidth
-        cross.frame = backgroundViewBounds
-        backgroundViewLayer.addSublayer(cross)
-        
-        let failCircleArcCenter = CGPointMake(CGRectGetMidX(backgroundViewBounds), CGRectGetMidY(backgroundViewBounds))
-        let failCircle = CAShapeLayer(layer: outerCircle)
-        failCircle.path = UIBezierPath(arcCenter: failCircleArcCenter,
-            radius: CIRCLE_RADIUS_OUTER,
-            startAngle: -CGFloat(M_PI_2),
-            endAngle: CGFloat(M_PI) / 180 * 270,
-            clockwise: true).CGPath
-        failCircle.fillColor = nil
-        failCircle.strokeColor = config.failCircleColor
-        failCircle.lineWidth = config.failCircleLineWidth
-        backgroundViewLayer.addSublayer(failCircle)
-        
-        let animationCross = CABasicAnimation(keyPath: "strokeEnd")
-        animationCross.removedOnCompletion = false
-        animationCross.fromValue = 0
-        animationCross.toValue = 1
-        animationCross.duration = config.failCrossAnimationDrawDuration
-        animationCross.fillMode = kCAFillModeBoth
-        animationCross.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
-        cross.addAnimation(animationCross, forKey: nil)
-        
-        let animationCircle = CABasicAnimation(keyPath: "opacity")
-        animationCircle.removedOnCompletion = true
-        animationCircle.fromValue = 0
-        animationCircle.toValue = 1
-        animationCircle.fillMode = kCAFillModeBoth
-        animationCircle.duration = config.failCircleAnimationDrawDuration
-        animationCircle.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        failCircle.addAnimation(animationCircle, forKey: nil)
-        
     }
     
     func cleanup() {
@@ -555,7 +503,17 @@ private extension ProgressLoader {
 
 
 
-private final class SuccessStatus: Loader {
+
+// =====================================================================================================================
+// MARK: - Success Status
+// =====================================================================================================================
+
+private enum StatusType {
+    case Success
+    case Fail
+}
+
+private final class Status: Loader {
     
     @objc var backgroundView: UIVisualEffectView
     
@@ -564,15 +522,15 @@ private final class SuccessStatus: Loader {
         createdFrameForBackgroundView(backgroundView, onView: nil)
     }
     
-    static func showSuccess() {
+    static func show(type: StatusType) {
         if let loader = currentLoader {
             stopCircleAnimations(loader, completionBlock: {
-                SuccessStatus.drawSuccess(loader.backgroundView)
+                drawStatus(type, loader: loader)
             })
         } else {
-            let loader = SuccessStatus()
+            let loader = Status()
             presentLoader(loader, onView: nil, completionBlock: {
-                SuccessStatus.drawSuccess(loader.backgroundView)
+                drawStatus(type, loader: loader)
             })
             
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1.25 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
@@ -580,7 +538,22 @@ private final class SuccessStatus: Loader {
             })
         }
     }
+    
+    static func drawStatus(type: StatusType, loader: Loader) {
+        currentStatus = loader
+        
+        switch type {
+        case .Success:
+            Status.drawSuccess(loader.backgroundView)
+        case .Fail:
+            Status.drawFail(loader.backgroundView)
+        }
+    }
+    
+}
 
+private extension Status {
+    
     static func drawSuccess(backgroundView: UIVisualEffectView) {
         let backgroundViewBounds = backgroundView.bounds
         let backgroundLayer = backgroundView.layer
@@ -631,7 +604,60 @@ private final class SuccessStatus: Loader {
         successCircle.addAnimation(animationCircle, forKey: nil)
     }
     
+    static func drawFail(backgroundView: UIVisualEffectView) {
+        let backgroundViewBounds = backgroundView.bounds
+        let backgroundViewLayer = backgroundView.layer
+        let outerCircleWidth = CGRectGetWidth(backgroundViewBounds)
+        let outerCircleHeight = CGRectGetHeight(backgroundViewBounds)
+        
+        let crossPath = UIBezierPath()
+        crossPath.moveToPoint(CGPointMake(outerCircleWidth * 0.67, outerCircleHeight * 0.32))
+        crossPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.32, outerCircleHeight * 0.67))
+        crossPath.moveToPoint(CGPointMake(outerCircleWidth * 0.32, outerCircleHeight * 0.32))
+        crossPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.67, outerCircleHeight * 0.67))
+        crossPath.lineCapStyle = .Square
+        
+        let cross = CAShapeLayer()
+        cross.path = crossPath.CGPath
+        cross.fillColor = nil
+        cross.strokeColor = config.failCrossColor
+        cross.lineWidth = config.failCrossLineWidth
+        cross.frame = backgroundViewBounds
+        backgroundViewLayer.addSublayer(cross)
+        
+        let failCircleArcCenter = CGPointMake(CGRectGetMidX(backgroundViewBounds), CGRectGetMidY(backgroundViewBounds))
+        let failCircle = CAShapeLayer()
+        failCircle.path = UIBezierPath(arcCenter: failCircleArcCenter,
+            radius: CIRCLE_RADIUS_OUTER,
+            startAngle: -CGFloat(M_PI_2),
+            endAngle: CGFloat(M_PI) / 180 * 270,
+            clockwise: true).CGPath
+        failCircle.fillColor = nil
+        failCircle.strokeColor = config.failCircleColor
+        failCircle.lineWidth = config.failCircleLineWidth
+        backgroundViewLayer.addSublayer(failCircle)
+        
+        let animationCross = CABasicAnimation(keyPath: "strokeEnd")
+        animationCross.removedOnCompletion = false
+        animationCross.fromValue = 0
+        animationCross.toValue = 1
+        animationCross.duration = config.failCrossAnimationDrawDuration
+        animationCross.fillMode = kCAFillModeBoth
+        animationCross.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        cross.addAnimation(animationCross, forKey: nil)
+        
+        let animationCircle = CABasicAnimation(keyPath: "opacity")
+        animationCircle.removedOnCompletion = true
+        animationCircle.fromValue = 0
+        animationCircle.toValue = 1
+        animationCircle.fillMode = kCAFillModeBoth
+        animationCircle.duration = config.failCircleAnimationDrawDuration
+        animationCircle.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        failCircle.addAnimation(animationCircle, forKey: nil)
+    }
+    
 }
+
 
 
 
