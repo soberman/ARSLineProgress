@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ARSLineProgress"
-  s.version      = "1.0.1"
+  s.version      = "1.1.0"
   s.summary      = "iOS progress bar, replacement for the default activity indicator."
 
   s.description  = <<-DESC
@@ -10,8 +10,8 @@ Pod::Spec.new do |s|
   # ARSLineProgress
   iOS progress bar as a replacement for iOS activity indicator. This progress HUD will add some nice style touch to your application. Moreover, you can customize this progress loader through customization structure.
 
-  |                Infinite               |               Success               |              Fail             |          No State Animation         |
-  | ------------------------------------- | ----------------------------------- | ----------------------------- | ----------------------------------- |
+  |                Infinite               |               Success               |              Fail             |          No State Animation      |
+  | ------------------------------------- | ----------------------------------- | ----------------------------- | -------------------------------- |
   | ![ARSLineProgress Infinite][Infinite] | ![ARSLineProgress Success][Success] | ![ARSLineProgress Fail][Fail] | ![ARSLineProgress NoState][NoState] |
 
   [Infinite]: http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_infinite.gif
@@ -79,6 +79,12 @@ Pod::Spec.new do |s|
   class func showWithProgress(initialValue value: CGFloat, onView: UIView, completionBlock: (() -> Void)?)
   ```
 
+  You are able to show just the 'success' checkmark or fail with these methods:
+  ``` Swift
+  static func showSuccess()
+  static func showFail()
+  ```
+
   ###### Hiding
   Hiding progressHUD is can be similar to what you have done so far with the infinite loader, or you could use these dedicated methods:
 
@@ -105,7 +111,7 @@ Pod::Spec.new do |s|
   s.author             = { "Yarik Arsenkin" => "info@arsenkin.com" }
   s.social_media_url   = "http://twitter.com/Soberman777"
   s.platform     = :ios, "8.0"
-  s.source       = { :git => "https://github.com/soberman/ARSLineProgress.git", :tag => "1.0.1" }
+  s.source       = { :git => "https://github.com/soberman/ARSLineProgress.git", :tag => "1.1.0" }
   s.source_files  = "Source/ARSLineProgress.swift"
   s.exclude_files = "Demo/*", "Carthage/*"
   # s.public_header_files = "Source/ARSLineProgress.swift"

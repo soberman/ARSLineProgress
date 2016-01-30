@@ -72,6 +72,12 @@ class func showWithProgress(initialValue value: CGFloat, onView: UIView)
 class func showWithProgress(initialValue value: CGFloat, onView: UIView, completionBlock: (() -> Void)?)
 ```
 
+You are able to show just the 'success' checkmark or fail with these methods:
+``` Swift
+static func showSuccess()
+static func showFail()
+```
+
 ###### Hiding
 Hiding progressHUD is can be similar to what you have done so far with the infinite loader, or you could use these dedicated methods:
 
