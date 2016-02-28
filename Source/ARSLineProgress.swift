@@ -386,13 +386,12 @@ private extension ProgressLoader {
     // MARK: Configs & Animations
     
     func launchTimer() {
-        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.01 * Double(NSEC_PER_SEC)));
-        dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+        dispatchAfter(0.01) {
             guard let strongSelf = ProgressLoader.weakSelf else { return }
             
             strongSelf.incrementCircleRadius()
             strongSelf.launchTimer()
-        })
+        }
     }
     
     func incrementCircleRadius() {
@@ -472,26 +471,28 @@ private extension ProgressLoader {
             CATransaction.commit()
         CATransaction.commit()
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.9 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+        dispatchAfter(0.9) {
             if config.showSuccessCheckmark {
                 Status.show(.Success)
                 
                 let dismissDelay = 0.5 + max(config.successCircleAnimationDrawDuration, config.checkmarkAnimationDrawDuration)
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(dismissDelay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+                
+                dispatchAfter(dismissDelay) {
                     hideLoader(currentLoader, withCompletionBlock: currentCompletionBlock)
-                })
+                }
             } else {
                 hideLoader(currentLoader, withCompletionBlock: currentCompletionBlock)
             }
-        })
+        }
     }
     
     func failedLoading() {
         Status.show(.Fail)
         let dismissDelay = 0.5 + max(config.failCircleAnimationDrawDuration, config.failCrossAnimationDrawDuration)
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(dismissDelay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+        
+        dispatchAfter(dismissDelay) {
             hideLoader(currentLoader, withCompletionBlock: currentCompletionBlock)
-        })
+        }
     }
     
     func cleanup() {
@@ -545,9 +546,9 @@ private final class Status: Loader {
             Status.drawFail(loader.backgroundView)
         }
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1.25 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
+        dispatchAfter(1.25) {
             hideLoader(loader, withCompletionBlock: nil)
-        })
+        }
     }
     
 }
@@ -702,15 +703,18 @@ private func presentLoader(loader: Loader, onView view: UIView?, completionBlock
     currentLoader = loader
     let backgroundView = loader.backgroundView
     
-    if let targetView = view {
-        targetView.addSubview(backgroundView)
-    } else {
-        window()!.addSubview(backgroundView)
+    dispatchOnMainQueue {
+        if let targetView = view {
+            targetView.addSubview(backgroundView)
+        } else {
+            window()!.addSubview(backgroundView)
+        }
+        
+        backgroundView.alpha = 0.1
+        UIView.animateWithDuration(config.backgroundViewPresentAnimationDuration, delay: 0.0, options: .CurveEaseOut, animations: {
+            backgroundView.alpha = 1.0
+        }, completion: { _ in completionBlock?() })
     }
-    backgroundView.alpha = 0.1
-    UIView.animateWithDuration(config.backgroundViewPresentAnimationDuration, delay: 0.0, options: .CurveEaseOut, animations: {
-        backgroundView.alpha = 1.0
-    }, completion: { _ in completionBlock?() })
 }
 
 private func hideLoader(loader: Loader?, withCompletionBlock block: (() -> Void)?) {
@@ -718,14 +722,16 @@ private func hideLoader(loader: Loader?, withCompletionBlock block: (() -> Void)
     
     let backgroundView = loader.backgroundView
     
-    UIView.animateWithDuration(config.backgroundViewDismissAnimationDuration, delay: 0.0, options: .CurveEaseOut, animations: {
-        backgroundView.alpha = 0.0
-        backgroundView.transform = CGAffineTransformMakeScale(0.9, 0.9)
-    }, completion: { _ in block?() })
+    dispatchOnMainQueue {
+        UIView.animateWithDuration(config.backgroundViewDismissAnimationDuration, delay: 0.0, options: .CurveEaseOut, animations: {
+            backgroundView.alpha = 0.0
+            backgroundView.transform = CGAffineTransformMakeScale(0.9, 0.9)
+        }, completion: { _ in block?() })
+    }
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(config.backgroundViewDismissAnimationDuration * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
+    dispatchAfter(config.backgroundViewDismissAnimationDuration) {
         cleanupLoader(loader)
-    })
+    }
 }
 
 private func window() -> UIWindow? {
@@ -855,4 +861,13 @@ private extension UIColor {
         return UIColor(red: red/255.0, green: green/255.0, blue: blue/255.0, alpha: alpha)
     }
     
+}
+
+private func dispatchAfter(time: Double, block: dispatch_block_t) {
+    let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(time * Double(NSEC_PER_SEC)))
+    dispatch_after(dispatchTime, dispatch_get_main_queue(), block)
+}
+
+private func dispatchOnMainQueue(block: dispatch_block_t) {
+    dispatch_async(dispatch_get_main_queue(), block)
 }
