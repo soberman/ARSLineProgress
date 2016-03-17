@@ -1,6 +1,6 @@
 ![ARSLineProgress](http://git.arsenkin.com/ARSLineProgress/ARSLineProgress@2x.png)
 
-# ARSLineProgress [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+# ARSLineProgress ![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 iOS progress bar as a replacement for iOS activity indicator. This progress HUD will add some nice style touch to your application. Moreover, you can customize this progress loader through customization structure.
 
 |                Infinite               |               Success               |              Fail             |          No State Animation      |
