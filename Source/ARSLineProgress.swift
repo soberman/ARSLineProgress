@@ -10,7 +10,7 @@
 
 import UIKit
 
-public final class ARSLineProgress {
+public final class ARSLineProgress: NSObject {
     
     public static var shown: Bool { return ars_currentLoader != nil ? true : false }
     public static var statusShown: Bool { return ars_currentStatus != nil ? true : false }
@@ -58,28 +58,28 @@ public final class ARSLineProgress {
     
     
     /**
-        - note: initialValue should be from 0 to 100
+		Note: initialValue should be from 0 to 100
     */
     public static func showWithProgress(initialValue value: CGFloat) {
         if !shown { ARSProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: nil) }
     }
     
     /**
-        - note: initialValue should be from 0 to 100
+        Note: initialValue should be from 0 to 100
      */
     public static func showWithProgress(initialValue value: CGFloat, onView: UIView) {
         if !shown { ARSProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: nil) }
     }
     
     /**
-        - note: initialValue should be from 0 to 100
+        Note: initialValue should be from 0 to 100
      */
     public static func showWithProgress(initialValue value: CGFloat, completionBlock: (() -> Void)?) {
         if !shown { ARSProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: completionBlock) }
     }
     
     /**
-        - note: initialValue should be from 0 to 100
+        Note: initialValue should be from 0 to 100
      */
     public static func showWithProgress(initialValue value: CGFloat, onView: UIView, completionBlock: (() -> Void)?) {
         if !shown { ARSProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: completionBlock) }
@@ -120,18 +120,19 @@ public final class ARSLineProgress {
     
     // MARK: Hide Loader
     
-    
+	
     public static func hide() {
         ars_hideLoader(ars_currentLoader, withCompletionBlock: nil)
     }
     
+    /// <code>completionBlock</code> is going to be called on the main queue
     public static func hideWithCompletionBlock(block: () -> Void) {
         ars_hideLoader(ars_currentLoader, withCompletionBlock: block)
     }
     
 }
 
-public struct ARSLineProgressConfiguration {
+final public class ARSLineProgressConfiguration: NSObject {
     
     public static var showSuccessCheckmark = true
     
@@ -264,7 +265,7 @@ private final class ARSInfiniteLoader: ARSLoader {
     init() {
         backgroundView = ARSBlurredBackgroundRect().view
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "orientationChanged:",
+			selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
             name: UIDeviceOrientationDidChangeNotification,
             object: nil)
     }
@@ -330,7 +331,7 @@ private final class ARSProgressLoader: ARSLoader {
         backgroundView = ARSBlurredBackgroundRect().view
         ARSProgressLoader.weakSelf = self
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "orientationChanged:",
+            selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
             name: UIDeviceOrientationDidChangeNotification,
             object: nil)
     }
@@ -830,6 +831,7 @@ private func ars_configureLayer(layer: CAShapeLayer, forView view: UIView, withP
     layer.lineWidth = ARS_CIRCLE_LINE_WIDTH
     layer.strokeColor = color
     layer.fillColor = UIColor.clearColor().CGColor
+    layer.opaque = true
     view.layer.addSublayer(layer)
 }
 
