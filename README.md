@@ -7,10 +7,16 @@ iOS progress bar as a replacement for iOS activity indicator. This progress HUD 
 | ------------------------------------- | ----------------------------------- | ----------------------------- | -------------------------------- |
 | ![ARSLineProgress Infinite][Infinite] | ![ARSLineProgress Success][Success] | ![ARSLineProgress Fail][Fail] | ![ARSLineProgress NoState][NoState] |
 
+| 			                                                    OK                                                  			    | 				                                                      Error                                               			  |
+| -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| <img src="http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_success.gif", alt="ARSLineProgress OK", width=191, height=339> | <img src="http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_failure.gif", alt="ARSLineProgress Error", width=191, height=339> |
+
 [Infinite]: http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_infinite.gif
 [Success]: http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_progress_with_success.gif
 [Fail]: http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_progress_with_fail.gif
 [NoState]: http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_without_final_animation.gif
+[OK]: http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_success.gif
+[Error]: http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_failure.gif
 
 ## Installation
 
