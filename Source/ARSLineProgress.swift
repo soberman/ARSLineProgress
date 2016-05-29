@@ -213,6 +213,7 @@ final public class ARSLineProgressConfiguration: NSObject {
 private typealias ars_config = ARSLineProgressConfiguration
 
 @objc private protocol ARSLoader {
+	var emptyView: UIView { get set }
     var backgroundView: UIVisualEffectView { get set }
     optional var outerCircle: CAShapeLayer { get set }
     optional var middleCircle: CAShapeLayer { get set }
@@ -256,6 +257,7 @@ private var ars_currentCompletionBlock: (() -> Void)?
 
 private final class ARSInfiniteLoader: ARSLoader {
     
+	@objc var emptyView = UIView()
     @objc var backgroundView: UIVisualEffectView
     @objc var outerCircle = CAShapeLayer()
     @objc var middleCircle = CAShapeLayer()
@@ -315,6 +317,7 @@ private extension ARSInfiniteLoader {
 
 private final class ARSProgressLoader: ARSLoader {
     
+	@objc var emptyView = UIView()
     @objc var backgroundView: UIVisualEffectView
     @objc var outerCircle = CAShapeLayer()
     @objc var middleCircle = CAShapeLayer()
@@ -517,6 +520,7 @@ private enum ARSStatusType {
 
 private final class ARSStatus: ARSLoader {
     
+	@objc var emptyView = UIView()
     @objc var backgroundView: UIVisualEffectView
     
     init() {
@@ -702,18 +706,22 @@ private func ars_stopCircleAnimations(loader: ARSLoader, completionBlock: () -> 
 
 private func ars_presentLoader(loader: ARSLoader, onView view: UIView?, completionBlock: (() -> Void)?) {
     ars_currentLoader = loader
-    let backgroundView = loader.backgroundView
+	
+	let emptyView = loader.emptyView
+	emptyView.backgroundColor = .clearColor()
+	emptyView.frame = loader.backgroundView.bounds
+	emptyView.addSubview(loader.backgroundView)
     
     ars_dispatchOnMainQueue {
         if let targetView = view {
-            targetView.addSubview(backgroundView)
+            targetView.addSubview(emptyView)
         } else {
-            ars_window()!.addSubview(backgroundView)
+            ars_window()!.addSubview(emptyView)
         }
         
-        backgroundView.alpha = 0.1
+        emptyView.alpha = 0.1
         UIView.animateWithDuration(ars_config.backgroundViewPresentAnimationDuration, delay: 0.0, options: .CurveEaseOut, animations: {
-            backgroundView.alpha = 1.0
+            emptyView.alpha = 1.0
         }, completion: { _ in completionBlock?() })
     }
 }
@@ -721,12 +729,10 @@ private func ars_presentLoader(loader: ARSLoader, onView view: UIView?, completi
 private func ars_hideLoader(loader: ARSLoader?, withCompletionBlock block: (() -> Void)?) {
     guard let loader = loader else { return }
     
-    let backgroundView = loader.backgroundView
-    
     ars_dispatchOnMainQueue {
         UIView.animateWithDuration(ars_config.backgroundViewDismissAnimationDuration, delay: 0.0, options: .CurveEaseOut, animations: {
-            backgroundView.alpha = 0.0
-            backgroundView.transform = CGAffineTransformMakeScale(0.9, 0.9)
+            loader.emptyView.alpha = 0.0
+            loader.backgroundView.transform = CGAffineTransformMakeScale(0.9, 0.9)
         }, completion: { _ in block?() })
     }
     
@@ -854,7 +860,7 @@ private func ars_animateCircles(outerCircle outerCircle: CAShapeLayer, middleCir
 }
 
 private func ars_cleanupLoader(loader: ARSLoader) {
-    loader.backgroundView.removeFromSuperview()
+    loader.emptyView.removeFromSuperview()
     ars_currentLoader = nil
     ars_currentCompletionBlock = nil
 }
