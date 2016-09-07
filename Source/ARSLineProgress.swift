@@ -19,18 +19,18 @@ public final class ARSLineProgress: NSObject {
     // MARK: Show Statuses
     
     
-    /** 
-        Will interrupt the current .Infinite loader progress and show success animation instead.
-    */
+    /**
+     Will interrupt the current .Infinite loader progress and show success animation instead.
+     */
     public static func showSuccess() {
-        if !statusShown { ARSStatus.show(.Success) }
+        if !statusShown { ARSStatus.show(.success) }
     }
     
     /**
-        Will interrupt the current .Infinite loader progress and show fail animation instead.
-    */
+     Will interrupt the current .Infinite loader progress and show fail animation instead.
+     */
     public static func showFail() {
-        if !statusShown { ARSStatus.show(.Fail) }
+        if !statusShown { ARSStatus.show(.fail) }
     }
     
     
@@ -41,15 +41,15 @@ public final class ARSLineProgress: NSObject {
         if !shown { ARSInfiniteLoader().showOnView(nil, completionBlock: nil) }
     }
     
-    public static func showWithPresentCompetionBlock(block: () -> Void) {
+    public static func showWithPresentCompetionBlock(_ block: @escaping () -> Void) {
         if !shown { ARSInfiniteLoader().showOnView(nil, completionBlock: block) }
     }
     
-    public static func showOnView(view: UIView) {
+    public static func showOnView(_ view: UIView) {
         if !shown { ARSInfiniteLoader().showOnView(view, completionBlock: nil) }
     }
     
-    public static func showOnView(view: UIView, completionBlock: () -> Void) {
+    public static func showOnView(_ view: UIView, completionBlock: @escaping () -> Void) {
         if !shown { ARSInfiniteLoader().showOnView(view, completionBlock: completionBlock) }
     }
     
@@ -58,46 +58,46 @@ public final class ARSLineProgress: NSObject {
     
     
     /**
-		Note: initialValue should be from 0 to 100
-    */
+     Note: initialValue should be from 0 to 100
+     */
     public static func showWithProgress(initialValue value: CGFloat) {
         if !shown { ARSProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: nil) }
     }
     
     /**
-        Note: initialValue should be from 0 to 100
+     Note: initialValue should be from 0 to 100
      */
     public static func showWithProgress(initialValue value: CGFloat, onView: UIView) {
         if !shown { ARSProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: nil) }
     }
     
     /**
-        Note: initialValue should be from 0 to 100
+     Note: initialValue should be from 0 to 100
      */
     public static func showWithProgress(initialValue value: CGFloat, completionBlock: (() -> Void)?) {
         if !shown { ARSProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: completionBlock) }
     }
     
     /**
-        Note: initialValue should be from 0 to 100
+     Note: initialValue should be from 0 to 100
      */
     public static func showWithProgress(initialValue value: CGFloat, onView: UIView, completionBlock: (() -> Void)?) {
         if !shown { ARSProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: completionBlock) }
     }
     
-    public static func showWithProgressObject(progress: NSProgress) {
+    public static func showWithProgressObject(_ progress: Progress) {
         if !shown { ARSProgressLoader().showWithValue(0.0, onView: nil, progress: progress, completionBlock: nil) }
     }
     
-    public static func showWithProgressObject(progress: NSProgress, completionBlock: (() -> Void)?) {
+    public static func showWithProgressObject(_ progress: Progress, completionBlock: (() -> Void)?) {
         if !shown { ARSProgressLoader().showWithValue(0.0, onView: nil, progress: progress, completionBlock: completionBlock) }
     }
     
-    public static func showWithProgressObject(progress: NSProgress, onView: UIView) {
+    public static func showWithProgressObject(_ progress: Progress, onView: UIView) {
         if !shown { ARSProgressLoader().showWithValue(0.0, onView: onView, progress: progress, completionBlock: nil) }
     }
     
-    public static func showWithProgressObject(progress: NSProgress, onView: UIView, completionBlock: (() -> Void)?) {
+    public static func showWithProgressObject(_ progress: Progress, onView: UIView, completionBlock: (() -> Void)?) {
         if !shown { ARSProgressLoader().showWithValue(0.0, onView: onView, progress: progress, completionBlock: completionBlock) }
     }
     
@@ -105,28 +105,28 @@ public final class ARSLineProgress: NSObject {
     // MARK: Update Progress Loader
     
     
-    public static func updateWithProgress(value: CGFloat) {
+    public static func updateWithProgress(_ value: CGFloat) {
         ARSProgressLoader.weakSelf?.progressValue = value
     }
     
-    public static func cancelPorgressWithFailAnimation(showFail: Bool) {
+    public static func cancelPorgressWithFailAnimation(_ showFail: Bool) {
         ARSProgressLoader.weakSelf?.cancelWithFailAnimation(showFail, completionBlock: nil)
     }
     
-    public static func cancelPorgressWithFailAnimation(showFail: Bool, completionBlock: (() -> Void)?) {
+    public static func cancelPorgressWithFailAnimation(_ showFail: Bool, completionBlock: (() -> Void)?) {
         ARSProgressLoader.weakSelf?.cancelWithFailAnimation(showFail, completionBlock: completionBlock)
     }
     
     
     // MARK: Hide Loader
     
-	
+    
     public static func hide() {
         ars_hideLoader(ars_currentLoader, withCompletionBlock: nil)
     }
     
     /// <code>completionBlock</code> is going to be called on the main queue
-    public static func hideWithCompletionBlock(block: () -> Void) {
+    public static func hideWithCompletionBlock(_ block: @escaping () -> Void) {
         ars_hideLoader(ars_currentLoader, withCompletionBlock: block)
     }
     
@@ -140,10 +140,10 @@ final public class ARSLineProgressConfiguration: NSObject {
     public static var backgroundViewPresentAnimationDuration: CFTimeInterval = 0.3
     public static var backgroundViewDismissAnimationDuration: CFTimeInterval = 0.3
     
-    public static var blurStyle: UIBlurEffectStyle = .Dark
-    public static var circleColorOuter: CGColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
-    public static var circleColorMiddle: CGColor = UIColor.ars_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
-    public static var circleColorInner: CGColor = UIColor.ars_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).CGColor
+    public static var blurStyle: UIBlurEffectStyle = .dark
+    public static var circleColorOuter: CGColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).cgColor
+    public static var circleColorMiddle: CGColor = UIColor.ars_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).cgColor
+    public static var circleColorInner: CGColor = UIColor.ars_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).cgColor
     
     public static var circleRotationDurationOuter: CFTimeInterval = 3.0
     public static var circleRotationDurationMiddle: CFTimeInterval = 1.5
@@ -151,22 +151,22 @@ final public class ARSLineProgressConfiguration: NSObject {
     
     public static var checkmarkAnimationDrawDuration: CFTimeInterval = 0.4
     public static var checkmarkLineWidth: CGFloat = 2.0
-    public static var checkmarkColor: CGColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+    public static var checkmarkColor: CGColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).cgColor
     
     public static var successCircleAnimationDrawDuration: CFTimeInterval = 0.7
     public static var successCircleLineWidth: CGFloat = 2.0
-    public static var successCircleColor: CGColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+    public static var successCircleColor: CGColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).cgColor
     
     public static var failCrossAnimationDrawDuration: CFTimeInterval = 0.4
     public static var failCrossLineWidth: CGFloat = 2.0
-    public static var failCrossColor: CGColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+    public static var failCrossColor: CGColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).cgColor
     
     public static var failCircleAnimationDrawDuration: CFTimeInterval = 0.7
     public static var failCircleLineWidth: CGFloat = 2.0
-    public static var failCircleColor: CGColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+    public static var failCircleColor: CGColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).cgColor
     
     /**
-        Use this function to restore all properties to their default values.
+     Use this function to restore all properties to their default values.
      */
     public static func restoreDefaults() {
         ars_config.showSuccessCheckmark = true
@@ -175,10 +175,10 @@ final public class ARSLineProgressConfiguration: NSObject {
         ars_config.backgroundViewPresentAnimationDuration = 0.3
         ars_config.backgroundViewDismissAnimationDuration = 0.3
         
-        ars_config.blurStyle = .Dark
-        ars_config.circleColorOuter = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
-        ars_config.circleColorMiddle = UIColor.ars_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).CGColor
-        ars_config.circleColorInner = UIColor.ars_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).CGColor
+        ars_config.blurStyle = .dark
+        ars_config.circleColorOuter = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).cgColor
+        ars_config.circleColorMiddle = UIColor.ars_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).cgColor
+        ars_config.circleColorInner = UIColor.ars_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).cgColor
         
         ars_config.circleRotationDurationOuter = 3.0
         ars_config.circleRotationDurationMiddle = 1.5
@@ -186,19 +186,19 @@ final public class ARSLineProgressConfiguration: NSObject {
         
         ars_config.checkmarkAnimationDrawDuration = 0.4
         ars_config.checkmarkLineWidth = 2.0
-        ars_config.checkmarkColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+        ars_config.checkmarkColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).cgColor
         
         ars_config.successCircleAnimationDrawDuration = 0.7
         ars_config.successCircleLineWidth = 2.0
-        ars_config.successCircleColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+        ars_config.successCircleColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).cgColor
         
         ars_config.failCrossAnimationDrawDuration = 0.4
         ars_config.failCrossLineWidth = 2.0
-        ars_config.failCrossColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+        ars_config.failCrossColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).cgColor
         
         ars_config.failCircleAnimationDrawDuration = 0.7
         ars_config.failCircleLineWidth = 2.0
-        ars_config.failCircleColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).CGColor
+        ars_config.failCircleColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).cgColor
     }
     
 }
@@ -213,17 +213,17 @@ final public class ARSLineProgressConfiguration: NSObject {
 private typealias ars_config = ARSLineProgressConfiguration
 
 @objc private protocol ARSLoader {
-	var emptyView: UIView { get set }
+    var emptyView: UIView { get set }
     var backgroundView: UIVisualEffectView { get set }
-    optional var outerCircle: CAShapeLayer { get set }
-    optional var middleCircle: CAShapeLayer { get set }
-    optional var innerCircle: CAShapeLayer { get set }
-    optional weak var targetView: UIView? { get set }
+    @objc optional var outerCircle: CAShapeLayer { get set }
+    @objc optional var middleCircle: CAShapeLayer { get set }
+    @objc optional var innerCircle: CAShapeLayer { get set }
+    @objc optional weak var targetView: UIView? { get set }
 }
 
 private enum ARSLoaderType {
-    case Infinite
-    case Progress
+    case infinite
+    case progress
 }
 
 
@@ -257,7 +257,7 @@ private var ars_currentCompletionBlock: (() -> Void)?
 
 private final class ARSInfiniteLoader: ARSLoader {
     
-	@objc var emptyView = UIView()
+    @objc var emptyView = UIView()
     @objc var backgroundView: UIVisualEffectView
     @objc var outerCircle = CAShapeLayer()
     @objc var middleCircle = CAShapeLayer()
@@ -266,19 +266,19 @@ private final class ARSInfiniteLoader: ARSLoader {
     
     init() {
         backgroundView = ARSBlurredBackgroundRect().view
-        NSNotificationCenter.defaultCenter().addObserver(self,
-			selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
-            name: UIDeviceOrientationDidChangeNotification,
-            object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
+                                               name: NSNotification.Name.UIDeviceOrientationDidChange,
+                                               object: nil)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self,
-            name: UIDeviceOrientationDidChangeNotification,
-            object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: NSNotification.Name.UIDeviceOrientationDidChange,
+                                                  object: nil)
     }
     
-    @objc func orientationChanged(notification: NSNotification) {
+    @objc func orientationChanged(_ notification: Notification) {
         if let loader = ars_currentLoader {
             if let targetView = loader.targetView {
                 ars_createdFrameForBackgroundView(loader.backgroundView, onView: targetView)
@@ -292,16 +292,16 @@ private final class ARSInfiniteLoader: ARSLoader {
 
 private extension ARSInfiniteLoader {
     
-    func showOnView(view: UIView?, completionBlock: (() -> Void)?) {
+    func showOnView(_ view: UIView?, completionBlock: (() -> Void)?) {
         if ars_createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
         
         targetView = view
         
         ars_createCircles(outerCircle: outerCircle,
-            middleCircle: middleCircle,
-            innerCircle: innerCircle,
-            onView: backgroundView.contentView,
-            loaderType: .Infinite)
+                          middleCircle: middleCircle,
+                          innerCircle: innerCircle,
+                          onView: backgroundView.contentView,
+                          loaderType: .infinite)
         ars_animateCircles(outerCircle: outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
         ars_presentLoader(self, onView: view, completionBlock: completionBlock)
     }
@@ -317,7 +317,7 @@ private extension ARSInfiniteLoader {
 
 private final class ARSProgressLoader: ARSLoader {
     
-	@objc var emptyView = UIView()
+    @objc var emptyView = UIView()
     @objc var backgroundView: UIVisualEffectView
     @objc var outerCircle = CAShapeLayer()
     @objc var middleCircle = CAShapeLayer()
@@ -325,7 +325,7 @@ private final class ARSProgressLoader: ARSLoader {
     var multiplier: CGFloat = 1.0
     var lastMultiplierValue: CGFloat = 0.0
     var progressValue: CGFloat = 0.0
-    var progress: NSProgress?
+    var progress: Progress?
     var failed = false
     static weak var weakSelf: ARSProgressLoader?
     @objc weak var targetView: UIView?
@@ -333,19 +333,19 @@ private final class ARSProgressLoader: ARSLoader {
     init() {
         backgroundView = ARSBlurredBackgroundRect().view
         ARSProgressLoader.weakSelf = self
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
-            name: UIDeviceOrientationDidChangeNotification,
-            object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
+                                               name: NSNotification.Name.UIDeviceOrientationDidChange,
+                                               object: nil)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self,
-            name: UIDeviceOrientationDidChangeNotification,
-            object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: NSNotification.Name.UIDeviceOrientationDidChange,
+                                                  object: nil)
     }
     
-    @objc func orientationChanged(notification: NSNotification) {
+    @objc func orientationChanged(_ notification: Notification) {
         if let loader = ars_currentLoader {
             if let targetView = loader.targetView {
                 ars_createdFrameForBackgroundView(loader.backgroundView, onView: targetView)
@@ -361,7 +361,7 @@ private extension ARSProgressLoader {
     
     // MARK: Show/Cancel
     
-    func showWithValue(value: CGFloat, onView view: UIView?, progress: NSProgress?, completionBlock: (() -> Void)?) {
+    func showWithValue(_ value: CGFloat, onView view: UIView?, progress: Progress?, completionBlock: (() -> Void)?) {
         if ars_createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
         if let progress = progress { self.progress = progress }
         
@@ -369,16 +369,16 @@ private extension ARSProgressLoader {
         targetView = view
         
         ars_createCircles(outerCircle: outerCircle,
-            middleCircle: middleCircle,
-            innerCircle: innerCircle,
-            onView: backgroundView.contentView,
-            loaderType: .Progress)
+                          middleCircle: middleCircle,
+                          innerCircle: innerCircle,
+                          onView: backgroundView.contentView,
+                          loaderType: .progress)
         ars_animateCircles(outerCircle: outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
         ars_presentLoader(self, onView: view, completionBlock: nil)
         launchTimer()
     }
     
-    func cancelWithFailAnimation(failAnim: Bool, completionBlock: (() -> Void)?) {
+    func cancelWithFailAnimation(_ failAnim: Bool, completionBlock: (() -> Void)?) {
         if failAnim {
             ars_currentCompletionBlock = completionBlock
             failed = true
@@ -416,15 +416,15 @@ private extension ARSProgressLoader {
     
     func drawCirclePath() {
         let viewBounds = backgroundView.bounds
-        let center = CGPointMake(CGRectGetMidX(viewBounds), CGRectGetMidY(viewBounds))
+        let center = CGPoint(x: viewBounds.midX, y: viewBounds.midY)
         let endAngle = CGFloat(M_PI) / 180 * 3.6 * multiplier
         let outerPath = UIBezierPath(arcCenter: center, radius: ARS_CIRCLE_RADIUS_OUTER, startAngle: 0, endAngle: endAngle, clockwise: true)
         let middlePath = UIBezierPath(arcCenter: center, radius: ARS_CIRCLE_RADIUS_MIDDLE, startAngle: 0, endAngle: endAngle, clockwise: true)
         let innerPath = UIBezierPath(arcCenter: center, radius: ARS_CIRCLE_RADIUS_INNER, startAngle: 0, endAngle: endAngle, clockwise: true)
         
-        self.outerCircle.path = outerPath.CGPath
-        self.middleCircle.path = middlePath.CGPath
-        self.innerCircle.path = innerPath.CGPath
+        self.outerCircle.path = outerPath.cgPath
+        self.middleCircle.path = middlePath.cgPath
+        self.innerCircle.path = innerPath.cgPath
     }
     
     func didIncrementMultiplier() -> Bool {
@@ -465,19 +465,19 @@ private extension ARSProgressLoader {
         CATransaction.setAnimationDuration(0.5)
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(controlPoints: 0.70, -0.80, 0.68, 0.95))
         self.innerCircle.transform = transform
-            CATransaction.begin()
-            CATransaction.setAnimationDuration(0.7)
-            self.middleCircle.transform = transform
-                CATransaction.begin()
-                CATransaction.setAnimationDuration(0.9)
-                self.outerCircle.transform = transform
-                CATransaction.commit()
-            CATransaction.commit()
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(0.7)
+        self.middleCircle.transform = transform
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(0.9)
+        self.outerCircle.transform = transform
+        CATransaction.commit()
+        CATransaction.commit()
         CATransaction.commit()
         
         ars_dispatchAfter(0.9) {
             if ars_config.showSuccessCheckmark {
-                ARSStatus.show(.Success)
+                ARSStatus.show(.success)
                 
                 let dismissDelay = 0.5 + max(ars_config.successCircleAnimationDrawDuration, ars_config.checkmarkAnimationDrawDuration)
                 
@@ -491,7 +491,7 @@ private extension ARSProgressLoader {
     }
     
     func failedLoading() {
-        ARSStatus.show(.Fail)
+        ARSStatus.show(.fail)
         let dismissDelay = 0.5 + max(ars_config.failCircleAnimationDrawDuration, ars_config.failCrossAnimationDrawDuration)
         
         ars_dispatchAfter(dismissDelay) {
@@ -514,13 +514,13 @@ private extension ARSProgressLoader {
 // =====================================================================================================================
 
 private enum ARSStatusType {
-    case Success
-    case Fail
+    case success
+    case fail
 }
 
 private final class ARSStatus: ARSLoader {
     
-	@objc var emptyView = UIView()
+    @objc var emptyView = UIView()
     @objc var backgroundView: UIVisualEffectView
     
     init() {
@@ -528,7 +528,7 @@ private final class ARSStatus: ARSLoader {
         ars_createdFrameForBackgroundView(backgroundView, onView: nil)
     }
     
-    static func show(type: ARSStatusType) {
+    static func show(_ type: ARSStatusType) {
         if let loader = ars_currentLoader {
             ars_stopCircleAnimations(loader, completionBlock: {
                 drawStatus(type, loader: loader)
@@ -541,13 +541,13 @@ private final class ARSStatus: ARSLoader {
         }
     }
     
-    static func drawStatus(type: ARSStatusType, loader: ARSLoader) {
+    static func drawStatus(_ type: ARSStatusType, loader: ARSLoader) {
         ars_currentStatus = loader
         
         switch type {
-        case .Success:
+        case .success:
             ARSStatus.drawSuccess(loader.backgroundView)
-        case .Fail:
+        case .fail:
             ARSStatus.drawFail(loader.backgroundView)
         }
         
@@ -560,106 +560,106 @@ private final class ARSStatus: ARSLoader {
 
 private extension ARSStatus {
     
-    static func drawSuccess(backgroundView: UIVisualEffectView) {
+    static func drawSuccess(_ backgroundView: UIVisualEffectView) {
         let backgroundViewBounds = backgroundView.bounds
         let backgroundLayer = backgroundView.layer
-        let outerCircleHeight = CGRectGetHeight(backgroundViewBounds)
-        let outerCircleWidth = CGRectGetWidth(backgroundViewBounds)
+        let outerCircleHeight = backgroundViewBounds.height
+        let outerCircleWidth = backgroundViewBounds.width
         
         let checkmarkPath = UIBezierPath()
-        checkmarkPath.moveToPoint(CGPointMake(outerCircleWidth * 0.28, outerCircleHeight * 0.53))
-        checkmarkPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.42, outerCircleHeight * 0.66))
-        checkmarkPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.72, outerCircleHeight * 0.36))
-        checkmarkPath.lineCapStyle = .Square
+        checkmarkPath.move(to: CGPoint(x: outerCircleWidth * 0.28, y: outerCircleHeight * 0.53))
+        checkmarkPath.addLine(to: CGPoint(x: outerCircleWidth * 0.42, y: outerCircleHeight * 0.66))
+        checkmarkPath.addLine(to: CGPoint(x: outerCircleWidth * 0.72, y: outerCircleHeight * 0.36))
+        checkmarkPath.lineCapStyle = .square
         
         let checkmark = CAShapeLayer()
-        checkmark.path = checkmarkPath.CGPath
+        checkmark.path = checkmarkPath.cgPath
         checkmark.fillColor = nil
         checkmark.strokeColor = ars_config.checkmarkColor
         checkmark.lineWidth = ars_config.checkmarkLineWidth
         backgroundLayer.addSublayer(checkmark)
         
-        let successCircleArcCenter = CGPointMake(CGRectGetMidX(backgroundViewBounds), CGRectGetMidY(backgroundViewBounds))
+        let successCircleArcCenter = CGPoint(x: backgroundViewBounds.midX, y: backgroundViewBounds.midY)
         let successCircle = CAShapeLayer()
         successCircle.path = UIBezierPath(arcCenter: successCircleArcCenter,
-            radius: ARS_CIRCLE_RADIUS_OUTER,
-            startAngle: -CGFloat(M_PI_2),
-            endAngle: CGFloat(M_PI) / 180 * 270,
-            clockwise: true).CGPath
+                                          radius: ARS_CIRCLE_RADIUS_OUTER,
+                                          startAngle: -CGFloat(M_PI_2),
+                                          endAngle: CGFloat(M_PI) / 180 * 270,
+                                          clockwise: true).cgPath
         successCircle.fillColor = nil
         successCircle.strokeColor = ars_config.successCircleColor
         successCircle.lineWidth = ars_config.successCircleLineWidth
         backgroundLayer.addSublayer(successCircle)
         
         let animationCheckmark = CABasicAnimation(keyPath: "strokeEnd")
-        animationCheckmark.removedOnCompletion = true
+        animationCheckmark.isRemovedOnCompletion = true
         animationCheckmark.fromValue = 0
         animationCheckmark.toValue = 1
         animationCheckmark.fillMode = kCAFillModeBoth
         animationCheckmark.duration = ars_config.checkmarkAnimationDrawDuration
         animationCheckmark.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        checkmark.addAnimation(animationCheckmark, forKey: nil)
+        checkmark.add(animationCheckmark, forKey: nil)
         
         let animationCircle = CABasicAnimation(keyPath: "strokeEnd")
-        animationCircle.removedOnCompletion = true
+        animationCircle.isRemovedOnCompletion = true
         animationCircle.fromValue = 0
         animationCircle.toValue = 1
         animationCircle.fillMode = kCAFillModeBoth
         animationCircle.duration = ars_config.successCircleAnimationDrawDuration
         animationCircle.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        successCircle.addAnimation(animationCircle, forKey: nil)
+        successCircle.add(animationCircle, forKey: nil)
     }
     
-    static func drawFail(backgroundView: UIVisualEffectView) {
+    static func drawFail(_ backgroundView: UIVisualEffectView) {
         let backgroundViewBounds = backgroundView.bounds
         let backgroundViewLayer = backgroundView.layer
-        let outerCircleWidth = CGRectGetWidth(backgroundViewBounds)
-        let outerCircleHeight = CGRectGetHeight(backgroundViewBounds)
+        let outerCircleWidth = backgroundViewBounds.width
+        let outerCircleHeight = backgroundViewBounds.height
         
         let crossPath = UIBezierPath()
-        crossPath.moveToPoint(CGPointMake(outerCircleWidth * 0.67, outerCircleHeight * 0.32))
-        crossPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.32, outerCircleHeight * 0.67))
-        crossPath.moveToPoint(CGPointMake(outerCircleWidth * 0.32, outerCircleHeight * 0.32))
-        crossPath.addLineToPoint(CGPointMake(outerCircleWidth * 0.67, outerCircleHeight * 0.67))
-        crossPath.lineCapStyle = .Square
+        crossPath.move(to: CGPoint(x: outerCircleWidth * 0.67, y: outerCircleHeight * 0.32))
+        crossPath.addLine(to: CGPoint(x: outerCircleWidth * 0.32, y: outerCircleHeight * 0.67))
+        crossPath.move(to: CGPoint(x: outerCircleWidth * 0.32, y: outerCircleHeight * 0.32))
+        crossPath.addLine(to: CGPoint(x: outerCircleWidth * 0.67, y: outerCircleHeight * 0.67))
+        crossPath.lineCapStyle = .square
         
         let cross = CAShapeLayer()
-        cross.path = crossPath.CGPath
+        cross.path = crossPath.cgPath
         cross.fillColor = nil
         cross.strokeColor = ars_config.failCrossColor
         cross.lineWidth = ars_config.failCrossLineWidth
         cross.frame = backgroundViewBounds
         backgroundViewLayer.addSublayer(cross)
         
-        let failCircleArcCenter = CGPointMake(CGRectGetMidX(backgroundViewBounds), CGRectGetMidY(backgroundViewBounds))
+        let failCircleArcCenter = CGPoint(x: backgroundViewBounds.midX, y: backgroundViewBounds.midY)
         let failCircle = CAShapeLayer()
         failCircle.path = UIBezierPath(arcCenter: failCircleArcCenter,
-            radius: ARS_CIRCLE_RADIUS_OUTER,
-            startAngle: -CGFloat(M_PI_2),
-            endAngle: CGFloat(M_PI) / 180 * 270,
-            clockwise: true).CGPath
+                                       radius: ARS_CIRCLE_RADIUS_OUTER,
+                                       startAngle: -CGFloat(M_PI_2),
+                                       endAngle: CGFloat(M_PI) / 180 * 270,
+                                       clockwise: true).cgPath
         failCircle.fillColor = nil
         failCircle.strokeColor = ars_config.failCircleColor
         failCircle.lineWidth = ars_config.failCircleLineWidth
         backgroundViewLayer.addSublayer(failCircle)
         
         let animationCross = CABasicAnimation(keyPath: "strokeEnd")
-        animationCross.removedOnCompletion = false
+        animationCross.isRemovedOnCompletion = false
         animationCross.fromValue = 0
         animationCross.toValue = 1
         animationCross.duration = ars_config.failCrossAnimationDrawDuration
         animationCross.fillMode = kCAFillModeBoth
         animationCross.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
-        cross.addAnimation(animationCross, forKey: nil)
+        cross.add(animationCross, forKey: nil)
         
         let animationCircle = CABasicAnimation(keyPath: "opacity")
-        animationCircle.removedOnCompletion = true
+        animationCircle.isRemovedOnCompletion = true
         animationCircle.fromValue = 0
         animationCircle.toValue = 1
         animationCircle.fillMode = kCAFillModeBoth
         animationCircle.duration = ars_config.failCircleAnimationDrawDuration
         animationCircle.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        failCircle.addAnimation(animationCircle, forKey: nil)
+        failCircle.add(animationCircle, forKey: nil)
     }
     
 }
@@ -693,24 +693,24 @@ private struct ARSBlurredBackgroundRect {
 // MARK: - Extensions & Helpers & Shared Methods
 // =====================================================================================================================
 
-private func ars_stopCircleAnimations(loader: ARSLoader, completionBlock: () -> Void) {
+private func ars_stopCircleAnimations(_ loader: ARSLoader, completionBlock: @escaping () -> Void) {
     
     CATransaction.begin()
     CATransaction.setAnimationDuration(0.25)
     CATransaction.setCompletionBlock(completionBlock)
-        loader.outerCircle?.opacity = 0.0
-        loader.middleCircle?.opacity = 0.0
-        loader.innerCircle?.opacity = 0.0
+    loader.outerCircle?.opacity = 0.0
+    loader.middleCircle?.opacity = 0.0
+    loader.innerCircle?.opacity = 0.0
     CATransaction.commit()
 }
 
-private func ars_presentLoader(loader: ARSLoader, onView view: UIView?, completionBlock: (() -> Void)?) {
+private func ars_presentLoader(_ loader: ARSLoader, onView view: UIView?, completionBlock: (() -> Void)?) {
     ars_currentLoader = loader
-	
-	let emptyView = loader.emptyView
-	emptyView.backgroundColor = .clearColor()
-	emptyView.frame = loader.backgroundView.bounds
-	emptyView.addSubview(loader.backgroundView)
+    
+    let emptyView: UIView = loader.emptyView
+    emptyView.backgroundColor = UIColor.clear
+    emptyView.frame = loader.backgroundView.bounds
+    emptyView.addSubview(loader.backgroundView)
     
     ars_dispatchOnMainQueue {
         if let targetView = view {
@@ -720,20 +720,20 @@ private func ars_presentLoader(loader: ARSLoader, onView view: UIView?, completi
         }
         
         emptyView.alpha = 0.1
-        UIView.animateWithDuration(ars_config.backgroundViewPresentAnimationDuration, delay: 0.0, options: .CurveEaseOut, animations: {
+        UIView.animate(withDuration: ars_config.backgroundViewPresentAnimationDuration, delay: 0.0, options: .curveEaseOut, animations: {
             emptyView.alpha = 1.0
-        }, completion: { _ in completionBlock?() })
+            }, completion: { _ in completionBlock?() })
     }
 }
 
-private func ars_hideLoader(loader: ARSLoader?, withCompletionBlock block: (() -> Void)?) {
+private func ars_hideLoader(_ loader: ARSLoader?, withCompletionBlock block: (() -> Void)?) {
     guard let loader = loader else { return }
     
     ars_dispatchOnMainQueue {
-        UIView.animateWithDuration(ars_config.backgroundViewDismissAnimationDuration, delay: 0.0, options: .CurveEaseOut, animations: {
+        UIView.animate(withDuration: ars_config.backgroundViewDismissAnimationDuration, delay: 0.0, options: .curveEaseOut, animations: {
             loader.emptyView.alpha = 0.0
-            loader.backgroundView.transform = CGAffineTransformMakeScale(0.9, 0.9)
-        }, completion: { _ in block?() })
+            loader.backgroundView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            }, completion: { _ in block?() })
     }
     
     ars_dispatchAfter(ars_config.backgroundViewDismissAnimationDuration) {
@@ -743,10 +743,10 @@ private func ars_hideLoader(loader: ARSLoader?, withCompletionBlock block: (() -
 
 private func ars_window() -> UIWindow? {
     var targetWindow: UIWindow?
-    let windows = UIApplication.sharedApplication().windows
+    let windows = UIApplication.shared.windows
     for window in windows {
-        if window.screen != UIScreen.mainScreen() { continue }
-        if !window.hidden && window.alpha == 0 { continue }
+        if window.screen != UIScreen.main { continue }
+        if !window.isHidden && window.alpha == 0 { continue }
         if window.windowLevel != UIWindowLevelNormal { continue }
         
         targetWindow = window
@@ -756,110 +756,110 @@ private func ars_window() -> UIWindow? {
     return targetWindow
 }
 
-private func ars_createdFrameForBackgroundView(backgroundView: UIView, onView view: UIView?) -> Bool {
+private func ars_createdFrameForBackgroundView(_ backgroundView: UIView, onView view: UIView?) -> Bool {
     let center: CGPoint
     
     if view == nil {
         guard let window = ars_window() else { return false }
-        center = CGPointMake(CGRectGetMidX(window.screen.bounds), CGRectGetMidY(window.screen.bounds))
+        center = CGPoint(x: window.screen.bounds.midX, y: window.screen.bounds.midY)
     } else {
         let viewBounds = view!.bounds
-        center = CGPointMake(CGRectGetMidX(viewBounds), CGRectGetMidY(viewBounds))
+        center = CGPoint(x: viewBounds.midX, y: viewBounds.midY)
     }
     
     let sideLengths = ARS_BACKGROUND_VIEW_SIDE_LENGTH
-    backgroundView.frame = CGRectMake(center.x - sideLengths / 2, center.y - sideLengths / 2, sideLengths, sideLengths)
+    backgroundView.frame = CGRect(x: center.x - sideLengths / 2, y: center.y - sideLengths / 2, width: sideLengths, height: sideLengths)
     backgroundView.layer.cornerRadius = ars_config.backgroundViewCornerRadius
     
     return true
 }
 
-private func ars_createCircles(outerCircle outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer, onView view: UIView, loaderType: ARSLoaderType) {
+private func ars_createCircles(outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer, onView view: UIView, loaderType: ARSLoaderType) {
     let circleRadiusOuter = ARS_CIRCLE_RADIUS_OUTER
     let circleRadiusMiddle = ARS_CIRCLE_RADIUS_MIDDLE
     let circleRadiusInner = ARS_CIRCLE_RADIUS_INNER
     let viewBounds = view.bounds
-    let arcCenter = CGPointMake(CGRectGetMidX(viewBounds), CGRectGetMidY(viewBounds))
+    let arcCenter = CGPoint(x: viewBounds.midX, y: viewBounds.midY)
     var path: UIBezierPath
     
     switch loaderType {
-    case .Infinite:
+    case .infinite:
         path = UIBezierPath(arcCenter: arcCenter,
-            radius: circleRadiusOuter,
-            startAngle: ARS_CIRCLE_START_ANGLE,
-            endAngle: ARS_CIRCLE_END_ANGLE,
-            clockwise: true)
-    case .Progress:
+                            radius: circleRadiusOuter,
+                            startAngle: ARS_CIRCLE_START_ANGLE,
+                            endAngle: ARS_CIRCLE_END_ANGLE,
+                            clockwise: true)
+    case .progress:
         path = UIBezierPath(arcCenter: arcCenter,
-            radius: circleRadiusOuter,
-            startAngle: 0, endAngle:
+                            radius: circleRadiusOuter,
+                            startAngle: 0, endAngle:
             CGFloat(M_PI) / 180 * 3.6 * 1,
-            clockwise: true)
+                            clockwise: true)
     }
-    ars_configureLayer(outerCircle, forView: view, withPath: path.CGPath, withBounds: viewBounds, withColor: ars_config.circleColorOuter)
+    ars_configureLayer(outerCircle, forView: view, withPath: path.cgPath, withBounds: viewBounds, withColor: ars_config.circleColorOuter)
     
     switch loaderType {
-    case .Infinite:
+    case .infinite:
         path = UIBezierPath(arcCenter: arcCenter,
-            radius: circleRadiusMiddle,
-            startAngle: ARS_CIRCLE_START_ANGLE,
-            endAngle: ARS_CIRCLE_END_ANGLE,
-            clockwise: true)
-    case .Progress:
+                            radius: circleRadiusMiddle,
+                            startAngle: ARS_CIRCLE_START_ANGLE,
+                            endAngle: ARS_CIRCLE_END_ANGLE,
+                            clockwise: true)
+    case .progress:
         path = UIBezierPath(arcCenter: arcCenter,
-            radius: circleRadiusMiddle,
-            startAngle: 0,
-            endAngle: CGFloat(M_PI) / 180 * 3.6 * 1,
-            clockwise: true)
+                            radius: circleRadiusMiddle,
+                            startAngle: 0,
+                            endAngle: CGFloat(M_PI) / 180 * 3.6 * 1,
+                            clockwise: true)
     }
-    ars_configureLayer(middleCircle, forView: view, withPath: path.CGPath, withBounds: viewBounds, withColor: ars_config.circleColorMiddle)
+    ars_configureLayer(middleCircle, forView: view, withPath: path.cgPath, withBounds: viewBounds, withColor: ars_config.circleColorMiddle)
     
     switch loaderType {
-    case .Infinite:
+    case .infinite:
         path = UIBezierPath(arcCenter: arcCenter,
-            radius: circleRadiusInner,
-            startAngle: ARS_CIRCLE_START_ANGLE,
-            endAngle: ARS_CIRCLE_END_ANGLE,
-            clockwise: true)
-    case .Progress:
+                            radius: circleRadiusInner,
+                            startAngle: ARS_CIRCLE_START_ANGLE,
+                            endAngle: ARS_CIRCLE_END_ANGLE,
+                            clockwise: true)
+    case .progress:
         path = UIBezierPath(arcCenter: arcCenter,
-            radius: circleRadiusInner,
-            startAngle: 0,
-            endAngle: CGFloat(M_PI) / 180 * 3.6 * 1,
-            clockwise: true)
+                            radius: circleRadiusInner,
+                            startAngle: 0,
+                            endAngle: CGFloat(M_PI) / 180 * 3.6 * 1,
+                            clockwise: true)
     }
-    ars_configureLayer(innerCircle, forView: view, withPath: path.CGPath, withBounds: viewBounds, withColor: ars_config.circleColorInner)
+    ars_configureLayer(innerCircle, forView: view, withPath: path.cgPath, withBounds: viewBounds, withColor: ars_config.circleColorInner)
 }
 
-private func ars_configureLayer(layer: CAShapeLayer, forView view: UIView, withPath path: CGPath, withBounds bounds: CGRect, withColor color: CGColor) {
+private func ars_configureLayer(_ layer: CAShapeLayer, forView view: UIView, withPath path: CGPath, withBounds bounds: CGRect, withColor color: CGColor) {
     layer.path = path
     layer.frame = bounds
     layer.lineWidth = ARS_CIRCLE_LINE_WIDTH
     layer.strokeColor = color
-    layer.fillColor = UIColor.clearColor().CGColor
-    layer.opaque = true
+    layer.fillColor = UIColor.clear.cgColor
+    layer.isOpaque = true
     view.layer.addSublayer(layer)
 }
 
-private func ars_animateCircles(outerCircle outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer) {
+private func ars_animateCircles(outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer) {
     ars_dispatchOnMainQueue {
         let outerAnimation = CABasicAnimation(keyPath: "transform.rotation")
         outerAnimation.toValue = ARS_CIRCLE_ROTATION_TO_VALUE
         outerAnimation.duration = ars_config.circleRotationDurationOuter
         outerAnimation.repeatCount = ARS_CIRCLE_ROTATION_REPEAT_COUNT
-        outerCircle.addAnimation(outerAnimation, forKey: "outerCircleRotation")
+        outerCircle.add(outerAnimation, forKey: "outerCircleRotation")
         
         let middleAnimation = outerAnimation.copy() as! CABasicAnimation
         middleAnimation.duration = ars_config.circleRotationDurationMiddle
-        middleCircle.addAnimation(middleAnimation, forKey: "middleCircleRotation")
+        middleCircle.add(middleAnimation, forKey: "middleCircleRotation")
         
         let innerAnimation = middleAnimation.copy() as! CABasicAnimation
         innerAnimation.duration = ars_config.circleRotationDurationInner
-        innerCircle.addAnimation(innerAnimation, forKey: "middleCircleRotation")
+        innerCircle.add(innerAnimation, forKey: "middleCircleRotation")
     }
 }
 
-private func ars_cleanupLoader(loader: ARSLoader) {
+private func ars_cleanupLoader(_ loader: ARSLoader) {
     loader.emptyView.removeFromSuperview()
     ars_currentLoader = nil
     ars_currentCompletionBlock = nil
@@ -867,17 +867,17 @@ private func ars_cleanupLoader(loader: ARSLoader) {
 
 private extension UIColor {
     
-    static func ars_colorWithRGB(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> UIColor {
+    static func ars_colorWithRGB(_ red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> UIColor {
         return UIColor(red: red/255.0, green: green/255.0, blue: blue/255.0, alpha: alpha)
     }
     
 }
 
-private func ars_dispatchAfter(time: Double, block: dispatch_block_t) {
-    let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(time * Double(NSEC_PER_SEC)))
-    dispatch_after(dispatchTime, dispatch_get_main_queue(), block)
+private func ars_dispatchAfter(_ time: Double, block: @escaping ()->()) {
+    let dispatchTime = DispatchTime.now() + Double(Int64(time * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+    DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: block)
 }
 
-private func ars_dispatchOnMainQueue(block: dispatch_block_t) {
-    dispatch_async(dispatch_get_main_queue(), block)
+private func ars_dispatchOnMainQueue(_ block: @escaping ()->()) {
+    DispatchQueue.main.async(execute: block)
 }
