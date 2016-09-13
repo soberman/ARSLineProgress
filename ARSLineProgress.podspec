@@ -116,5 +116,5 @@ Pod::Spec.new do |s|
   s.exclude_files = "Demo/*", "Carthage/*"
   # s.public_header_files = "Source/ARSLineProgress.swift"
   s.requires_arc = true
-
+  s.xcconfig = { 'SWIFT_VERSION' => '3.0' }
 end
