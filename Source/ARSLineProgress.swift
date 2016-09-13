@@ -756,7 +756,7 @@ private func ars_window() -> UIWindow? {
     return targetWindow
 }
 
-private func ars_createdFrameForBackgroundView(_ backgroundView: UIView, onView view: UIView?) -> Bool {
+@discardableResult private func ars_createdFrameForBackgroundView(_ backgroundView: UIView, onView view: UIView?) -> Bool {
     let center: CGPoint
     
     if view == nil {
