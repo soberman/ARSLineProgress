@@ -38,19 +38,19 @@ public final class ARSLineProgress: NSObject {
     
     
     public static func show() {
-        if !shown { ARSInfiniteLoader().showOnView(nil, completionBlock: nil) }
+        if !shown { ARSInfiniteLoader().ars_showOnView(nil, completionBlock: nil) }
     }
     
     public static func showWithPresentCompetionBlock(_ block: @escaping () -> Void) {
-        if !shown { ARSInfiniteLoader().showOnView(nil, completionBlock: block) }
+        if !shown { ARSInfiniteLoader().ars_showOnView(nil, completionBlock: block) }
     }
     
-    public static func showOnView(_ view: UIView) {
-        if !shown { ARSInfiniteLoader().showOnView(view, completionBlock: nil) }
+    public static func ars_showOnView(_ view: UIView) {
+        if !shown { ARSInfiniteLoader().ars_showOnView(view, completionBlock: nil) }
     }
     
-    public static func showOnView(_ view: UIView, completionBlock: @escaping () -> Void) {
-        if !shown { ARSInfiniteLoader().showOnView(view, completionBlock: completionBlock) }
+    public static func ars_showOnView(_ view: UIView, completionBlock: @escaping () -> Void) {
+        if !shown { ARSInfiniteLoader().ars_showOnView(view, completionBlock: completionBlock) }
     }
     
     
@@ -61,44 +61,44 @@ public final class ARSLineProgress: NSObject {
 		Note: initialValue should be from 0 to 100
     */
     public static func showWithProgress(initialValue value: CGFloat) {
-        if !shown { ARSProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: nil) }
+        if !shown { ARSProgressLoader().ars_showWithValue(value, onView: nil, progress: nil, completionBlock: nil) }
     }
     
     /**
         Note: initialValue should be from 0 to 100
      */
     public static func showWithProgress(initialValue value: CGFloat, onView: UIView) {
-        if !shown { ARSProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: nil) }
+        if !shown { ARSProgressLoader().ars_showWithValue(value, onView: onView, progress: nil, completionBlock: nil) }
     }
     
     /**
         Note: initialValue should be from 0 to 100
      */
     public static func showWithProgress(initialValue value: CGFloat, completionBlock: (() -> Void)?) {
-        if !shown { ARSProgressLoader().showWithValue(value, onView: nil, progress: nil, completionBlock: completionBlock) }
+        if !shown { ARSProgressLoader().ars_showWithValue(value, onView: nil, progress: nil, completionBlock: completionBlock) }
     }
     
     /**
         Note: initialValue should be from 0 to 100
      */
     public static func showWithProgress(initialValue value: CGFloat, onView: UIView, completionBlock: (() -> Void)?) {
-        if !shown { ARSProgressLoader().showWithValue(value, onView: onView, progress: nil, completionBlock: completionBlock) }
+        if !shown { ARSProgressLoader().ars_showWithValue(value, onView: onView, progress: nil, completionBlock: completionBlock) }
     }
     
     public static func showWithProgressObject(_ progress: Progress) {
-        if !shown { ARSProgressLoader().showWithValue(0.0, onView: nil, progress: progress, completionBlock: nil) }
+        if !shown { ARSProgressLoader().ars_showWithValue(0.0, onView: nil, progress: progress, completionBlock: nil) }
     }
     
     public static func showWithProgressObject(_ progress: Progress, completionBlock: (() -> Void)?) {
-        if !shown { ARSProgressLoader().showWithValue(0.0, onView: nil, progress: progress, completionBlock: completionBlock) }
+        if !shown { ARSProgressLoader().ars_showWithValue(0.0, onView: nil, progress: progress, completionBlock: completionBlock) }
     }
     
     public static func showWithProgressObject(_ progress: Progress, onView: UIView) {
-        if !shown { ARSProgressLoader().showWithValue(0.0, onView: onView, progress: progress, completionBlock: nil) }
+        if !shown { ARSProgressLoader().ars_showWithValue(0.0, onView: onView, progress: progress, completionBlock: nil) }
     }
     
     public static func showWithProgressObject(_ progress: Progress, onView: UIView, completionBlock: (() -> Void)?) {
-        if !shown { ARSProgressLoader().showWithValue(0.0, onView: onView, progress: progress, completionBlock: completionBlock) }
+        if !shown { ARSProgressLoader().ars_showWithValue(0.0, onView: onView, progress: progress, completionBlock: completionBlock) }
     }
     
     
@@ -110,11 +110,11 @@ public final class ARSLineProgress: NSObject {
     }
     
     public static func cancelPorgressWithFailAnimation(_ showFail: Bool) {
-        ARSProgressLoader.weakSelf?.cancelWithFailAnimation(showFail, completionBlock: nil)
+        ARSProgressLoader.weakSelf?.ars_cancelWithFailAnimation(showFail, completionBlock: nil)
     }
     
     public static func cancelPorgressWithFailAnimation(_ showFail: Bool, completionBlock: (() -> Void)?) {
-        ARSProgressLoader.weakSelf?.cancelWithFailAnimation(showFail, completionBlock: completionBlock)
+        ARSProgressLoader.weakSelf?.ars_cancelWithFailAnimation(showFail, completionBlock: completionBlock)
     }
     
     

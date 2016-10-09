@@ -47,7 +47,7 @@ final class ARSInfiniteLoader: ARSLoader {
 
 extension ARSInfiniteLoader {
 	
-	func showOnView(_ view: UIView?, completionBlock: (() -> Void)?) {
+	func ars_showOnView(_ view: UIView?, completionBlock: (() -> Void)?) {
 		if ars_createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
 		
 		targetView = view

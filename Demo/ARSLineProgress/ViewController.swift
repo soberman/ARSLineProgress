@@ -62,7 +62,7 @@ final class ViewController: UIViewController {
 
         progressObject = Progress(totalUnitCount: 100)
         ARSLineProgress.showWithProgressObject(progressObject!, completionBlock: {
-            print("This copmletion block is going to be overriden by cancel completion block in launchTimer() method.")
+            print("This copmletion block is going to be overriden by cancel completion block in ars_launchTimer() method.")
         })
         
         progressDemoHelper(success: false)
@@ -104,10 +104,10 @@ extension ViewController {
     
     fileprivate func progressDemoHelper(success: Bool) {
         isSuccess = success
-        launchTimer()
+        ars_launchTimer()
     }
     
-    fileprivate func launchTimer() {
+    fileprivate func ars_launchTimer() {
         let dispatchTime = DispatchTime.now() + Double(Int64(0.7 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC);
         
         DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {
@@ -122,7 +122,7 @@ extension ViewController {
                 if progressObject?.fractionCompleted >= 1.0 { return }
             }
             
-            self.launchTimer()
+            self.ars_launchTimer()
         })
     }
     

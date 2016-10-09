@@ -56,7 +56,7 @@ extension ARSProgressLoader {
 	
 	// MARK: Show/Cancel
 	
-	func showWithValue(_ value: CGFloat, onView view: UIView?, progress: Progress?, completionBlock: (() -> Void)?) {
+	func ars_showWithValue(_ value: CGFloat, onView view: UIView?, progress: Progress?, completionBlock: (() -> Void)?) {
 		if ars_createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
 		if let progress = progress { self.progress = progress }
 		
@@ -70,10 +70,10 @@ extension ARSProgressLoader {
 		                  loaderType: .progress)
 		ars_animateCircles(outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
 		ars_presentLoader(self, onView: view, completionBlock: nil)
-		launchTimer()
+		ars_launchTimer()
 	}
 	
-	func cancelWithFailAnimation(_ failAnim: Bool, completionBlock: (() -> Void)?) {
+	func ars_cancelWithFailAnimation(_ failAnim: Bool, completionBlock: (() -> Void)?) {
 		if failAnim {
 			ars_currentCompletionBlock = completionBlock
 			failed = true
@@ -84,32 +84,32 @@ extension ARSProgressLoader {
 	
 	// MARK: Configs & Animations
 	
-	func launchTimer() {
+	func ars_launchTimer() {
 		ars_dispatchAfter(0.01) {
 			guard let strongSelf = ARSProgressLoader.weakSelf else { return }
 			
-			strongSelf.incrementCircleRadius()
-			strongSelf.launchTimer()
+			strongSelf.ars_incrementCircleRadius()
+			strongSelf.ars_launchTimer()
 		}
 	}
 	
-	func incrementCircleRadius() {
-		if didIncrementMultiplier() == false { return }
+	func ars_incrementCircleRadius() {
+		if ars_didIncrementMultiplier() == false { return }
 		
-		drawCirclePath()
+		ars_drawCirclePath()
 		
 		if failed && multiplier <= 0.0 {
 			ARSProgressLoader.weakSelf = nil
 			multiplier = 0.01
-			drawCirclePath()
-			failedLoading()
+			ars_drawCirclePath()
+			ars_failedLoading()
 		} else if multiplier >= 100 {
 			ARSProgressLoader.weakSelf = nil
-			completed()
+			ars_completed()
 		}
 	}
 	
-	func drawCirclePath() {
+	func ars_drawCirclePath() {
 		let viewBounds = backgroundView.bounds
 		let center = CGPoint(x: viewBounds.midX, y: viewBounds.midY)
 		let endAngle = CGFloat(M_PI) / 180 * 3.6 * multiplier
@@ -122,13 +122,13 @@ extension ARSProgressLoader {
 		self.innerCircle.path = innerPath.cgPath
 	}
 	
-	func didIncrementMultiplier() -> Bool {
+	func ars_didIncrementMultiplier() -> Bool {
 		if failed {
 			multiplier -= 1.5
 			return true
 		}
 		
-		let progress: CGFloat = progressSource()
+		let progress: CGFloat = ars_progressSource()
 		if lastMultiplierValue == progress { return false }
 		
 		if progress / multiplier > 2 {
@@ -145,7 +145,7 @@ extension ARSProgressLoader {
 		return true
 	}
 	
-	func progressSource() -> CGFloat {
+	func ars_progressSource() -> CGFloat {
 		if let progress = self.progress {
 			return CGFloat(progress.fractionCompleted * 100.0)
 		} else {
@@ -153,7 +153,7 @@ extension ARSProgressLoader {
 		}
 	}
 	
-	func completed() {
+	func ars_completed() {
 		let transform = CATransform3DMakeScale(0.01, 0.01, 1)
 		
 		CATransaction.begin()
@@ -185,17 +185,13 @@ extension ARSProgressLoader {
 		}
 	}
 	
-	func failedLoading() {
+	func ars_failedLoading() {
 		ARSStatus.show(.fail)
 		let dismissDelay = 0.5 + max(ARSLineProgressConfiguration.failCircleAnimationDrawDuration, ARSLineProgressConfiguration.failCrossAnimationDrawDuration)
 		
 		ars_dispatchAfter(dismissDelay) {
 			ars_hideLoader(ars_currentLoader, withCompletionBlock: ars_currentCompletionBlock)
 		}
-	}
-	
-	func cleanup() {
-		backgroundView.removeFromSuperview()
 	}
 	
 }
