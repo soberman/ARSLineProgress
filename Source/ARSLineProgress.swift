@@ -297,12 +297,12 @@ private extension ARSInfiniteLoader {
         
         targetView = view
         
-        ars_createCircles(outerCircle: outerCircle,
+        ars_createCircles(outerCircle,
             middleCircle: middleCircle,
             innerCircle: innerCircle,
             onView: backgroundView.contentView,
             loaderType: .infinite)
-        ars_animateCircles(outerCircle: outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
+        ars_animateCircles(outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
         ars_presentLoader(self, onView: view, completionBlock: completionBlock)
     }
     
@@ -368,12 +368,12 @@ private extension ARSProgressLoader {
         ars_currentCompletionBlock = completionBlock
         targetView = view
         
-        ars_createCircles(outerCircle: outerCircle,
+        ars_createCircles(outerCircle,
             middleCircle: middleCircle,
             innerCircle: innerCircle,
             onView: backgroundView.contentView,
             loaderType: .progress)
-        ars_animateCircles(outerCircle: outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
+        ars_animateCircles(outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
         ars_presentLoader(self, onView: view, completionBlock: nil)
         launchTimer()
     }
@@ -558,7 +558,7 @@ private final class ARSStatus: ARSLoader {
     
 }
 
-private extension ARSStatus {
+extension ARSStatus {
     
     static func drawSuccess(_ backgroundView: UIVisualEffectView) {
         let backgroundViewBounds = backgroundView.bounds
@@ -672,7 +672,7 @@ private extension ARSStatus {
 // MARK: - Background Rect
 // =====================================================================================================================
 
-private struct ARSBlurredBackgroundRect {
+fileprivate struct ARSBlurredBackgroundRect {
     
     var view: UIVisualEffectView
     
@@ -693,7 +693,7 @@ private struct ARSBlurredBackgroundRect {
 // MARK: - Extensions & Helpers & Shared Methods
 // =====================================================================================================================
 
-private func ars_stopCircleAnimations(_ loader: ARSLoader, completionBlock: @escaping () -> Void) {
+fileprivate func ars_stopCircleAnimations(_ loader: ARSLoader, completionBlock: @escaping () -> Void) {
     
     CATransaction.begin()
     CATransaction.setAnimationDuration(0.25)
@@ -704,7 +704,7 @@ private func ars_stopCircleAnimations(_ loader: ARSLoader, completionBlock: @esc
     CATransaction.commit()
 }
 
-private func ars_presentLoader(_ loader: ARSLoader, onView view: UIView?, completionBlock: (() -> Void)?) {
+fileprivate func ars_presentLoader(_ loader: ARSLoader, onView view: UIView?, completionBlock: (() -> Void)?) {
     ars_currentLoader = loader
 	
 	let emptyView = loader.emptyView
@@ -726,7 +726,7 @@ private func ars_presentLoader(_ loader: ARSLoader, onView view: UIView?, comple
     }
 }
 
-private func ars_hideLoader(_ loader: ARSLoader?, withCompletionBlock block: (() -> Void)?) {
+fileprivate func ars_hideLoader(_ loader: ARSLoader?, withCompletionBlock block: (() -> Void)?) {
     guard let loader = loader else { return }
     
     ars_dispatchOnMainQueue {
@@ -741,7 +741,7 @@ private func ars_hideLoader(_ loader: ARSLoader?, withCompletionBlock block: (()
     }
 }
 
-private func ars_window() -> UIWindow? {
+fileprivate func ars_window() -> UIWindow? {
     var targetWindow: UIWindow?
     let windows = UIApplication.shared.windows
     for window in windows {
@@ -756,7 +756,7 @@ private func ars_window() -> UIWindow? {
     return targetWindow
 }
 
-@discardableResult private func ars_createdFrameForBackgroundView(_ backgroundView: UIView, onView view: UIView?) -> Bool {
+@discardableResult fileprivate func ars_createdFrameForBackgroundView(_ backgroundView: UIView, onView view: UIView?) -> Bool {
     let center: CGPoint
     
     if view == nil {
@@ -774,7 +774,7 @@ private func ars_window() -> UIWindow? {
     return true
 }
 
-private func ars_createCircles(outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer, onView view: UIView, loaderType: ARSLoaderType) {
+fileprivate func ars_createCircles(_ outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer, onView view: UIView, loaderType: ARSLoaderType) {
     let circleRadiusOuter = ARS_CIRCLE_RADIUS_OUTER
     let circleRadiusMiddle = ARS_CIRCLE_RADIUS_MIDDLE
     let circleRadiusInner = ARS_CIRCLE_RADIUS_INNER
@@ -831,7 +831,7 @@ private func ars_createCircles(outerCircle: CAShapeLayer, middleCircle: CAShapeL
     ars_configureLayer(innerCircle, forView: view, withPath: path.cgPath, withBounds: viewBounds, withColor: ars_config.circleColorInner)
 }
 
-private func ars_configureLayer(_ layer: CAShapeLayer, forView view: UIView, withPath path: CGPath, withBounds bounds: CGRect, withColor color: CGColor) {
+fileprivate func ars_configureLayer(_ layer: CAShapeLayer, forView view: UIView, withPath path: CGPath, withBounds bounds: CGRect, withColor color: CGColor) {
     layer.path = path
     layer.frame = bounds
     layer.lineWidth = ARS_CIRCLE_LINE_WIDTH
@@ -841,7 +841,7 @@ private func ars_configureLayer(_ layer: CAShapeLayer, forView view: UIView, wit
     view.layer.addSublayer(layer)
 }
 
-private func ars_animateCircles(outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer) {
+fileprivate func ars_animateCircles(_ outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer) {
     ars_dispatchOnMainQueue {
         let outerAnimation = CABasicAnimation(keyPath: "transform.rotation")
         outerAnimation.toValue = ARS_CIRCLE_ROTATION_TO_VALUE
@@ -859,13 +859,13 @@ private func ars_animateCircles(outerCircle: CAShapeLayer, middleCircle: CAShape
     }
 }
 
-private func ars_cleanupLoader(_ loader: ARSLoader) {
+fileprivate func ars_cleanupLoader(_ loader: ARSLoader) {
     loader.emptyView.removeFromSuperview()
     ars_currentLoader = nil
     ars_currentCompletionBlock = nil
 }
 
-private extension UIColor {
+fileprivate extension UIColor {
     
     static func ars_colorWithRGB(_ red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> UIColor {
         return UIColor(red: red/255.0, green: green/255.0, blue: blue/255.0, alpha: alpha)
@@ -873,11 +873,11 @@ private extension UIColor {
     
 }
 
-private func ars_dispatchAfter(_ time: Double, block: @escaping ()->()) {
+fileprivate func ars_dispatchAfter(_ time: Double, block: @escaping ()->()) {
     let dispatchTime = DispatchTime.now() + Double(Int64(time * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
     DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: block)
 }
 
-private func ars_dispatchOnMainQueue(_ block: @escaping ()->()) {
+fileprivate func ars_dispatchOnMainQueue(_ block: @escaping ()->()) {
     DispatchQueue.main.async(execute: block)
 }
