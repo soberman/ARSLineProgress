@@ -34,11 +34,13 @@ final class ARSInfiniteLoader: ARSLoader {
 	}
 	
 	@objc func orientationChanged(_ notification: Notification) {
-		if let loader = ars_currentLoader {
-			if let targetView = loader.targetView {
-				ars_createdFrameForBackgroundView(loader.backgroundView, onView: targetView)
-			} else {
-				ars_createdFrameForBackgroundView(loader.backgroundView, onView: nil)
+		ars_dispatchOnMainQueue {
+			if let loader = ars_currentLoader {
+				if let targetView = loader.targetView {
+					ars_createdFrameForBackgroundView(loader.backgroundView, onView: targetView)
+				} else {
+					ars_createdFrameForBackgroundView(loader.backgroundView, onView: nil)
+				}
 			}
 		}
 	}

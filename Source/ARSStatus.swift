@@ -23,6 +23,28 @@ final class ARSStatus: ARSLoader {
 	init() {
 		backgroundView = ARSBlurredBackgroundRect().view
 		ars_createdFrameForBackgroundView(backgroundView, onView: nil)
+		NotificationCenter.default.addObserver(self,
+		                                       selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
+		                                       name: NSNotification.Name.UIDeviceOrientationDidChange,
+		                                       object: nil)
+	}
+	
+	deinit {
+		NotificationCenter.default.removeObserver(self,
+		                                          name: NSNotification.Name.UIDeviceOrientationDidChange,
+		                                          object: nil)
+	}
+	
+	@objc func orientationChanged(_ notification: Notification) {
+		ars_dispatchOnMainQueue {
+			if let loader = ars_currentLoader {
+				if let targetView = loader.targetView {
+					ars_createdFrameForBackgroundView(loader.backgroundView, onView: targetView)
+				} else {
+					ars_createdFrameForBackgroundView(loader.backgroundView, onView: nil)
+				}
+			}
+		}
 	}
 	
 	static func show(_ type: ARSStatusType) {
