@@ -209,7 +209,7 @@ func ars_hideLoader(_ loader: ARSLoader?, withCompletionBlock block: (() -> Void
 		let currentLayer = loader.emptyView.layer.presentation()
 		
 		let alpha = Double(currentLayer?.opacity ?? 0)
-		let fixedTime = alpha * ars_config.backgroundViewPresentAnimationDuration
+		let fixedTime = alpha * ars_config.backgroundViewDismissAnimationDuration
 		
 		CATransaction.begin()
 		CATransaction.setCompletionBlock(block)
