@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ARSLineProgress"
-  s.version      = "2.0.0"
+  s.version      = "2.0.2.1"
   s.summary      = "iOS progress bar, replacement for the default activity indicator."
 
   s.description  = <<-DESC
@@ -111,8 +111,8 @@ Pod::Spec.new do |s|
   s.author             = { "Yarik Arsenkin" => "info@arsenkin.com" }
   s.social_media_url   = "http://twitter.com/Soberman777"
   s.platform     = :ios, "8.0"
-  s.source       = { :git => "https://github.com/soberman/ARSLineProgress.git", :tag => "2.0.0" }
-  s.source_files  = "Source/ARSLineProgress.swift"
+  s.source       = { :git => "https://github.com/soberman/ARSLineProgress.git", :tag => "2.0.2.1" }
+  s.source_files  = "Source/*"
   s.exclude_files = "Demo/*", "Carthage/*"
   # s.public_header_files = "Source/ARSLineProgress.swift"
   s.requires_arc = true
