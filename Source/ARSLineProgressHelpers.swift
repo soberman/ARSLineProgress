@@ -187,10 +187,18 @@ func ars_presentLoader(_ loader: ARSLoader, onView view: UIView?, completionBloc
 			ars_window()!.addSubview(emptyView)
 		}
 		
-		emptyView.alpha = 0.1
-		UIView.animate(withDuration: ars_config.backgroundViewPresentAnimationDuration, delay: 0.0, options: .curveEaseOut, animations: {
-			emptyView.alpha = 1.0
-			}, completion: { _ in completionBlock?() })
+		CATransaction.begin()
+		CATransaction.setCompletionBlock(completionBlock)
+		
+		let alphaAnimation = CABasicAnimation(keyPath: "opacity")
+		alphaAnimation.fromValue = 0
+		alphaAnimation.toValue = 1
+		alphaAnimation.duration = ars_config.backgroundViewPresentAnimationDuration
+		
+		emptyView.layer.removeAnimation(forKey: "alpha")
+		emptyView.layer.add(alphaAnimation, forKey: "alpha")
+		
+		CATransaction.commit()
 	}
 }
 
@@ -198,11 +206,32 @@ func ars_hideLoader(_ loader: ARSLoader?, withCompletionBlock block: (() -> Void
 	guard let loader = loader else { return }
 	
 	ars_dispatchOnMainQueue {
-		UIView.animate(withDuration: ars_config.backgroundViewDismissAnimationDuration, delay: 0.0, options: .curveEaseOut, animations: {
-			loader.emptyView.alpha = 0.0
-			loader.backgroundView.transform = CGAffineTransform(scaleX: ars_config.backgroundViewDismissTransformScale,
-			                                                    y: ars_config.backgroundViewDismissTransformScale)
-			}, completion: { _ in block?() })
+		let currentLayer = loader.emptyView.layer.presentation()
+		
+		let alpha = Double(currentLayer?.opacity ?? 0)
+		let fixedTime = alpha * ars_config.backgroundViewPresentAnimationDuration
+		
+		CATransaction.begin()
+		CATransaction.setCompletionBlock(block)
+		let alphaAnimation = CABasicAnimation(keyPath: "opacity")
+		alphaAnimation.fromValue = alpha
+		alphaAnimation.toValue = 0
+		alphaAnimation.duration = fixedTime
+		alphaAnimation.isRemovedOnCompletion = true
+		
+		loader.emptyView.layer.removeAnimation(forKey: "alpha")
+		loader.emptyView.alpha = 0
+		loader.emptyView.layer.add(alphaAnimation, forKey: "alpha")
+		
+		let scaleAnimation = CABasicAnimation(keyPath: "transform")
+		scaleAnimation.fromValue = CGAffineTransform(scaleX: 1, y: 1)
+		scaleAnimation.toValue = CGAffineTransform(scaleX: ars_config.backgroundViewDismissTransformScale,
+		                                           y: ars_config.backgroundViewDismissTransformScale)
+		scaleAnimation.duration = fixedTime
+		scaleAnimation.isRemovedOnCompletion = true
+		
+		loader.backgroundView.layer.removeAnimation(forKey: "transform")
+		loader.backgroundView.layer.add(scaleAnimation, forKey: "transform")
 	}
 	
 	ars_dispatchAfter(ars_config.backgroundViewDismissAnimationDuration) {
