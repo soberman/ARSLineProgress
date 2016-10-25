@@ -14,6 +14,9 @@ final public class ARSLineProgressConfiguration: NSObject {
 	
 	public static var showSuccessCheckmark = true
 	
+	public static var backgroundViewDismissTransformScale: CGFloat = 0.9
+	public static var backgroundViewColor: CGColor = UIColor.clear.cgColor
+	public static var backgroundViewStyle: BackgroundStyle = .blur
 	public static var backgroundViewCornerRadius: CGFloat = 20.0
 	public static var backgroundViewPresentAnimationDuration: CFTimeInterval = 0.3
 	public static var backgroundViewDismissAnimationDuration: CFTimeInterval = 0.3
@@ -49,6 +52,9 @@ final public class ARSLineProgressConfiguration: NSObject {
 	public static func restoreDefaults() {
 		ARSLineProgressConfiguration.showSuccessCheckmark = true
 		
+		ARSLineProgressConfiguration.backgroundViewDismissTransformScale = 0.9
+		ARSLineProgressConfiguration.backgroundViewColor = UIColor.clear.cgColor
+		ARSLineProgressConfiguration.backgroundViewStyle = .blur
 		ARSLineProgressConfiguration.backgroundViewCornerRadius = 20.0
 		ARSLineProgressConfiguration.backgroundViewPresentAnimationDuration = 0.3
 		ARSLineProgressConfiguration.backgroundViewDismissAnimationDuration = 0.3

@@ -16,7 +16,11 @@ enum ARSLoaderType {
 	case progress
 }
 
-
+public enum BackgroundStyle {
+	case blur
+	case simple
+	case full
+}
 
 func ars_window() -> UIWindow? {
 	var targetWindow: UIWindow?
@@ -35,18 +39,29 @@ func ars_window() -> UIWindow? {
 
 @discardableResult func ars_createdFrameForBackgroundView(_ backgroundView: UIView, onView view: UIView?) -> Bool {
 	let center: CGPoint
+	let bounds: CGRect
 	
 	if view == nil {
 		guard let window = ars_window() else { return false }
-		center = CGPoint(x: window.screen.bounds.midX, y: window.screen.bounds.midY)
+		bounds = window.screen.bounds
 	} else {
-		let viewBounds = view!.bounds
-		center = CGPoint(x: viewBounds.midX, y: viewBounds.midY)
+		bounds = view!.bounds
 	}
 	
+	center = CGPoint(x: bounds.midX, y: bounds.midY)
+	
 	let sideLengths = ARS_BACKGROUND_VIEW_SIDE_LENGTH
-	backgroundView.frame = CGRect(x: center.x - sideLengths / 2, y: center.y - sideLengths / 2, width: sideLengths, height: sideLengths)
-	backgroundView.layer.cornerRadius = ars_config.backgroundViewCornerRadius
+	
+	switch ars_config.backgroundViewStyle {
+	case .blur, .simple:
+		backgroundView.frame = CGRect(x: center.x - sideLengths / 2, y: center.y - sideLengths / 2, width: sideLengths, height: sideLengths)
+		backgroundView.layer.cornerRadius = ars_config.backgroundViewCornerRadius
+	case .full:
+		backgroundView.frame = CGRect(x: bounds.minX, y: bounds.minY, width: bounds.width, height: bounds.height)
+		backgroundView.layer.cornerRadius = 0
+	}
+	
+	backgroundView.backgroundColor = UIColor(cgColor: ars_config.backgroundViewColor)
 	
 	return true
 }
@@ -63,6 +78,30 @@ class ARSBlurredBackgroundRect {
 		view = effectView
 	}
 	
+}
+
+class ARSSimpleBackgroundRect {
+	
+	var view: UIView
+	
+	init() {
+		let simpleView = UIView()
+		simpleView.backgroundColor = UIColor(cgColor: ars_config.backgroundViewColor)
+		
+		view = simpleView
+	}
+}
+
+class ARSFullBackgroundRect {
+	
+	var view: UIView
+	
+	init() {
+		let fullView = UIView()
+		fullView.backgroundColor = UIColor(cgColor: ars_config.backgroundViewColor)
+		
+		view = fullView
+	}
 }
 
 func ars_createCircles(_ outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer, onView view: UIView, loaderType: ARSLoaderType) {
@@ -161,7 +200,8 @@ func ars_hideLoader(_ loader: ARSLoader?, withCompletionBlock block: (() -> Void
 	ars_dispatchOnMainQueue {
 		UIView.animate(withDuration: ars_config.backgroundViewDismissAnimationDuration, delay: 0.0, options: .curveEaseOut, animations: {
 			loader.emptyView.alpha = 0.0
-			loader.backgroundView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+			loader.backgroundView.transform = CGAffineTransform(scaleX: ars_config.backgroundViewDismissTransformScale,
+			                                                    y: ars_config.backgroundViewDismissTransformScale)
 			}, completion: { _ in block?() })
 	}
 	

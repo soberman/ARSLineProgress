@@ -13,7 +13,19 @@ import UIKit
 final class ARSProgressLoader: ARSLoader {
 	
 	@objc var emptyView = UIView()
-	@objc var backgroundView: UIVisualEffectView
+	@objc var backgroundBlurView: UIView
+	@objc var backgroundSimpleView: UIView
+	@objc var backgroundFullView: UIView
+	@objc var backgroundView: UIView {
+		switch ars_config.backgroundViewStyle {
+		case .blur:
+			return backgroundBlurView
+		case .simple:
+			return backgroundSimpleView
+		case .full:
+			return backgroundFullView
+		}
+	}
 	@objc var outerCircle = CAShapeLayer()
 	@objc var middleCircle = CAShapeLayer()
 	@objc var innerCircle = CAShapeLayer()
@@ -26,7 +38,9 @@ final class ARSProgressLoader: ARSLoader {
 	@objc weak var targetView: UIView?
 	
 	init() {
-		backgroundView = ARSBlurredBackgroundRect().view
+		backgroundBlurView = ARSBlurredBackgroundRect().view
+		backgroundSimpleView = ARSSimpleBackgroundRect().view
+		backgroundFullView = ARSFullBackgroundRect().view
 		ARSProgressLoader.weakSelf = self
 		NotificationCenter.default.addObserver(self,
 		                                       selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
@@ -68,7 +82,7 @@ extension ARSProgressLoader {
 		ars_createCircles(outerCircle,
 		                  middleCircle: middleCircle,
 		                  innerCircle: innerCircle,
-		                  onView: backgroundView.contentView,
+		                  onView: ((backgroundView as? UIVisualEffectView)?.contentView) ?? backgroundView,
 		                  loaderType: .progress)
 		ars_animateCircles(outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
 		ars_presentLoader(self, onView: view, completionBlock: nil)
