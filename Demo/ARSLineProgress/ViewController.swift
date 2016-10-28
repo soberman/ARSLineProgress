@@ -7,25 +7,6 @@
 //
 
 import UIKit
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l >= r
-  default:
-    return !(lhs < rhs)
-  }
-}
 
 
 final class ViewController: UIViewController {
@@ -115,7 +96,6 @@ final class ViewController: UIViewController {
 
 // MARK: Helper Demo Methods
 
-private var progress: CGFloat = 0.0
 private var progressObject: Progress?
 private var isSuccess: Bool?
 
@@ -145,4 +125,19 @@ extension ViewController {
         })
     }
     
+}
+
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+	switch (lhs, rhs) {
+	case let (l?, r?):	return l < r
+	case (nil, _?):		return true
+	default:			return false
+	}
+}
+
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+	switch (lhs, rhs) {
+	case let (l?, r?):	return l >= r
+	default:			return !(lhs < rhs)
+	}
 }
