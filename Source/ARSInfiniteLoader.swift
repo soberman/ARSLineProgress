@@ -13,14 +13,28 @@ import UIKit
 final class ARSInfiniteLoader: ARSLoader {
 	
 	@objc var emptyView = UIView()
-	@objc var backgroundView: UIVisualEffectView
+	@objc var backgroundBlurView: UIVisualEffectView
+	@objc var backgroundSimpleView: UIView
+	@objc var backgroundFullView: UIView
+	@objc var backgroundView: UIView {
+		switch ars_config.backgroundViewStyle {
+		case .blur:
+			return backgroundBlurView
+		case .simple:
+			return backgroundSimpleView
+		case .full:
+			return backgroundFullView
+		}
+	}
 	@objc var outerCircle = CAShapeLayer()
 	@objc var middleCircle = CAShapeLayer()
 	@objc var innerCircle = CAShapeLayer()
 	@objc weak var targetView: UIView?
 	
 	init() {
-		backgroundView = ARSBlurredBackgroundRect().view
+		backgroundBlurView = ARSBlurredBackgroundRect().view
+		backgroundSimpleView = ARSSimpleBackgroundRect().view
+		backgroundFullView = ARSFullBackgroundRect().view
 		NotificationCenter.default.addObserver(self,
 		                                       selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
 		                                       name: NSNotification.Name.UIDeviceOrientationDidChange,
@@ -57,7 +71,7 @@ extension ARSInfiniteLoader {
 		ars_createCircles(outerCircle,
 		                  middleCircle: middleCircle,
 		                  innerCircle: innerCircle,
-		                  onView: backgroundView.contentView,
+		                  onView: ((backgroundView as? UIVisualEffectView)?.contentView) ?? backgroundView,
 		                  loaderType: .infinite)
 		ars_animateCircles(outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)
 		ars_presentLoader(self, onView: view, completionBlock: completionBlock)

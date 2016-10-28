@@ -18,10 +18,24 @@ enum ARSStatusType {
 final class ARSStatus: ARSLoader {
 	
 	@objc var emptyView = UIView()
-	@objc var backgroundView: UIVisualEffectView
+	@objc var backgroundBlurView: UIVisualEffectView
+	@objc var backgroundSimpleView: UIView
+	@objc var backgroundFullView: UIView
+	@objc var backgroundView: UIView {
+		switch ars_config.backgroundViewStyle {
+		case .blur:
+			return backgroundBlurView
+		case .simple:
+			return backgroundSimpleView
+		case .full:
+			return backgroundFullView
+		}
+	}
 	
 	init() {
-		backgroundView = ARSBlurredBackgroundRect().view
+		backgroundBlurView = ARSBlurredBackgroundRect().view
+		backgroundSimpleView = ARSSimpleBackgroundRect().view
+		backgroundFullView = ARSFullBackgroundRect().view
 		ars_createdFrameForBackgroundView(backgroundView, onView: nil)
 		NotificationCenter.default.addObserver(self,
 		                                       selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
@@ -79,16 +93,19 @@ final class ARSStatus: ARSLoader {
 
 extension ARSStatus {
 	
-	static func drawSuccess(_ backgroundView: UIVisualEffectView) {
+	static func drawSuccess(_ backgroundView: UIView) {
 		let backgroundViewBounds = backgroundView.bounds
 		let backgroundLayer = backgroundView.layer
-		let outerCircleHeight = backgroundViewBounds.height
-		let outerCircleWidth = backgroundViewBounds.width
+		
+		let checkmarkSideLength = ARS_STATUS_PATH_SIDE_LENGTH
+		let checkmarkPathCenter = CGPoint(x: (backgroundViewBounds.width - checkmarkSideLength) / 2,
+		                                  y: (backgroundViewBounds.height - checkmarkSideLength) / 2)
 		
 		let checkmarkPath = UIBezierPath()
-		checkmarkPath.move(to: CGPoint(x: outerCircleWidth * 0.28, y: outerCircleHeight * 0.53))
-		checkmarkPath.addLine(to: CGPoint(x: outerCircleWidth * 0.42, y: outerCircleHeight * 0.66))
-		checkmarkPath.addLine(to: CGPoint(x: outerCircleWidth * 0.72, y: outerCircleHeight * 0.36))
+		checkmarkPath.move(to: CGPoint(x: checkmarkSideLength * 0.28, y: checkmarkSideLength * 0.53))
+		checkmarkPath.addLine(to: CGPoint(x: checkmarkSideLength * 0.42, y: checkmarkSideLength * 0.66))
+		checkmarkPath.addLine(to: CGPoint(x: checkmarkSideLength * 0.72, y: checkmarkSideLength * 0.36))
+		checkmarkPath.apply(CGAffineTransform.init(translationX: checkmarkPathCenter.x, y: checkmarkPathCenter.y))
 		checkmarkPath.lineCapStyle = .square
 		
 		let checkmark = CAShapeLayer()
@@ -98,9 +115,9 @@ extension ARSStatus {
 		checkmark.lineWidth = ars_config.checkmarkLineWidth
 		backgroundLayer.addSublayer(checkmark)
 		
-		let successCircleArcCenter = CGPoint(x: backgroundViewBounds.midX, y: backgroundViewBounds.midY)
+		let successCircleCenter = CGPoint(x: backgroundViewBounds.midX, y: backgroundViewBounds.midY)
 		let successCircle = CAShapeLayer()
-		successCircle.path = UIBezierPath(arcCenter: successCircleArcCenter,
+		successCircle.path = UIBezierPath(arcCenter: successCircleCenter,
 		                                  radius: ARS_CIRCLE_RADIUS_OUTER,
 		                                  startAngle: -CGFloat(M_PI_2),
 		                                  endAngle: CGFloat(M_PI) / 180 * 270,
@@ -129,17 +146,20 @@ extension ARSStatus {
 		successCircle.add(animationCircle, forKey: nil)
 	}
 	
-	static func drawFail(_ backgroundView: UIVisualEffectView) {
+	static func drawFail(_ backgroundView: UIView) {
 		let backgroundViewBounds = backgroundView.bounds
 		let backgroundViewLayer = backgroundView.layer
-		let outerCircleWidth = backgroundViewBounds.width
-		let outerCircleHeight = backgroundViewBounds.height
+		
+		let crossSideLength = ARS_STATUS_PATH_SIDE_LENGTH
+		let crossPathCenter = CGPoint(x: (backgroundViewBounds.width - crossSideLength) / 2,
+		                              y: (backgroundViewBounds.height - crossSideLength) / 2)
 		
 		let crossPath = UIBezierPath()
-		crossPath.move(to: CGPoint(x: outerCircleWidth * 0.67, y: outerCircleHeight * 0.32))
-		crossPath.addLine(to: CGPoint(x: outerCircleWidth * 0.32, y: outerCircleHeight * 0.67))
-		crossPath.move(to: CGPoint(x: outerCircleWidth * 0.32, y: outerCircleHeight * 0.32))
-		crossPath.addLine(to: CGPoint(x: outerCircleWidth * 0.67, y: outerCircleHeight * 0.67))
+		crossPath.move(to: CGPoint(x: crossSideLength * 0.67, y: crossSideLength * 0.32))
+		crossPath.addLine(to: CGPoint(x: crossSideLength * 0.32, y: crossSideLength * 0.67))
+		crossPath.move(to: CGPoint(x: crossSideLength * 0.32, y: crossSideLength * 0.32))
+		crossPath.addLine(to: CGPoint(x: crossSideLength * 0.67, y: crossSideLength * 0.67))
+		crossPath.apply(CGAffineTransform.init(translationX: crossPathCenter.x, y: crossPathCenter.y))
 		crossPath.lineCapStyle = .square
 		
 		let cross = CAShapeLayer()

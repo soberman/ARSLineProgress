@@ -89,8 +89,27 @@ final class ViewController: UIViewController {
     
     @IBAction func didTapShowFailButton(_ sender: AnyObject) {
         ARSLineProgress.showFail()
-    }
-    
+	}
+	
+	@IBAction func showFullBackgroundLoader(_ sender: AnyObject) {
+		if ARSLineProgress.shown { return }
+		
+		ARSLineProgressConfiguration.backgroundViewStyle = .full
+		ARSLineProgressConfiguration.backgroundViewColor = UIColor.white.cgColor
+		ARSLineProgressConfiguration.backgroundViewDismissTransformScale = 1
+		
+		ARSLineProgress.showWithPresentCompetionBlock { () -> Void in
+			print("Showed with completion block")
+		}
+		
+		DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(3 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: { () -> Void in
+			ARSLineProgress.hideWithCompletionBlock({ () -> Void in
+				print("Hidden with completion block")
+				
+				ARSLineProgressConfiguration.restoreDefaults()
+			})
+		})
+	}
 }
 
 
