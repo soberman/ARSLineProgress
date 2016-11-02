@@ -9,6 +9,15 @@
 /* Begin PBXBuildFile section */
 		279C59111C56F3E500228DE3 /* ARSLineProgress.h in Headers */ = {isa = PBXBuildFile; fileRef = 279C59101C56F3E500228DE3 /* ARSLineProgress.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		279C59191C56F56A00228DE3 /* ARSLineProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279C59181C56F56A00228DE3 /* ARSLineProgress.swift */; };
+		37A67CCE1DCA12E300646E32 /* ARSInfiniteLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A67CC51DCA12E300646E32 /* ARSInfiniteLoader.swift */; };
+		37A67CCF1DCA12E300646E32 /* ARSLineProgressConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A67CC61DCA12E300646E32 /* ARSLineProgressConstants.swift */; };
+		37A67CD01DCA12E300646E32 /* ARSLineProgressCustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A67CC71DCA12E300646E32 /* ARSLineProgressCustomization.swift */; };
+		37A67CD11DCA12E300646E32 /* ARSLineProgressExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A67CC81DCA12E300646E32 /* ARSLineProgressExtensions.swift */; };
+		37A67CD21DCA12E300646E32 /* ARSLineProgressHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A67CC91DCA12E300646E32 /* ARSLineProgressHelpers.swift */; };
+		37A67CD31DCA12E300646E32 /* ARSLineProgressProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A67CCA1DCA12E300646E32 /* ARSLineProgressProtocols.swift */; };
+		37A67CD41DCA12E300646E32 /* ARSLineProgressTypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A67CCB1DCA12E300646E32 /* ARSLineProgressTypeAliases.swift */; };
+		37A67CD51DCA12E300646E32 /* ARSProgressLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A67CCC1DCA12E300646E32 /* ARSProgressLoader.swift */; };
+		37A67CD61DCA12E300646E32 /* ARSStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A67CCD1DCA12E300646E32 /* ARSStatus.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -16,6 +25,15 @@
 		279C59101C56F3E500228DE3 /* ARSLineProgress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARSLineProgress.h; sourceTree = "<group>"; };
 		279C59121C56F3E500228DE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		279C59181C56F56A00228DE3 /* ARSLineProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSLineProgress.swift; path = ../../../Source/ARSLineProgress.swift; sourceTree = "<group>"; };
+		37A67CC51DCA12E300646E32 /* ARSInfiniteLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSInfiniteLoader.swift; path = ../../../Source/ARSInfiniteLoader.swift; sourceTree = "<group>"; };
+		37A67CC61DCA12E300646E32 /* ARSLineProgressConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSLineProgressConstants.swift; path = ../../../Source/ARSLineProgressConstants.swift; sourceTree = "<group>"; };
+		37A67CC71DCA12E300646E32 /* ARSLineProgressCustomization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSLineProgressCustomization.swift; path = ../../../Source/ARSLineProgressCustomization.swift; sourceTree = "<group>"; };
+		37A67CC81DCA12E300646E32 /* ARSLineProgressExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSLineProgressExtensions.swift; path = ../../../Source/ARSLineProgressExtensions.swift; sourceTree = "<group>"; };
+		37A67CC91DCA12E300646E32 /* ARSLineProgressHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSLineProgressHelpers.swift; path = ../../../Source/ARSLineProgressHelpers.swift; sourceTree = "<group>"; };
+		37A67CCA1DCA12E300646E32 /* ARSLineProgressProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSLineProgressProtocols.swift; path = ../../../Source/ARSLineProgressProtocols.swift; sourceTree = "<group>"; };
+		37A67CCB1DCA12E300646E32 /* ARSLineProgressTypeAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSLineProgressTypeAliases.swift; path = ../../../Source/ARSLineProgressTypeAliases.swift; sourceTree = "<group>"; };
+		37A67CCC1DCA12E300646E32 /* ARSProgressLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSProgressLoader.swift; path = ../../../Source/ARSProgressLoader.swift; sourceTree = "<group>"; };
+		37A67CCD1DCA12E300646E32 /* ARSStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSStatus.swift; path = ../../../Source/ARSStatus.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +66,15 @@
 		279C590F1C56F3E500228DE3 /* ARSLineProgress */ = {
 			isa = PBXGroup;
 			children = (
+				37A67CC51DCA12E300646E32 /* ARSInfiniteLoader.swift */,
+				37A67CC61DCA12E300646E32 /* ARSLineProgressConstants.swift */,
+				37A67CC71DCA12E300646E32 /* ARSLineProgressCustomization.swift */,
+				37A67CC81DCA12E300646E32 /* ARSLineProgressExtensions.swift */,
+				37A67CC91DCA12E300646E32 /* ARSLineProgressHelpers.swift */,
+				37A67CCA1DCA12E300646E32 /* ARSLineProgressProtocols.swift */,
+				37A67CCB1DCA12E300646E32 /* ARSLineProgressTypeAliases.swift */,
+				37A67CCC1DCA12E300646E32 /* ARSProgressLoader.swift */,
+				37A67CCD1DCA12E300646E32 /* ARSStatus.swift */,
 				279C59181C56F56A00228DE3 /* ARSLineProgress.swift */,
 				279C59101C56F3E500228DE3 /* ARSLineProgress.h */,
 				279C59121C56F3E500228DE3 /* Info.plist */,
@@ -134,7 +161,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37A67CD31DCA12E300646E32 /* ARSLineProgressProtocols.swift in Sources */,
 				279C59191C56F56A00228DE3 /* ARSLineProgress.swift in Sources */,
+				37A67CD01DCA12E300646E32 /* ARSLineProgressCustomization.swift in Sources */,
+				37A67CCF1DCA12E300646E32 /* ARSLineProgressConstants.swift in Sources */,
+				37A67CD61DCA12E300646E32 /* ARSStatus.swift in Sources */,
+				37A67CD41DCA12E300646E32 /* ARSLineProgressTypeAliases.swift in Sources */,
+				37A67CCE1DCA12E300646E32 /* ARSInfiniteLoader.swift in Sources */,
+				37A67CD11DCA12E300646E32 /* ARSLineProgressExtensions.swift in Sources */,
+				37A67CD51DCA12E300646E32 /* ARSProgressLoader.swift in Sources */,
+				37A67CD21DCA12E300646E32 /* ARSLineProgressHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
