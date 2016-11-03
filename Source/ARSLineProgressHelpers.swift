@@ -191,6 +191,7 @@ func ars_presentLoader(_ loader: ARSLoader, onView view: UIView?, completionBloc
 		CATransaction.setCompletionBlock(completionBlock)
 		
 		let alphaAnimation = CABasicAnimation(keyPath: "opacity")
+		alphaAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
 		alphaAnimation.fromValue = 0
 		alphaAnimation.toValue = 1
 		alphaAnimation.duration = ars_config.backgroundViewPresentAnimationDuration
@@ -206,6 +207,7 @@ func ars_hideLoader(_ loader: ARSLoader?, withCompletionBlock block: (() -> Void
 	guard let loader = loader else { return }
 	
 	ars_dispatchOnMainQueue {
+		
 		let currentLayer = loader.emptyView.layer.presentation()
 		
 		let alpha = Double(currentLayer?.opacity ?? 0)
@@ -214,6 +216,7 @@ func ars_hideLoader(_ loader: ARSLoader?, withCompletionBlock block: (() -> Void
 		CATransaction.begin()
 		CATransaction.setCompletionBlock(block)
 		let alphaAnimation = CABasicAnimation(keyPath: "opacity")
+		alphaAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
 		alphaAnimation.fromValue = alpha
 		alphaAnimation.toValue = 0
 		alphaAnimation.duration = fixedTime
@@ -224,6 +227,7 @@ func ars_hideLoader(_ loader: ARSLoader?, withCompletionBlock block: (() -> Void
 		loader.emptyView.layer.add(alphaAnimation, forKey: "alpha")
 		
 		let scaleAnimation = CABasicAnimation(keyPath: "transform")
+		scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
 		scaleAnimation.fromValue = CGAffineTransform(scaleX: 1, y: 1)
 		scaleAnimation.toValue = CGAffineTransform(scaleX: ars_config.backgroundViewDismissTransformScale,
 		                                           y: ars_config.backgroundViewDismissTransformScale)
