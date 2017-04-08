@@ -109,11 +109,11 @@ public final class ARSLineProgress: NSObject {
         ARSProgressLoader.weakSelf?.progressValue = value
     }
     
-    public static func cancelPorgressWithFailAnimation(_ showFail: Bool) {
+    public static func cancelProgressWithFailAnimation(_ showFail: Bool) {
         ARSProgressLoader.weakSelf?.ars_cancelWithFailAnimation(showFail, completionBlock: nil)
     }
     
-    public static func cancelPorgressWithFailAnimation(_ showFail: Bool, completionBlock: (() -> Void)?) {
+    public static func cancelProgressWithFailAnimation(_ showFail: Bool, completionBlock: (() -> Void)?) {
         ARSProgressLoader.weakSelf?.ars_cancelWithFailAnimation(showFail, completionBlock: completionBlock)
     }
     

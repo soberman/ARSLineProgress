@@ -113,7 +113,7 @@ extension ViewController {
             progressObject!.completedUnitCount += Int64(arc4random_uniform(30))
             
             if isSuccess == false && progressObject?.fractionCompleted >= 0.7 {
-                ARSLineProgress.cancelPorgressWithFailAnimation(true, completionBlock: {
+                ARSLineProgress.cancelProgressWithFailAnimation(true, completionBlock: {
                     print("Hidden with completion block")
                 })
                 return
