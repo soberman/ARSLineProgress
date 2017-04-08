@@ -9,7 +9,7 @@ iOS progress bar as a replacement for iOS activity indicator. This progress HUD 
 
 | 			                                                    OK                                                  			    | 				                                                      Error                                               			  |
 | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| <img src="http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_success.gif", alt="ARSLineProgress OK", width=191, height=339> | <img src="http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_failure.gif", alt="ARSLineProgress Error", width=191, height=339> |
+| ![ARSLineProgress OK][OK] | ![ARSLineProgress Error][Error] |
 
 [Infinite]: http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_infinite.gif
 [Success]: http://git.arsenkin.com/ARSLineProgress/ARSLineProgress_progress_with_success.gif
