@@ -119,8 +119,8 @@ extension ARSStatus {
 		let successCircle = CAShapeLayer()
 		successCircle.path = UIBezierPath(arcCenter: successCircleCenter,
 		                                  radius: ARS_CIRCLE_RADIUS_OUTER,
-		                                  startAngle: -CGFloat(M_PI_2),
-		                                  endAngle: CGFloat(M_PI) / 180 * 270,
+		                                  startAngle: -CGFloat.pi / 2 ,
+		                                  endAngle: CGFloat.pi / 180 * 270,
 		                                  clockwise: true).cgPath
 		successCircle.fillColor = nil
 		successCircle.strokeColor = ars_config.successCircleColor
@@ -174,8 +174,8 @@ extension ARSStatus {
 		let failCircle = CAShapeLayer()
 		failCircle.path = UIBezierPath(arcCenter: failCircleArcCenter,
 		                               radius: ARS_CIRCLE_RADIUS_OUTER,
-		                               startAngle: -CGFloat(M_PI_2),
-		                               endAngle: CGFloat(M_PI) / 180 * 270,
+		                               startAngle: -CGFloat.pi / 2,
+		                               endAngle: CGFloat.pi / 180 * 270,
 		                               clockwise: true).cgPath
 		failCircle.fillColor = nil
 		failCircle.strokeColor = ars_config.failCircleColor

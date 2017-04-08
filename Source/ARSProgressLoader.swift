@@ -128,7 +128,7 @@ extension ARSProgressLoader {
 	func ars_drawCirclePath() {
 		let viewBounds = backgroundView.bounds
 		let center = CGPoint(x: viewBounds.midX, y: viewBounds.midY)
-		let endAngle = CGFloat(M_PI) / 180 * 3.6 * multiplier
+		let endAngle = CGFloat.pi / 180 * 3.6 * multiplier
 		let outerPath = UIBezierPath(arcCenter: center, radius: ARS_CIRCLE_RADIUS_OUTER, startAngle: 0, endAngle: endAngle, clockwise: true)
 		let middlePath = UIBezierPath(arcCenter: center, radius: ARS_CIRCLE_RADIUS_MIDDLE, startAngle: 0, endAngle: endAngle, clockwise: true)
 		let innerPath = UIBezierPath(arcCenter: center, radius: ARS_CIRCLE_RADIUS_INNER, startAngle: 0, endAngle: endAngle, clockwise: true)
