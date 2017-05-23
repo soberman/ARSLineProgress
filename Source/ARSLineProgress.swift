@@ -25,6 +25,10 @@ public final class ARSLineProgress: NSObject {
     public static func showSuccess() {
         if !statusShown { ARSStatus.show(.success) }
     }
+	
+	public static func showSuccess(completionBlock: @escaping () -> Void) {
+		if !statusShown { ARSStatus.show(.success, completionBlock: completionBlock) }
+	}
     
     /**
         Will interrupt the current .Infinite loader progress and show fail animation instead.
@@ -32,7 +36,11 @@ public final class ARSLineProgress: NSObject {
     public static func showFail() {
         if !statusShown { ARSStatus.show(.fail) }
     }
-    
+	
+	public static func showFail(completionBlock: @escaping () -> Void) {
+		if !statusShown { ARSStatus.show(.fail, completionBlock: completionBlock) }
+	}
+	
     
     // MARK: Show Infinite Loader
     

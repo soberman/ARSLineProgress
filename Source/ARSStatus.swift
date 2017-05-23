@@ -61,20 +61,21 @@ final class ARSStatus: ARSLoader {
 		}
 	}
 	
-	static func show(_ type: ARSStatusType) {
+	static func show(_ type: ARSStatusType, completionBlock: (() -> ())? = nil) {
 		if let loader = ars_currentLoader {
 			ars_stopCircleAnimations(loader, completionBlock: {
-				drawStatus(type, loader: loader)
+				drawStatus(type, loader: loader, completionBlock: completionBlock)
 			})
 		} else {
 			let loader = ARSStatus()
 			ars_presentLoader(loader, onView: nil, completionBlock: {
-				drawStatus(type, loader: loader)
+				drawStatus(type, loader: loader, completionBlock: completionBlock)
 			})
 		}
 	}
 	
-	static func drawStatus(_ type: ARSStatusType, loader: ARSLoader) {
+	static func drawStatus(_ type: ARSStatusType, loader: ARSLoader,
+	                       completionBlock: (() -> ())? = nil) {
 		ars_currentStatus = loader
 		
 		switch type {
@@ -85,7 +86,7 @@ final class ARSStatus: ARSLoader {
 		}
 		
 		ars_dispatchAfter(1.25) {
-			ars_hideLoader(loader, withCompletionBlock: nil)
+			ars_hideLoader(loader, withCompletionBlock: completionBlock)
 		}
 	}
 	
@@ -120,7 +121,7 @@ extension ARSStatus {
 		successCircle.path = UIBezierPath(arcCenter: successCircleCenter,
 		                                  radius: ARS_CIRCLE_RADIUS_OUTER,
 		                                  startAngle: -CGFloat(M_PI_2),
-		                                  endAngle: CGFloat(M_PI) / 180 * 270,
+		                                  endAngle: CGFloat.pi / 180 * 270,
 		                                  clockwise: true).cgPath
 		successCircle.fillColor = nil
 		successCircle.strokeColor = ars_config.successCircleColor
@@ -175,7 +176,7 @@ extension ARSStatus {
 		failCircle.path = UIBezierPath(arcCenter: failCircleArcCenter,
 		                               radius: ARS_CIRCLE_RADIUS_OUTER,
 		                               startAngle: -CGFloat(M_PI_2),
-		                               endAngle: CGFloat(M_PI) / 180 * 270,
+		                               endAngle: CGFloat.pi / 180 * 270,
 		                               clockwise: true).cgPath
 		failCircle.fillColor = nil
 		failCircle.strokeColor = ars_config.failCircleColor
