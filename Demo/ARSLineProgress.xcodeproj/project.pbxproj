@@ -22,6 +22,7 @@
 		276406C21C3832B700BCE105 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 276406C11C3832B700BCE105 /* Assets.xcassets */; };
 		276406C51C3832B700BCE105 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 276406C31C3832B700BCE105 /* LaunchScreen.storyboard */; };
 		27E116281C55844300661F75 /* ARSLineProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E116271C55844300661F75 /* ARSLineProgress.swift */; };
+		938FA74420460F6D00B968F1 /* ARSLineProgressCustomizationObjcExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938FA74320460F6D00B968F1 /* ARSLineProgressCustomizationObjcExt.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -55,6 +56,7 @@
 		276406C41C3832B700BCE105 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		276406C61C3832B700BCE105 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27E116271C55844300661F75 /* ARSLineProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSLineProgress.swift; path = ../../Source/ARSLineProgress.swift; sourceTree = "<group>"; };
+		938FA74320460F6D00B968F1 /* ARSLineProgressCustomizationObjcExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARSLineProgressCustomizationObjcExt.swift; path = ../../Source/ARSLineProgressCustomizationObjcExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 			children = (
 				27E116271C55844300661F75 /* ARSLineProgress.swift */,
 				2734519E1DAA807000D53326 /* ARSLineProgressCustomization.swift */,
+				938FA74320460F6D00B968F1 /* ARSLineProgressCustomizationObjcExt.swift */,
 				2734519C1DAA807000D53326 /* ARSInfiniteLoader.swift */,
 				273451AC1DAA85A500D53326 /* ARSProgressLoader.swift */,
 				273451AE1DAA85DE00D53326 /* ARSStatus.swift */,
@@ -190,6 +193,7 @@
 				273451A71DAA82C800D53326 /* ARSLineProgressHelpers.swift in Sources */,
 				27E116281C55844300661F75 /* ARSLineProgress.swift in Sources */,
 				273451AD1DAA85A500D53326 /* ARSProgressLoader.swift in Sources */,
+				938FA74420460F6D00B968F1 /* ARSLineProgressCustomizationObjcExt.swift in Sources */,
 				276406BB1C3832B600BCE105 /* AppDelegate.swift in Sources */,
 				273451AB1DAA84AE00D53326 /* ARSLineProgressExtensions.swift in Sources */,
 			);
