@@ -16,6 +16,7 @@ final class ARSProgressLoader: ARSLoader {
 	@objc var backgroundBlurView: UIView
 	@objc var backgroundSimpleView: UIView
 	@objc var backgroundFullView: UIView
+    @objc var title: NSString
 	@objc var backgroundView: UIView {
 		switch ars_config.backgroundViewStyle {
 		case .blur:
@@ -38,6 +39,7 @@ final class ARSProgressLoader: ARSLoader {
 	@objc weak var targetView: UIView?
 	
 	init() {
+        title = ""
 		backgroundBlurView = ARSBlurredBackgroundRect().view
 		backgroundSimpleView = ARSSimpleBackgroundRect().view
 		backgroundFullView = ARSFullBackgroundRect().view
@@ -58,9 +60,9 @@ final class ARSProgressLoader: ARSLoader {
 		ars_dispatchOnMainQueue {
 			if let loader = ars_currentLoader {
 				if let targetView = loader.targetView {
-					ars_createdFrameForBackgroundView(loader.backgroundView, onView: targetView)
+					ars_createdFrameForBackgroundView(loader.backgroundView, title:loader.title, onView: targetView)
 				} else {
-					ars_createdFrameForBackgroundView(loader.backgroundView, onView: nil)
+					ars_createdFrameForBackgroundView(loader.backgroundView, title:loader.title, onView: nil)
 				}
 			}
 		}
@@ -73,7 +75,7 @@ extension ARSProgressLoader {
 	// MARK: Show/Cancel
 	
 	func ars_showWithValue(_ value: CGFloat, onView view: UIView?, progress: Progress?, completionBlock: (() -> Void)?) {
-		if ars_createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
+		if ars_createdFrameForBackgroundView(backgroundView, title:title, onView: view) == false { return }
 		if let progress = progress { self.progress = progress }
 		
 		ars_currentCompletionBlock = completionBlock
@@ -188,7 +190,7 @@ extension ARSProgressLoader {
 		
 		ars_dispatchAfter(0.9) {
 			if ARSLineProgressConfiguration.showSuccessCheckmark {
-				ARSStatus.show(.success)
+                ARSStatus.show(.success, title: self.title)
 				
 				let dismissDelay = 0.5 + max(ARSLineProgressConfiguration.successCircleAnimationDrawDuration, ARSLineProgressConfiguration.checkmarkAnimationDrawDuration)
 				
@@ -202,7 +204,7 @@ extension ARSProgressLoader {
 	}
 	
 	func ars_failedLoading() {
-		ARSStatus.show(.fail)
+		ARSStatus.show(.fail, title: self.title)
 		let dismissDelay = 0.5 + max(ARSLineProgressConfiguration.failCircleAnimationDrawDuration, ARSLineProgressConfiguration.failCrossAnimationDrawDuration)
 		
 		ars_dispatchAfter(dismissDelay) {

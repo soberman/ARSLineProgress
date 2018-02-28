@@ -21,6 +21,7 @@ final class ARSStatus: ARSLoader {
 	@objc var backgroundBlurView: UIVisualEffectView
 	@objc var backgroundSimpleView: UIView
 	@objc var backgroundFullView: UIView
+    @objc var title: NSString
 	@objc var backgroundView: UIView {
 		switch ars_config.backgroundViewStyle {
 		case .blur:
@@ -33,10 +34,11 @@ final class ARSStatus: ARSLoader {
 	}
 	
 	init() {
+        title = ""
 		backgroundBlurView = ARSBlurredBackgroundRect().view
 		backgroundSimpleView = ARSSimpleBackgroundRect().view
 		backgroundFullView = ARSFullBackgroundRect().view
-		ars_createdFrameForBackgroundView(backgroundView, onView: nil)
+        ars_createdFrameForBackgroundView(backgroundView, title:title, onView: nil)
 		NotificationCenter.default.addObserver(self,
 		                                       selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
 		                                       name: NSNotification.Name.UIDeviceOrientationDidChange,
@@ -53,15 +55,15 @@ final class ARSStatus: ARSLoader {
 		ars_dispatchOnMainQueue {
 			if let loader = ars_currentLoader {
 				if let targetView = loader.targetView {
-					ars_createdFrameForBackgroundView(loader.backgroundView, onView: targetView)
+                    ars_createdFrameForBackgroundView(loader.backgroundView, title:loader.title, onView: targetView)
 				} else {
-					ars_createdFrameForBackgroundView(loader.backgroundView, onView: nil)
+                    ars_createdFrameForBackgroundView(loader.backgroundView, title:loader.title, onView: nil)
 				}
 			}
 		}
 	}
 	
-	static func show(_ type: ARSStatusType) {
+    static func show(_ type: ARSStatusType, title: NSString) {
 		if let loader = ars_currentLoader {
 			ars_stopCircleAnimations(loader, completionBlock: {
 				drawStatus(type, loader: loader)

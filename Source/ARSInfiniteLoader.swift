@@ -16,6 +16,7 @@ final class ARSInfiniteLoader: ARSLoader {
 	@objc var backgroundBlurView: UIVisualEffectView
 	@objc var backgroundSimpleView: UIView
 	@objc var backgroundFullView: UIView
+    @objc var title: NSString
 	@objc var backgroundView: UIView {
 		switch ars_config.backgroundViewStyle {
 		case .blur:
@@ -32,6 +33,7 @@ final class ARSInfiniteLoader: ARSLoader {
 	@objc weak var targetView: UIView?
 	
 	init() {
+        title = ""
 		backgroundBlurView = ARSBlurredBackgroundRect().view
 		backgroundSimpleView = ARSSimpleBackgroundRect().view
 		backgroundFullView = ARSFullBackgroundRect().view
@@ -51,9 +53,9 @@ final class ARSInfiniteLoader: ARSLoader {
 		ars_dispatchOnMainQueue {
 			if let loader = ars_currentLoader {
 				if let targetView = loader.targetView {
-					ars_createdFrameForBackgroundView(loader.backgroundView, onView: targetView)
+                    ars_createdFrameForBackgroundView(loader.backgroundView, title:loader.title, onView: targetView)
 				} else {
-					ars_createdFrameForBackgroundView(loader.backgroundView, onView: nil)
+                    ars_createdFrameForBackgroundView(loader.backgroundView, title:loader.title, onView: nil)
 				}
 			}
 		}
@@ -64,7 +66,7 @@ final class ARSInfiniteLoader: ARSLoader {
 extension ARSInfiniteLoader {
 	
 	func ars_showOnView(_ view: UIView?, completionBlock: (() -> Void)?) {
-		if ars_createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
+		if ars_createdFrameForBackgroundView(backgroundView, title:self.title, onView: view) == false { return }
 		
 		targetView = view
 		

@@ -37,9 +37,22 @@ func ars_window() -> UIWindow? {
 	return targetWindow
 }
 
-@discardableResult func ars_createdFrameForBackgroundView(_ backgroundView: UIView, onView view: UIView?) -> Bool {
+func sizeForTitle(_ title : NSString?) -> CGSize{
+    if title != nil{
+        return title!.boundingRect(with:CGSize(width:0, height:0),
+                                  options:NSStringDrawingOptions.usesLineFragmentOrigin,
+                                  attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: ARS_TITLE_SIZE)],
+                                  context:nil)
+            .size
+    }
+    
+    return CGSize(width:0, height:0)
+}
+
+@discardableResult func ars_createdFrameForBackgroundView(_ backgroundView: UIView, title: NSString?, onView view: UIView?) -> Bool {
 	let center: CGPoint
 	let bounds: CGRect
+    let lbSize = sizeForTitle(title)
 	
 	if view == nil {
 		guard let window = ars_window() else { return false }

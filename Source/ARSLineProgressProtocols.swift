@@ -13,6 +13,7 @@ import UIKit
 @objc protocol ARSLoader {
 	var emptyView: UIView { get }
 	var backgroundView: UIView { get }
+    @objc var title: NSString { get set }
 	@objc optional var outerCircle: CAShapeLayer { get set }
 	@objc optional var middleCircle: CAShapeLayer { get set }
 	@objc optional var innerCircle: CAShapeLayer { get set }

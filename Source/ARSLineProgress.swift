@@ -23,16 +23,23 @@ public final class ARSLineProgress: NSObject {
         Will interrupt the current .Infinite loader progress and show success animation instead.
     */
     public static func showSuccess() {
-        if !statusShown { ARSStatus.show(.success) }
+        if !statusShown { ARSStatus.show(.success, title: "") }
+    }
+    
+    public static func showSuccess(title: NSString) {
+        if !statusShown { ARSStatus.show(.success, title: title) }
     }
     
     /**
         Will interrupt the current .Infinite loader progress and show fail animation instead.
     */
     public static func showFail() {
-        if !statusShown { ARSStatus.show(.fail) }
+        if !statusShown { ARSStatus.show(.success, title: "") }
     }
     
+    public static func showFail(title: NSString) {
+        if !statusShown { ARSStatus.show(.success, title: title) }
+    }
     
     // MARK: Show Infinite Loader
     

@@ -89,9 +89,9 @@
 		276406B91C3832B600BCE105 /* ARSLineProgress */ = {
 			isa = PBXGroup;
 			children = (
-				27E116271C55844300661F75 /* ARSLineProgress.swift */,
 				2734519E1DAA807000D53326 /* ARSLineProgressCustomization.swift */,
 				938FA74320460F6D00B968F1 /* ARSLineProgressCustomizationObjcExt.swift */,
+				27E116271C55844300661F75 /* ARSLineProgress.swift */,
 				2734519C1DAA807000D53326 /* ARSInfiniteLoader.swift */,
 				273451AC1DAA85A500D53326 /* ARSProgressLoader.swift */,
 				273451AE1DAA85DE00D53326 /* ARSStatus.swift */,
