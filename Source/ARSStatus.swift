@@ -21,7 +21,8 @@ final class ARSStatus: ARSLoader {
 	@objc var backgroundBlurView: UIVisualEffectView
 	@objc var backgroundSimpleView: UIView
 	@objc var backgroundFullView: UIView
-    @objc var title: NSString
+    @objc var lbTitle: UILabel = UILabel()
+    @objc var title: NSString?
 	@objc var backgroundView: UIView {
 		switch ars_config.backgroundViewStyle {
 		case .blur:
@@ -63,7 +64,7 @@ final class ARSStatus: ARSLoader {
 		}
 	}
 	
-    static func show(_ type: ARSStatusType, title: NSString) {
+    static func show(_ type: ARSStatusType, title: NSString?) {
 		if let loader = ars_currentLoader {
 			ars_stopCircleAnimations(loader, completionBlock: {
 				drawStatus(type, loader: loader)

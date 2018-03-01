@@ -16,7 +16,8 @@ final class ARSProgressLoader: ARSLoader {
 	@objc var backgroundBlurView: UIView
 	@objc var backgroundSimpleView: UIView
 	@objc var backgroundFullView: UIView
-    @objc var title: NSString
+    @objc var lbTitle: UILabel = UILabel()
+    @objc var title: NSString?
 	@objc var backgroundView: UIView {
 		switch ars_config.backgroundViewStyle {
 		case .blur:
@@ -84,6 +85,7 @@ extension ARSProgressLoader {
 		ars_createCircles(outerCircle,
 		                  middleCircle: middleCircle,
 		                  innerCircle: innerCircle,
+                          title: title,
 		                  onView: ((backgroundView as? UIVisualEffectView)?.contentView) ?? backgroundView,
 		                  loaderType: .progress)
 		ars_animateCircles(outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)

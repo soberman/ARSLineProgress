@@ -16,7 +16,8 @@ final class ARSInfiniteLoader: ARSLoader {
 	@objc var backgroundBlurView: UIVisualEffectView
 	@objc var backgroundSimpleView: UIView
 	@objc var backgroundFullView: UIView
-    @objc var title: NSString
+    @objc var lbTitle: UILabel = UILabel()
+    @objc var title: NSString?
 	@objc var backgroundView: UIView {
 		switch ars_config.backgroundViewStyle {
 		case .blur:
@@ -37,6 +38,10 @@ final class ARSInfiniteLoader: ARSLoader {
 		backgroundBlurView = ARSBlurredBackgroundRect().view
 		backgroundSimpleView = ARSSimpleBackgroundRect().view
 		backgroundFullView = ARSFullBackgroundRect().view
+        
+        lbTitle.textColor = ARS_TITLE_COLOR
+        lbTitle.font = UIFont.systemFont(ofSize: ARS_TITLE_SIZE)
+        
 		NotificationCenter.default.addObserver(self,
 		                                       selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
 		                                       name: NSNotification.Name.UIDeviceOrientationDidChange,
@@ -65,14 +70,28 @@ final class ARSInfiniteLoader: ARSLoader {
 
 extension ARSInfiniteLoader {
 	
-	func ars_showOnView(_ view: UIView?, completionBlock: (() -> Void)?) {
+    func ars_showOnView(_ view: UIView?, title: NSString?, completionBlock: (() -> Void)?) {
+        self.title = title
+        
 		if ars_createdFrameForBackgroundView(backgroundView, title:self.title, onView: view) == false { return }
-		
+        
+        if(title != nil && title!.length > 0){
+            lbTitle.text = self.title! as String;
+            lbTitle.sizeToFit();
+            let parentView = ((backgroundView as? UIVisualEffectView)?.contentView) ?? backgroundView;
+            parentView.addSubview(lbTitle);
+            
+            lbTitle.center = CGPoint(x:parentView.center.x,
+                                     y:parentView.frame.origin.y + backgroundView.frame.size.height - ARS_TITLE_MARGIN - lbTitle.frame.size.height);
+        }
+        
+        
 		targetView = view
 		
 		ars_createCircles(outerCircle,
 		                  middleCircle: middleCircle,
 		                  innerCircle: innerCircle,
+                          title: title,
 		                  onView: ((backgroundView as? UIVisualEffectView)?.contentView) ?? backgroundView,
 		                  loaderType: .infinite)
 		ars_animateCircles(outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)

@@ -38,7 +38,7 @@ func ars_window() -> UIWindow? {
 }
 
 func sizeForTitle(_ title : NSString?) -> CGSize{
-    if title != nil{
+    if (title != nil && title!.length > 0){
         return title!.boundingRect(with:CGSize(width:0, height:0),
                                   options:NSStringDrawingOptions.usesLineFragmentOrigin,
                                   attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: ARS_TITLE_SIZE)],
@@ -64,10 +64,15 @@ func sizeForTitle(_ title : NSString?) -> CGSize{
 	center = CGPoint(x: bounds.midX, y: bounds.midY)
 	
 	let sideLengths = ARS_BACKGROUND_VIEW_SIDE_LENGTH
-	
+    let width = max(sideLengths, lbSize.width + 2 * ARS_TITLE_MARGIN)
+    let height = sideLengths + (lbSize.height > 0 ? lbSize.height + ARS_TITLE_MARGIN : 0)
+    
 	switch ars_config.backgroundViewStyle {
 	case .blur, .simple:
-		backgroundView.frame = CGRect(x: center.x - sideLengths / 2, y: center.y - sideLengths / 2, width: sideLengths, height: sideLengths)
+        backgroundView.frame = CGRect(x: center.x - width / 2,
+                                      y: center.y - height / 2,
+                                      width: width,
+                                      height: height)
 		backgroundView.layer.cornerRadius = ars_config.backgroundViewCornerRadius
 	case .full:
 		backgroundView.frame = CGRect(x: bounds.minX, y: bounds.minY, width: bounds.width, height: bounds.height)
@@ -117,11 +122,13 @@ class ARSFullBackgroundRect {
 	}
 }
 
-func ars_createCircles(_ outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer, onView view: UIView, loaderType: ARSLoaderType) {
+func ars_createCircles(_ outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer, title: NSString?, onView view: UIView, loaderType: ARSLoaderType) {
 	let circleRadiusOuter = ARS_CIRCLE_RADIUS_OUTER
 	let circleRadiusMiddle = ARS_CIRCLE_RADIUS_MIDDLE
 	let circleRadiusInner = ARS_CIRCLE_RADIUS_INNER
-	let viewBounds = view.bounds
+    let lbSize = sizeForTitle(title)
+    let heightDiff = lbSize.height > 0 ? lbSize.height + ARS_TITLE_MARGIN : 0;
+    let viewBounds = CGRect(x:0, y:0, width:view.bounds.size.width, height:view.bounds.size.height - heightDiff);
 	let arcCenter = CGPoint(x: viewBounds.midX, y: viewBounds.midY)
 	var path: UIBezierPath
 	
