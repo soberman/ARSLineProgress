@@ -20,9 +20,11 @@ final class ViewController: UIViewController {
         
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(3 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: { () -> Void in
-            ARSLineProgress.hideWithCompletionBlock({ () -> Void in
-                print("Hidden with completion block")
-            })
+            
+            ARSLineProgress.showSuccess()
+//            ARSLineProgress.hideWithCompletionBlock({ () -> Void in
+//                print("Hidden with completion block")
+//            })
         })
     }
     
@@ -66,11 +68,11 @@ final class ViewController: UIViewController {
     }
     
     @IBAction func didTapShowSuccessButton(_ sender: AnyObject) {
-        ARSLineProgress.showSuccess()
+        ARSLineProgress.showSuccess("Success")
     }
     
     @IBAction func didTapShowFailButton(_ sender: AnyObject) {
-        ARSLineProgress.showFail()
+        ARSLineProgress.showFail("Fail")
 	}
 	
 	@IBAction func showFullBackgroundLoader(_ sender: AnyObject) {

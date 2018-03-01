@@ -23,10 +23,10 @@ public final class ARSLineProgress: NSObject {
         Will interrupt the current .Infinite loader progress and show success animation instead.
     */
     public static func showSuccess() {
-        if !statusShown { ARSStatus.show(.success, title: "") }
+        showSuccess("")
     }
     
-    public static func showSuccess(_ title: NSString?) {
+    public static func showSuccess(_ title: String) {
         if !statusShown { ARSStatus.show(.success, title: title) }
     }
     
@@ -34,51 +34,51 @@ public final class ARSLineProgress: NSObject {
         Will interrupt the current .Infinite loader progress and show fail animation instead.
     */
     public static func showFail() {
-        if !statusShown { ARSStatus.show(.success, title: "") }
+        showFail("")
     }
     
-    public static func showFail(_ title: NSString?) {
-        if !statusShown { ARSStatus.show(.success, title: title) }
+    public static func showFail(_ title: String) {
+        if !statusShown { ARSStatus.show(.fail, title: title) }
     }
     
     // MARK: Show Infinite Loader
     
     
     public static func show() {
-        show(nil)
+        show("")
     }
     
-    public static func show(_ title: NSString?) {
+    public static func show(_ title: String) {
         if !shown { ARSInfiniteLoader().ars_showOnView(nil, title:title, completionBlock: nil) }
     }
     
     
     
     public static func showWithPresentCompetionBlock(_ block: @escaping () -> Void) {
-        showWithPresentCompetionBlock(nil, block: block)
+        showWithPresentCompetionBlock("", block: block)
     }
     
-    public static func showWithPresentCompetionBlock(_ title: NSString?, block: @escaping () -> Void) {
+    public static func showWithPresentCompetionBlock(_ title: String, block: @escaping () -> Void) {
         if !shown { ARSInfiniteLoader().ars_showOnView(nil, title:title, completionBlock: block) }
     }
     
     
     
     public static func ars_showOnView(_ view: UIView) {
-        ars_showOnView(view, title:nil)
+        ars_showOnView(view, title:"")
     }
     
-    public static func ars_showOnView(_ view: UIView, title: NSString?) {
+    public static func ars_showOnView(_ view: UIView, title: String) {
         if !shown { ARSInfiniteLoader().ars_showOnView(view, title: title, completionBlock: nil) }
     }
     
     
     
     public static func ars_showOnView(_ view: UIView, completionBlock: @escaping () -> Void) {
-        ars_showOnView(view, title:nil, completionBlock:completionBlock)
+        ars_showOnView(view, title:"", completionBlock:completionBlock)
     }
     
-    public static func ars_showOnView(_ view: UIView, title: NSString?, completionBlock: @escaping () -> Void) {
+    public static func ars_showOnView(_ view: UIView, title: String, completionBlock: @escaping () -> Void) {
         if !shown { ARSInfiniteLoader().ars_showOnView(view, title: title, completionBlock: completionBlock) }
     }
     

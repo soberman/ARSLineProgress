@@ -17,7 +17,7 @@ final class ARSInfiniteLoader: ARSLoader {
 	@objc var backgroundSimpleView: UIView
 	@objc var backgroundFullView: UIView
     @objc var lbTitle: UILabel = UILabel()
-    @objc var title: NSString?
+    @objc var title: String
 	@objc var backgroundView: UIView {
 		switch ars_config.backgroundViewStyle {
 		case .blur:
@@ -70,13 +70,13 @@ final class ARSInfiniteLoader: ARSLoader {
 
 extension ARSInfiniteLoader {
 	
-    func ars_showOnView(_ view: UIView?, title: NSString?, completionBlock: (() -> Void)?) {
+    func ars_showOnView(_ view: UIView?, title: String, completionBlock: (() -> Void)?) {
         self.title = title
         
 		if ars_createdFrameForBackgroundView(backgroundView, title:self.title, onView: view) == false { return }
         
-        if(title != nil && title!.length > 0){
-            lbTitle.text = self.title! as String;
+        if(title.count > 0){
+            lbTitle.text = self.title;
             lbTitle.sizeToFit();
             let parentView = ((backgroundView as? UIVisualEffectView)?.contentView) ?? backgroundView;
             parentView.addSubview(lbTitle);

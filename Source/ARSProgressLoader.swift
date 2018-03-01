@@ -17,7 +17,7 @@ final class ARSProgressLoader: ARSLoader {
 	@objc var backgroundSimpleView: UIView
 	@objc var backgroundFullView: UIView
     @objc var lbTitle: UILabel = UILabel()
-    @objc var title: NSString?
+    @objc var title: String
 	@objc var backgroundView: UIView {
 		switch ars_config.backgroundViewStyle {
 		case .blur:

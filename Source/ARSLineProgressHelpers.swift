@@ -37,9 +37,9 @@ func ars_window() -> UIWindow? {
 	return targetWindow
 }
 
-func sizeForTitle(_ title : NSString?) -> CGSize{
-    if (title != nil && title!.length > 0){
-        return title!.boundingRect(with:CGSize(width:0, height:0),
+func sizeForTitle(_ title : String) -> CGSize{
+    if (title.count > 0){
+        return title.boundingRect(with:CGSize(width:0, height:0),
                                   options:NSStringDrawingOptions.usesLineFragmentOrigin,
                                   attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: ARS_TITLE_SIZE)],
                                   context:nil)
@@ -49,7 +49,7 @@ func sizeForTitle(_ title : NSString?) -> CGSize{
     return CGSize(width:0, height:0)
 }
 
-@discardableResult func ars_createdFrameForBackgroundView(_ backgroundView: UIView, title: NSString?, onView view: UIView?) -> Bool {
+@discardableResult func ars_createdFrameForBackgroundView(_ backgroundView: UIView, title: String, onView view: UIView?) -> Bool {
 	let center: CGPoint
 	let bounds: CGRect
     let lbSize = sizeForTitle(title)
@@ -64,8 +64,8 @@ func sizeForTitle(_ title : NSString?) -> CGSize{
 	center = CGPoint(x: bounds.midX, y: bounds.midY)
 	
 	let sideLengths = ARS_BACKGROUND_VIEW_SIDE_LENGTH
-    let width = max(sideLengths, lbSize.width + 2 * ARS_TITLE_MARGIN)
     let height = sideLengths + (lbSize.height > 0 ? lbSize.height + ARS_TITLE_MARGIN : 0)
+    let width = max(sideLengths, height)
     
 	switch ars_config.backgroundViewStyle {
 	case .blur, .simple:
@@ -122,7 +122,7 @@ class ARSFullBackgroundRect {
 	}
 }
 
-func ars_createCircles(_ outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer, title: NSString?, onView view: UIView, loaderType: ARSLoaderType) {
+func ars_createCircles(_ outerCircle: CAShapeLayer, middleCircle: CAShapeLayer, innerCircle: CAShapeLayer, title: String, onView view: UIView, loaderType: ARSLoaderType) {
 	let circleRadiusOuter = ARS_CIRCLE_RADIUS_OUTER
 	let circleRadiusMiddle = ARS_CIRCLE_RADIUS_MIDDLE
 	let circleRadiusInner = ARS_CIRCLE_RADIUS_INNER
