@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ARSLineProgress"
-  s.version      = "2.1.1"
+  s.version      = "2.2.0"
   s.summary      = "iOS progress bar, replacement for the default activity indicator."
 
   s.description  = <<-DESC
@@ -40,7 +40,7 @@ Pod::Spec.new do |s|
 
       use_frameworks!
       platform :ios, '8.0'
-      pod 'ARSLineProgress', '~> 1.0'
+      pod 'ARSLineProgress', '~> 2.0'
 
   ### Rookie way
   You can always to do the old way - just drag the source file into your projects and you are good to go.
@@ -111,10 +111,10 @@ Pod::Spec.new do |s|
   s.author             = { "Yarik Arsenkin" => "info@arsenkin.com" }
   s.social_media_url   = "http://twitter.com/Soberman777"
   s.platform     = :ios, "8.0"
-  s.source       = { :git => "https://github.com/soberman/ARSLineProgress.git", :tag => "2.1.1" }
+  s.source       = { :git => "https://github.com/soberman/ARSLineProgress.git", :tag => "2.2.0" }
   s.source_files  = "Source/*"
   s.exclude_files = "Demo/*", "Carthage/*"
   # s.public_header_files = "Source/ARSLineProgress.swift"
   s.requires_arc = true
-  s.xcconfig = { 'SWIFT_VERSION' => '3.0' }
+  s.xcconfig = { 'SWIFT_VERSION' => '4.0' }
 end
