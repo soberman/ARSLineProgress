@@ -259,6 +259,7 @@ func ars_animateCircles(_ outerCircle: CAShapeLayer, middleCircle: CAShapeLayer,
 		outerAnimation.toValue = ARS_CIRCLE_ROTATION_TO_VALUE
 		outerAnimation.duration = ars_config.circleRotationDurationOuter
 		outerAnimation.repeatCount = ARS_CIRCLE_ROTATION_REPEAT_COUNT
+        outerAnimation.isRemovedOnCompletion = false
 		outerCircle.add(outerAnimation, forKey: "outerCircleRotation")
 		
 		let middleAnimation = outerAnimation.copy() as! CABasicAnimation
