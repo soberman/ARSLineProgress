@@ -39,13 +39,13 @@ final class ARSStatus: ARSLoader {
 		ars_createdFrameForBackgroundView(backgroundView, onView: nil)
 		NotificationCenter.default.addObserver(self,
 		                                       selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
-		                                       name: NSNotification.Name.UIDeviceOrientationDidChange,
+		                                       name: UIDevice.orientationDidChangeNotification,
 		                                       object: nil)
 	}
 	
 	deinit {
 		NotificationCenter.default.removeObserver(self,
-		                                          name: NSNotification.Name.UIDeviceOrientationDidChange,
+		                                          name: UIDevice.orientationDidChangeNotification,
 		                                          object: nil)
 	}
 	
@@ -131,18 +131,18 @@ extension ARSStatus {
 		animationCheckmark.isRemovedOnCompletion = true
 		animationCheckmark.fromValue = 0
 		animationCheckmark.toValue = 1
-		animationCheckmark.fillMode = kCAFillModeBoth
+		animationCheckmark.fillMode = CAMediaTimingFillMode.both
 		animationCheckmark.duration = ars_config.checkmarkAnimationDrawDuration
-		animationCheckmark.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+		animationCheckmark.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
 		checkmark.add(animationCheckmark, forKey: nil)
 		
 		let animationCircle = CABasicAnimation(keyPath: "strokeEnd")
 		animationCircle.isRemovedOnCompletion = true
 		animationCircle.fromValue = 0
 		animationCircle.toValue = 1
-		animationCircle.fillMode = kCAFillModeBoth
+		animationCircle.fillMode = CAMediaTimingFillMode.both
 		animationCircle.duration = ars_config.successCircleAnimationDrawDuration
-		animationCircle.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+		animationCircle.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
 		successCircle.add(animationCircle, forKey: nil)
 	}
 	
@@ -187,17 +187,17 @@ extension ARSStatus {
 		animationCross.fromValue = 0
 		animationCross.toValue = 1
 		animationCross.duration = ars_config.failCrossAnimationDrawDuration
-		animationCross.fillMode = kCAFillModeBoth
-		animationCross.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+		animationCross.fillMode = CAMediaTimingFillMode.both
+		animationCross.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
 		cross.add(animationCross, forKey: nil)
 		
 		let animationCircle = CABasicAnimation(keyPath: "opacity")
 		animationCircle.isRemovedOnCompletion = true
 		animationCircle.fromValue = 0
 		animationCircle.toValue = 1
-		animationCircle.fillMode = kCAFillModeBoth
+		animationCircle.fillMode = CAMediaTimingFillMode.both
 		animationCircle.duration = ars_config.failCircleAnimationDrawDuration
-		animationCircle.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+		animationCircle.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
 		failCircle.add(animationCircle, forKey: nil)
 	}
 	

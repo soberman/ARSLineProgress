@@ -21,7 +21,7 @@ final public class ARSLineProgressConfiguration: NSObject {
 	public static var backgroundViewPresentAnimationDuration: CFTimeInterval = 0.3
 	public static var backgroundViewDismissAnimationDuration: CFTimeInterval = 0.3
 	
-	public static var blurStyle: UIBlurEffectStyle = .dark
+	public static var blurStyle: UIBlurEffect.Style = .dark
 	public static var circleColorOuter: CGColor = UIColor.ars_colorWithRGB(130.0, green: 149.0, blue: 173.0, alpha: 1.0).cgColor
 	public static var circleColorMiddle: CGColor = UIColor.ars_colorWithRGB(82.0, green: 124.0, blue: 194.0, alpha: 1.0).cgColor
 	public static var circleColorInner: CGColor = UIColor.ars_colorWithRGB(60.0, green: 132.0, blue: 196.0, alpha: 1.0).cgColor

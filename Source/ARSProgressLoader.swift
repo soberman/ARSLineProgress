@@ -44,13 +44,13 @@ final class ARSProgressLoader: ARSLoader {
 		ARSProgressLoader.weakSelf = self
 		NotificationCenter.default.addObserver(self,
 		                                       selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
-		                                       name: NSNotification.Name.UIDeviceOrientationDidChange,
+		                                       name: UIDevice.orientationDidChangeNotification,
 		                                       object: nil)
 	}
 	
 	deinit {
 		NotificationCenter.default.removeObserver(self,
-		                                          name: NSNotification.Name.UIDeviceOrientationDidChange,
+		                                          name: UIDevice.orientationDidChangeNotification,
 		                                          object: nil)
 	}
 	

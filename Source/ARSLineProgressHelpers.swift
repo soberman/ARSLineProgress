@@ -28,7 +28,7 @@ func ars_window() -> UIWindow? {
 	for window in windows {
 		if window.screen != UIScreen.main { continue }
 		if !window.isHidden && window.alpha == 0 { continue }
-		if window.windowLevel != UIWindowLevelNormal { continue }
+		if window.windowLevel != UIWindow.Level.normal { continue }
 		
 		targetWindow = window
 		break
@@ -191,7 +191,7 @@ func ars_presentLoader(_ loader: ARSLoader, onView view: UIView?, completionBloc
 		CATransaction.setCompletionBlock(completionBlock)
 		
 		let alphaAnimation = CABasicAnimation(keyPath: "opacity")
-		alphaAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+		alphaAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
 		alphaAnimation.fromValue = 0
 		alphaAnimation.toValue = 1
 		alphaAnimation.duration = ars_config.backgroundViewPresentAnimationDuration
@@ -216,7 +216,7 @@ func ars_hideLoader(_ loader: ARSLoader?, withCompletionBlock block: (() -> Void
 		CATransaction.begin()
 		CATransaction.setCompletionBlock(block)
 		let alphaAnimation = CABasicAnimation(keyPath: "opacity")
-		alphaAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+		alphaAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
 		alphaAnimation.fromValue = alpha
 		alphaAnimation.toValue = 0
 		alphaAnimation.duration = fixedTime
@@ -227,7 +227,7 @@ func ars_hideLoader(_ loader: ARSLoader?, withCompletionBlock block: (() -> Void
 		loader.emptyView.layer.add(alphaAnimation, forKey: "alpha")
 		
 		let scaleAnimation = CABasicAnimation(keyPath: "transform")
-		scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+		scaleAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
 		scaleAnimation.fromValue = CGAffineTransform(scaleX: 1, y: 1)
 		scaleAnimation.toValue = CGAffineTransform(scaleX: ars_config.backgroundViewDismissTransformScale,
 		                                           y: ars_config.backgroundViewDismissTransformScale)
