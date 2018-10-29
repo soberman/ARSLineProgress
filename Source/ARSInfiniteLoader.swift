@@ -37,13 +37,13 @@ final class ARSInfiniteLoader: ARSLoader {
 		backgroundFullView = ARSFullBackgroundRect().view
 		NotificationCenter.default.addObserver(self,
 		                                       selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
-		                                       name: NSNotification.Name.UIDeviceOrientationDidChange,
+		                                       name: UIDevice.orientationDidChangeNotification,
 		                                       object: nil)
 	}
 	
 	deinit {
 		NotificationCenter.default.removeObserver(self,
-		                                          name: NSNotification.Name.UIDeviceOrientationDidChange,
+		                                          name: UIDevice.orientationDidChangeNotification,
 		                                          object: nil)
 	}
 	
