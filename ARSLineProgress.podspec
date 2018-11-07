@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ARSLineProgress"
-  s.version      = "3.0.0"
+  s.version      = "3.1.0"
   s.summary      = "iOS progress bar, replacement for the default activity indicator."
 
   s.description  = <<-DESC
@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   ### Carthage
   To install with [Carthage](https://github.com/Carthage/Carthage), simply specify this on your `Cartfile`:
 
-      github "soberman/ARSLineProgress" >= 3.0
+      github "soberman/ARSLineProgress" >= 3.1
 
   In case you don't Carthage installed yet, you could do this with [Homebrew](http://brew.sh/):
 
@@ -40,7 +40,7 @@ Pod::Spec.new do |s|
 
       use_frameworks!
       platform :ios, '8.0'
-      pod 'ARSLineProgress', '~> 3.0'
+      pod 'ARSLineProgress', '~> 3.1'
 
   ### Rookie way
   You can always to do the old way - just drag the source file into your projects and you are good to go.
@@ -111,7 +111,7 @@ Pod::Spec.new do |s|
   s.author             = { "Yarik Arsenkin" => "info@arsenkin.com" }
   s.social_media_url   = "http://twitter.com/Soberman777"
   s.platform     = :ios, "8.0"
-  s.source       = { :git => "https://github.com/soberman/ARSLineProgress.git", :tag => "3.0.0" }
+  s.source       = { :git => "https://github.com/soberman/ARSLineProgress.git", :tag => "3.1.0" }
   s.source_files  = "Source/*"
   s.exclude_files = "Demo/*", "Carthage/*"
   s.requires_arc = true
