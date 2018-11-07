@@ -10,7 +10,7 @@
 
 import UIKit
 
-final public class ARSLineProgressConfiguration: NSObject {
+@objcMembers final public class ARSLineProgressConfiguration: NSObject {
 	
 	public static var showSuccessCheckmark = true
 	
