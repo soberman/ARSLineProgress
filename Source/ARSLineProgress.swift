@@ -10,7 +10,7 @@
 
 import UIKit
 
-public final class ARSLineProgress: NSObject {
+@objcMembers public final class ARSLineProgress: NSObject {
     
     public static var shown: Bool { return ars_currentLoader != nil ? true : false }
     public static var statusShown: Bool { return ars_currentStatus != nil ? true : false }
