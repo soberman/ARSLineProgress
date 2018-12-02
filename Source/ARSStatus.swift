@@ -21,6 +21,8 @@ final class ARSStatus: ARSLoader {
 	@objc var backgroundBlurView: UIVisualEffectView
 	@objc var backgroundSimpleView: UIView
 	@objc var backgroundFullView: UIView
+    @objc var lbTitle: UILabel = UILabel()
+    @objc var title: String
 	@objc var backgroundView: UIView {
 		switch ars_config.backgroundViewStyle {
 		case .blur:
@@ -33,10 +35,11 @@ final class ARSStatus: ARSLoader {
 	}
 	
 	init() {
+        title = ""
 		backgroundBlurView = ARSBlurredBackgroundRect().view
 		backgroundSimpleView = ARSSimpleBackgroundRect().view
 		backgroundFullView = ARSFullBackgroundRect().view
-		ars_createdFrameForBackgroundView(backgroundView, onView: nil)
+        ars_createdFrameForBackgroundView(backgroundView, title:title, onView: nil)
 		NotificationCenter.default.addObserver(self,
 		                                       selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
 		                                       name: UIDevice.orientationDidChangeNotification,
@@ -53,30 +56,32 @@ final class ARSStatus: ARSLoader {
 		ars_dispatchOnMainQueue {
 			if let loader = ars_currentLoader {
 				if let targetView = loader.targetView {
-					ars_createdFrameForBackgroundView(loader.backgroundView, onView: targetView)
+                    ars_createdFrameForBackgroundView(loader.backgroundView, title:loader.title, onView: targetView)
 				} else {
-					ars_createdFrameForBackgroundView(loader.backgroundView, onView: nil)
+                    ars_createdFrameForBackgroundView(loader.backgroundView, title:loader.title, onView: nil)
 				}
 			}
 		}
 	}
 	
-	static func show(_ type: ARSStatusType) {
+    static func show(_ type: ARSStatusType, title: String) {
 		if let loader = ars_currentLoader {
-			ars_stopCircleAnimations(loader, completionBlock: {
-				drawStatus(type, loader: loader)
+            ars_stopCircleAnimations(loader, completionBlock: {
+				drawStatus(type, title:title, loader: loader)
 			})
 		} else {
 			let loader = ARSStatus()
 			ars_presentLoader(loader, onView: nil, completionBlock: {
-				drawStatus(type, loader: loader)
+				drawStatus(type, title:title, loader: loader)
 			})
 		}
 	}
 	
-	static func drawStatus(_ type: ARSStatusType, loader: ARSLoader) {
+	static func drawStatus(_ type: ARSStatusType, title: String, loader: ARSLoader) {
 		ars_currentStatus = loader
-		
+        loader.title = title;
+        loader.lbTitle.text = title
+                
 		switch type {
 		case .success:
 			ARSStatus.drawSuccess(loader.backgroundView)
