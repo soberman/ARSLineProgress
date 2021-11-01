@@ -236,6 +236,8 @@ func ars_hideLoader(_ loader: ARSLoader?, withCompletionBlock block: (() -> Void
 		
 		loader.backgroundView.layer.removeAnimation(forKey: "transform")
 		loader.backgroundView.layer.add(scaleAnimation, forKey: "transform")
+        
+        CATransaction.commit()
 	}
 	
 	ars_dispatchAfter(ars_config.backgroundViewDismissAnimationDuration) {
