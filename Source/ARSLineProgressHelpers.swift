@@ -236,6 +236,9 @@ func ars_hideLoader(_ loader: ARSLoader?, withCompletionBlock block: (() -> Void
 		
 		loader.backgroundView.layer.removeAnimation(forKey: "transform")
 		loader.backgroundView.layer.add(scaleAnimation, forKey: "transform")
+        
+        // Fix iOS 15
+        CATransaction.commit()
 	}
 	
 	ars_dispatchAfter(ars_config.backgroundViewDismissAnimationDuration) {
