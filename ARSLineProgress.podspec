@@ -39,7 +39,7 @@ Pod::Spec.new do |s|
   To install with [CocoaPods](http://cocoapods.org/), copy and paste this in your *Podfile* file:
 
       use_frameworks!
-      platform :ios, '8.0'
+      platform :ios, '9.0'
       pod 'ARSLineProgress', '~> 3.1'
 
   ### Rookie way
@@ -110,10 +110,11 @@ Pod::Spec.new do |s|
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author             = { "Yarik Arsenkin" => "info@arsenkin.com" }
   s.social_media_url   = "http://twitter.com/Soberman777"
-  s.platform     = :ios, "8.0"
+  s.platform     = :ios, "9.0"
   s.source       = { :git => "https://github.com/soberman/ARSLineProgress.git", :tag => "3.1.1" }
   s.source_files  = "Source/*"
   s.exclude_files = "Demo/*", "Carthage/*"
   s.requires_arc = true
+  s.swift_version = '4.2'
   s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.2' }
 end
