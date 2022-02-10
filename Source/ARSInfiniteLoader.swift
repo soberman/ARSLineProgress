@@ -16,6 +16,8 @@ final class ARSInfiniteLoader: ARSLoader {
 	@objc var backgroundBlurView: UIVisualEffectView
 	@objc var backgroundSimpleView: UIView
 	@objc var backgroundFullView: UIView
+    @objc var lbTitle: UILabel = UILabel()
+    @objc var title: String
 	@objc var backgroundView: UIView {
 		switch ars_config.backgroundViewStyle {
 		case .blur:
@@ -32,9 +34,14 @@ final class ARSInfiniteLoader: ARSLoader {
 	@objc weak var targetView: UIView?
 	
 	init() {
+        title = ""
 		backgroundBlurView = ARSBlurredBackgroundRect().view
 		backgroundSimpleView = ARSSimpleBackgroundRect().view
 		backgroundFullView = ARSFullBackgroundRect().view
+        
+        lbTitle.textColor = ARS_TITLE_COLOR
+        lbTitle.font = UIFont.systemFont(ofSize: ARS_TITLE_SIZE)
+        
 		NotificationCenter.default.addObserver(self,
 		                                       selector: #selector(ARSInfiniteLoader.orientationChanged(_:)),
 		                                       name: UIDevice.orientationDidChangeNotification,
@@ -51,9 +58,9 @@ final class ARSInfiniteLoader: ARSLoader {
 		ars_dispatchOnMainQueue {
 			if let loader = ars_currentLoader {
 				if let targetView = loader.targetView {
-					ars_createdFrameForBackgroundView(loader.backgroundView, onView: targetView)
+                    ars_createdFrameForBackgroundView(loader.backgroundView, title:loader.title, onView: targetView)
 				} else {
-					ars_createdFrameForBackgroundView(loader.backgroundView, onView: nil)
+                    ars_createdFrameForBackgroundView(loader.backgroundView, title:loader.title, onView: nil)
 				}
 			}
 		}
@@ -63,14 +70,28 @@ final class ARSInfiniteLoader: ARSLoader {
 
 extension ARSInfiniteLoader {
 	
-	func ars_showOnView(_ view: UIView?, completionBlock: (() -> Void)?) {
-		if ars_createdFrameForBackgroundView(backgroundView, onView: view) == false { return }
-		
+    func ars_showOnView(_ view: UIView?, title: String, completionBlock: (() -> Void)?) {
+        self.title = title
+        
+		if ars_createdFrameForBackgroundView(backgroundView, title:self.title, onView: view) == false { return }
+        
+        if(title.count > 0){
+            lbTitle.text = self.title;
+            lbTitle.sizeToFit();
+            let parentView = ((backgroundView as? UIVisualEffectView)?.contentView) ?? backgroundView;
+            parentView.addSubview(lbTitle);
+            
+            lbTitle.center = CGPoint(x:parentView.center.x,
+                                     y:parentView.frame.origin.y + backgroundView.frame.size.height - ARS_TITLE_MARGIN - lbTitle.frame.size.height);
+        }
+        
+        
 		targetView = view
 		
 		ars_createCircles(outerCircle,
 		                  middleCircle: middleCircle,
 		                  innerCircle: innerCircle,
+                          title: title,
 		                  onView: ((backgroundView as? UIVisualEffectView)?.contentView) ?? backgroundView,
 		                  loaderType: .infinite)
 		ars_animateCircles(outerCircle, middleCircle: middleCircle, innerCircle: innerCircle)

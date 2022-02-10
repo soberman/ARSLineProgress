@@ -10,8 +10,8 @@
 
 import UIKit
 
-let ARS_BACKGROUND_VIEW_SIDE_LENGTH: CGFloat = 125.0
-let ARS_STATUS_PATH_SIDE_LENGTH: CGFloat = 125.0
+let ARS_BACKGROUND_VIEW_SIDE_LENGTH: CGFloat = 110.0
+let ARS_STATUS_PATH_SIDE_LENGTH: CGFloat = 110.0
 
 let ARS_CIRCLE_ROTATION_TO_VALUE = 2 * CGFloat.pi
 let ARS_CIRCLE_ROTATION_REPEAT_COUNT = Float(UINT64_MAX)
@@ -21,6 +21,11 @@ let ARS_CIRCLE_RADIUS_INNER: CGFloat = 20.0
 let ARS_CIRCLE_LINE_WIDTH: CGFloat = 2.0
 let ARS_CIRCLE_START_ANGLE: CGFloat = -CGFloat.pi / 2
 let ARS_CIRCLE_END_ANGLE: CGFloat = 0.0
+
+let ARS_TITLE_SIZE: CGFloat = 12.0
+let ARS_TITLE_MARGIN: CGFloat = 3.0
+let ARS_TITLE_COLOR: UIColor = UIColor.white;
+
 
 weak var ars_currentStatus: ARSLoader?
 var ars_currentLoader: ARSLoader?
